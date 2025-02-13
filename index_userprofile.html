@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="style_userprofile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />    
+</head>
+<body>
+
+    <div class="nav-bar">
+        <div class="nav-links">
+            <a href="#">About</a> | <a href="#">FAQ</a> |
+            <a href="forum1.html">Forums</a>
+        </div>
+
+        <form class="search-form" action="">
+            <input type="search" class="search-input" placeholder="Search here...">
+            <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+
+    <div class="user-container">
+        <div class="left-container">
+            <div class="profile-container">
+                <img src="pfp.png" class="profile-img">
+                <div class="profile-username">
+                    <h2>Username</h2>
+                    <h3>Bio</h3>
+                </div>
+            </div>
+            
+            <button class="createforum-button" type="button">
+                <span class="material-symbols-outlined">add_circle</span>
+                <span>Create Forum</span>
+            </button>
+    
+            <div class="created-container">
+                    <h2>Created Forums</h2>
+                    <div id="forum-list">
+                        <div class="forum-entry">
+                            <span class="forum-title">Created Forum #1</span>
+                            <button class="info-button">...</button>
+                        </div>
+                        <div class="forum-entry">
+                            <span class="forum-title">Created Forum #2</span>
+                            <button class="info-button">...</button>
+                        </div>
+                        <div class="forum-entry">
+                            <span class="forum-title">Created Forum #3</span>
+                            <button class="info-button">...</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    
+        <div class="right-container">
+            <div class="most-container">
+                <h2>Most Recent Forums Posted</h2>
+                <p>Forum 1</p>
+                <p>Forum 2</p>
+                <p>Forum 3</p>
+            </div>
+            <div class="most-container">
+                <h2>Top 5 Most Popular Forums</h2>
+                <p>Forum 1</p>
+                <p>Forum 2</p>
+                <p>Forum 3</p>
+                <p>Forum 4</p>
+                <p>Forum 5</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="script_userprofile.js"></script>
+</body>
+</html>
