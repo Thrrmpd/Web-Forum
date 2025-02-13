@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.nav-bar {
+    background: #2369da;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    border-radius: 20px;
+}
+.nav-bar a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+.post-form,
+.posts-section {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto 20px auto; /* Adds space above and below */
+    max-width: 800px;
+}
+
+input,
+textarea,
+select,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background: #0056b3;
+}
+.post {
+    background: white;
+    padding: 10px; /* Reduce padding inside the box */
+    margin: 30px 0; /* Reduce margin between posts */
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.comment {
+    background: #f9f9f9;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.edit-delete {
+    display: list-item;
+    gap: 5px;
+    margin-top: 5px;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: block;
+}
