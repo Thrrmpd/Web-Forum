@@ -25,21 +25,23 @@
       .post-form,
       .posts-section {
         background: white;
-        padding: 20px;
+        padding: 15px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
+        margin: 20px auto 20px auto; /* Adds space above and below */
+        max-width: 800px;
       }
+
       input,
       textarea,
       select,
       button {
-        display: block;
         width: 100%;
-        margin: 10px 0;
         padding: 10px;
+        margin-bottom: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        box-sizing: border-box;
       }
       button {
         background: #007bff;
@@ -52,12 +54,13 @@
       }
       .post {
         background: white;
-        padding: 15px;
-        margin: 10px 0;
+        padding: 10px; /* Reduce padding inside the box */
+        margin: 30px 0; /* Reduce margin between posts */
         border-radius: 10px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         position: relative;
       }
+
       .comment {
         background: #f9f9f9;
         padding: 10px;
