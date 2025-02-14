@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
   forumDescription.textContent = descriptionText;
 
   // Add a sample post on load
+  addSamplePost6();
   addSamplePost2();
   addSamplePost3();
   addSamplePost4();
   addSamplePost5();
-  addSamplePost6();
   addSamplePost1();
 });
 
@@ -281,23 +281,45 @@ function addSamplePost6() {
     <div class="comments-section">
       <input type="text" class="commentInput" placeholder="Write a comment...">
       <button onclick="addComment(this)">Comment</button>
-      <div class="comments-container"></div>
+      <div class="comments-container">
+        <div class="comment">
+          <p>"That’s a cool idea! Maybe Psyduck could have an alternate evolution where it masters its psychic abilities instead of evolving into Golduck. Like a Psychic/Water-type with insane special attack!"</p>
+          <div class="edit-delete">
+            <button onclick="editComment(this)">Edit</button>
+            <button onclick="deleteComment(this)">Delete</button>
+          </div>
+        </div>
+        <div class="comment">
+          <p>Right? If Psyduck could consciously use its powers, it might even surpass Alakazam! But I guess its goofiness is part of its charm. 😂</p>
+          <div class="edit-delete">
+            <button onclick="editComment(this)">Edit</button>
+            <button onclick="deleteComment(this)">Delete</button>
+          </div>
+        </div>
+        <div class="comment">
+          <p>This makes me wonder—do all Psyducks have the same potential, or are there some that naturally have stronger psychic abilities than others? Maybe nature vs. nurture applies to Pokémon too!</p>
+          <div class="edit-delete">
+            <button onclick="editComment(this)">Edit</button>
+            <button onclick="deleteComment(this)">Delete</button>
+          </div>
+        </div>
+        <div class="comment">
+          <p>What if there was a storyline in a future Pokémon game where a Psyduck is trained by a powerful psychic trainer to control its abilities? That would be an awesome side quest!</p>
+          <div class="edit-delete">
+            <button onclick="editComment(this)">Edit</button>
+            <button onclick="deleteComment(this)">Delete</button>
+          </div>
+        </div>
+        <div class="comment">
+          <p>I always felt bad for Psyduck because it looks like it’s suffering, but now I kind of see it as an underdog waiting for its full potential to awaken. Maybe one day!</p>
+          <div class="edit-delete">
+            <button onclick="editComment(this)">Edit</button>
+            <button onclick="deleteComment(this)">Delete</button>
+          </div>
+        </div>
+      </div>
     </div>
   `;
 
   postContainer.prepend(postDiv);
-
-  // Add a comment
-  const commentsContainer = postDiv.querySelector(".comments-container");
-  const commentDiv = document.createElement("div");
-  commentDiv.classList.add("comment");
-  commentDiv.innerHTML = `
-    <p>That's right!</p>
-    <div class="edit-delete">
-      <button onclick="editComment(this)">Edit</button>
-      <button onclick="deleteComment(this)">Delete</button>
-    </div>
-  `;
-
-  commentsContainer.appendChild(commentDiv);
 }
