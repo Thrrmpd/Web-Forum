@@ -24,14 +24,14 @@ function login() {
 	
 	
 	if(checker == 1)
-		window.location.replace("./userpage.html");
+		window.location.replace("./index_userprofile.html");
 	else
 		alert("username or password might be wrong");
 	
 }
 
 function goback() {
-window.location.replace("./menu.html");
+window.history.back();
 }
 
 function signup() {
@@ -43,20 +43,25 @@ function signup() {
 		["goodbyemydei", "janefisher22@gmail.com"], 
 		["hellomyworld", "jennyparker432@gmail.com"]
 		]);
-	let checker = 0;
-	
+	let checkuname = 0;
+	let checkpass = 0;
 	const keys = emails.keys();
 	
 	while(true){
 		let result = keys.next();
 		
 			if(emails.get(result.value) == username) {
-				break;
+			         checkuname+=1;
+			         break;
 				}
 			else{
-				if(password == checkpwd)
-					checker+=1;
-					break;
+			     
+				if(password != checkpwd)
+				    {
+					   checkpass+=1;
+					   break;
+					   
+					}
 			}
 				
 			if(result.done)
@@ -64,10 +69,16 @@ function signup() {
 	}
 	
 	
-	if(checker == 1)
-		window.location.replace("./userpage.html");
-	else
-		alert("username already exists");
+	if(checkuname == 0 && checkpass == 0){
+		window.location.replace("./index_userprofile.html");
+		}
+	else{
+	       if(checkuname == 1)
+		      alert("username already used");
+		   else if(checkpass == 1)
+	           alert("passwords don't match");
+	   
+	   }
 	
 	
 
