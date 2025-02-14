@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Simulated dynamic forum description
   const descriptionText =
-    "Welcome to Forum 1! Discuss various topics and share your insights with others.";
+    "Welcome to the Psyduck Fan Forum! 🌊💛 Dive into discussions about everyone’s favorite confused duck! Share memes, theories, game strategies, and your best Psyduck moments. Whether you're a longtime fan or just curious, this is the place to quack about Psyduck!";
   forumDescription.textContent = descriptionText;
 
   // Add a sample post on load
