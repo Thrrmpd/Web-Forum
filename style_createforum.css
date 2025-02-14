@@ -3,50 +3,86 @@ body {
     margin: 20px;
     padding: 0;
     background-color: #f4f4f4;
-}
-
-h1 {
+  }
+  .nav-bar {
+    background: #2369da;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 20px;
+  }
+  .nav-bar a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+  .post-form,
+  .posts-section,
+  .forum-description {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+  }
+  .forum-description {
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+  }
+  input,
+  textarea,
+  select,
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+  .post {
+    background: white;
+    padding: 10px;
+    margin: 30px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  .comment {
+    background: #c8c8c8;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+  .edit-delete {
+    display: list-item;
+    gap: 5px;
+    margin-top: 5px;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: block;
+  }
+  h1 {
     font-size: 30px;
     color: #333;
     margin-bottom: 15px;
-    text-align:center;
-}
-
-input {
-    padding: 12px;
-    width: 100%;
-    max-width: 250px;
-    border: 2px solid #2369da;
-    border-radius: 8px;
-    outline: none;
     text-align: center;
-    font-size: 16px;
-    margin: 0 auto;
-    display: block;
-}
-
-/* Stylized button */
-button {
-    padding: 12px 25px;
-    margin-top: 15px;
-    background-color: #2369da;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 0 auto;
-    display: block;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    /*place in the center*/
-    text-align: center;
-}
-
-option {
-   
-}
+  }
+  
