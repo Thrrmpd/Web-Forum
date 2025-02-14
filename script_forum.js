@@ -1,11 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
   const forumDescription = document.getElementById("forumDescription");
 
-  // Simulated dynamic forum description (replace with actual backend call)
+  // Simulated dynamic forum description
   const descriptionText =
     "Welcome to Forum 1! Discuss various topics and share your insights with others.";
-
   forumDescription.textContent = descriptionText;
+
+  // Add a sample post on load
+  addSamplePost2();
+  addSamplePost3();
+  addSamplePost4();
+  addSamplePost5();
+  addSamplePost6();
+  addSamplePost1();
 });
 
 function createPost() {
@@ -36,7 +43,7 @@ function createPost() {
       <button onclick="editPost(this)">Edit</button>
       <button onclick="deletePost(this)">Delete</button>
     </div>
-    <div class="image-container"></div> <!-- Image will be inserted here -->
+    <div class="image-container"></div>
     <div class="comments-section">
       <input type="text" class="commentInput" placeholder="Write a comment...">
       <button onclick="addComment(this)">Comment</button>
@@ -120,4 +127,177 @@ function editComment(button) {
 
 function deleteComment(button) {
   button.closest(".comment").remove();
+}
+
+function addSamplePost1() {
+  const postContainer = document.getElementById("postsContainer");
+
+  const postDiv = document.createElement("div");
+  postDiv.classList.add("post");
+
+  postDiv.innerHTML = `
+    <small>Visibility: Public</small>
+    <h3>Psyduck the Pokemon</h3>
+    <p>Psyduck is a Water-type Pokémon from the Pokémon franchise. 
+      It’s a yellow, duck-like creature with a constant headache, 
+      which gives it powerful psychic abilities—though it struggles to control them. 
+      Psyduck is known for its blank expression and tendency to hold its head in confusion. 
+      It evolves into Golduck, a sleek, blue, more powerful Water/Psychic Pokémon..</p>
+    <img src="Psyduck.jpg" alt="Post Image">
+    <div class="edit-delete">
+      <button onclick="editPost(this)">Edit</button>
+      <button onclick="deletePost(this)">Delete</button>
+    </div>
+    <div class="comments-section">
+      <input type="text" class="commentInput" placeholder="Write a comment...">
+      <button onclick="addComment(this)">Comment</button>
+      <div class="comments-container"></div>
+    </div>
+  `;
+
+  postContainer.prepend(postDiv);
+}
+
+function addSamplePost2() {
+  const postContainer = document.getElementById("postsContainer");
+
+  const postDiv = document.createElement("div");
+  postDiv.classList.add("post");
+
+  postDiv.innerHTML = `
+    <small>Visibility: Public</small>
+    <h3>Why is Psyduck Always Confused?</h3>
+    <p>I’ve always wondered why Psyduck looks so clueless all the time. 
+    Is it just its nature, or is there an actual reason behind it? 
+    I read that its headaches trigger psychic powers, but does that mean it’s in pain all the time? 
+    Poor Psyduck! 😭</p>
+    <div class="edit-delete">
+      <button onclick="editPost(this)">Edit</button>
+      <button onclick="deletePost(this)">Delete</button>
+    </div>
+    <div class="comments-section">
+      <input type="text" class="commentInput" placeholder="Write a comment...">
+      <button onclick="addComment(this)">Comment</button>
+      <div class="comments-container"></div>
+    </div>
+  `;
+
+  postContainer.prepend(postDiv);
+}
+
+function addSamplePost3() {
+  const postContainer = document.getElementById("postsContainer");
+
+  const postDiv = document.createElement("div");
+  postDiv.classList.add("post");
+
+  postDiv.innerHTML = `
+    <small>Visibility: Public</small>
+    <h3>Psyduck in the Anime – Underrated MVP!</h3>
+    <p>People always laugh at Misty’s Psyduck, but let’s be real—it saved the team SO many times with 
+    its unexpected Psychic moves! That battle against Team Rocket? Absolute gold. 
+    Anyone else think Psyduck is lowkey OP?</p>
+    <div class="edit-delete">
+      <button onclick="editPost(this)">Edit</button>
+      <button onclick="deletePost(this)">Delete</button>
+    </div>
+    <div class="comments-section">
+      <input type="text" class="commentInput" placeholder="Write a comment...">
+      <button onclick="addComment(this)">Comment</button>
+      <div class="comments-container"></div>
+    </div>
+  `;
+
+  postContainer.prepend(postDiv);
+}
+
+function addSamplePost4() {
+  const postContainer = document.getElementById("postsContainer");
+
+  const postDiv = document.createElement("div");
+  postDiv.classList.add("post");
+
+  postDiv.innerHTML = `
+    <small>Visibility: Public</small>
+    <h3>Psyduck vs Golduck – Which One is Better?</h3>
+    <p>I know Golduck looks cooler and is stronger stat-wise, but something about Psyduck’s chaotic 
+    energy just makes it more fun. Which do you prefer: the derpy Psyduck or the sleek Golduck? Let’s discuss!</p>
+    <div class="edit-delete">
+      <button onclick="editPost(this)">Edit</button>
+      <button onclick="deletePost(this)">Delete</button>
+    </div>
+    <div class="comments-section">
+      <input type="text" class="commentInput" placeholder="Write a comment...">
+      <button onclick="addComment(this)">Comment</button>
+      <div class="comments-container"></div>
+    </div>
+  `;
+
+  postContainer.prepend(postDiv);
+}
+
+function addSamplePost5() {
+  const postContainer = document.getElementById("postsContainer");
+
+  const postDiv = document.createElement("div");
+  postDiv.classList.add("post");
+
+  postDiv.innerHTML = `
+    <small>Visibility: Public</small>
+    <h3>I Just Caught a Shiny Psyduck!</h3>
+    <p>I can’t believe it! After hours of hunting, I finally caught a shiny Psyduck! 
+    It’s blue instead of yellow, and it looks amazing. Anyone else have one? 
+    Also, should I evolve it or keep it as a Psyduck? 🤔</p>
+    <div class="edit-delete">
+      <button onclick="editPost(this)">Edit</button>
+      <button onclick="deletePost(this)">Delete</button>
+    </div>
+    <div class="comments-section">
+      <input type="text" class="commentInput" placeholder="Write a comment...">
+      <button onclick="addComment(this)">Comment</button>
+      <div class="comments-container"></div>
+    </div>
+  `;
+
+  postContainer.prepend(postDiv);
+}
+
+function addSamplePost6() {
+  const postContainer = document.getElementById("postsContainer");
+
+  const postDiv = document.createElement("div");
+  postDiv.classList.add("post");
+
+  postDiv.innerHTML = `
+    <small>Visibility: Public</small>
+    <h3>The Science Behind Psyduck’s Headaches</h3>
+    <p>I read that Psyduck’s headaches are caused by its latent psychic abilities. 
+    But if it can unleash powerful moves when stressed, does that mean it’s one of the strongest Pokémon in disguise? 
+    Imagine if a Psyduck learned to control its power! 😲</p>
+    <div class="edit-delete">
+      <button onclick="editPost(this)">Edit</button>
+      <button onclick="deletePost(this)">Delete</button>
+    </div>
+    <div class="comments-section">
+      <input type="text" class="commentInput" placeholder="Write a comment...">
+      <button onclick="addComment(this)">Comment</button>
+      <div class="comments-container"></div>
+    </div>
+  `;
+
+  postContainer.prepend(postDiv);
+
+  // Add a comment
+  const commentsContainer = postDiv.querySelector(".comments-container");
+  const commentDiv = document.createElement("div");
+  commentDiv.classList.add("comment");
+  commentDiv.innerHTML = `
+    <p>That's right!</p>
+    <div class="edit-delete">
+      <button onclick="editComment(this)">Edit</button>
+      <button onclick="deleteComment(this)">Delete</button>
+    </div>
+  `;
+
+  commentsContainer.appendChild(commentDiv);
 }
