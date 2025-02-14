@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align:center;
+}
+
+input {
+    padding: 12px;
+    width: 100%;
+    max-width: 250px;
+    border: 2px solid #2369da;
+    border-radius: 8px;
+    outline: none;
+    text-align: center;
+    font-size: 16px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Stylized button */
+button {
+    padding: 12px 25px;
+    margin-top: 15px;
+    background-color: #2369da;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 auto;
+    display: block;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    /*place in the center*/
+    text-align: center;
+}
+
+option {
+   
+}
