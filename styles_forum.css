@@ -7,8 +7,10 @@ body {
 .nav-bar {
     background: #2369da;
     color: white;
-    padding: 10px;
-    text-align: left;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between; /* Pushes left and right sections apart */
+    align-items: center;
     border-radius: 20px;
 }
 .nav-bar a {
@@ -72,4 +74,11 @@ img {
     margin-top: 10px;
     border-radius: 5px;
     display: block;
+}
+
+h1 {
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align:center;
 }
