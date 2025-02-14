@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (createForumButton) {
         createForumButton.addEventListener("click", function () {
-            window.location.href = "create_forum.html"; // placeholder html
+            window.location.href = "createforum.html"; // placeholder html
         });
     }
 });
