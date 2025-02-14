@@ -44,7 +44,7 @@ body {
 }
 
 .search-button {
-    background: #1a4ea6;
+    background: #2369da;
     border: none;
     color: white;
     padding: 6px 10px;
@@ -122,6 +122,7 @@ body {
     min-width: 341px;
     max-width: 45%;
     gap: 20px; 
+    color: #2369da;
 }
 
 .most-container {
@@ -168,7 +169,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background: #fff;
+    background: var(--button-background);
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-top: 10px;
@@ -191,4 +192,26 @@ body {
 
 .info-button:hover {
     background-color: #2369da;
+}
+
+.forum-container {
+    width: 90%;
+    background: var(--button-background-hover);
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.forum-container a {
+    text-decoration: none;
+    color: #000000;
+    display: block;
+}
+
+.forum-container:hover {
+    background: #d0d0d0;
 }
