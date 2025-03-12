@@ -4,22 +4,32 @@ const parser = require('body-parser')
 const users = require('./userModels')
 const forums = require('./forumModels')
 const posts = require('./postsModel')
+const path = require('path')
+const port = 3000
 
-var ID = 1000, username = "Test", email = "helloworld.to", password = "password", objectID;
+
+var username = "Test", email = "helloworld.to", password = "password", objectID;
 
 const conn = express();
 
 mongoose.connect('mongodb://localhost:27017/forumappdb')
+
+    conn.use(express.static(path.join(__dirname,'public')))
+    conn.use(parser.json());
+
+    conn.get('/', (req,res)=>{
+        res.sendFile(path.join(__dirname, 'index.html'))
+    })
 
 /***********************************CREATE***************************************/
     function addUsers(){
         conn.post('/addingUser', async (req, res) => {
             try{
                 const newUser = await new users({
-                    ID: ID,
-                    name: username,
-                    email: email,
-                    password: password,
+                    ID: req.body.ID,
+                    name: req.body.name,
+                    email: req.body.email,
+                    password: req.body.password,
                     isForumCreator: false
                 });
                 const addedUser = await newUser.save();
@@ -245,7 +255,7 @@ function deletePost(){
 }
 /********************************************************************************/
 
-conn.listen(8080, () => {
+conn.listen(3000, () => {
     getUsers();
     getForums();
     getPosts();

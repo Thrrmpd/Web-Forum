@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forum Posts</title>
+    <link rel="stylesheet" href="styles_forum.css" />
+  </head>
+  <body>
+    <div class="nav-bar">
+      <div class="nav-left">
+        <a href="#">About</a> | <a href="#">FAQ</a> |
+        <a href="index.html">Forums</a>
+      </div>
+      <div class="nav-right">
+        <a href="#">Sign Up</a> | <a href="#">Log In</a>
+      </div>
+    </div>
+
+    <div class="forum-name">
+      <h1>Forum 1</h1>
+    </div>
+
+    <!-- New Forum Description Section -->
+    <div class="forum-description">
+      <p id="forumDescription">Loading forum description...</p>
+    </div>
+
+    <div class="post-form">
+      <h2>Create a Post</h2>
+      <select id="postVisibility">
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+      </select>
+      <input type="text" id="postTitle" placeholder="Post Title" required />
+      <textarea
+        id="postContent"
+        placeholder="Write something..."
+        required
+      ></textarea>
+      <input type="file" id="postMedia" accept=".jpg,.jpeg" />
+      <button onclick="createPost()">Post</button>
+    </div>
+
+    <div class="posts-section">
+      <h2>Forum Posts</h2>
+      <div id="postsContainer"></div>
+    </div>
+
+    <script src="script_forum1.js"></script>
+  </body>
+</html>
