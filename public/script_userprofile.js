@@ -1,16 +1,32 @@
 
-var userarray;
+var userArray, forumArray;
 
 document.addEventListener("DOMContentLoaded", async ()=>{
     try{
-        const res = await fetch('/getUsers');
-        const userdata = res.json();
-        userarray = Object.entries(userdata);
-        
+        const userRes = await fetch('/getUsers');
+        const userdata = await userRes.json();
+        const forumRes = await fetch('/getForums')
+        const forumdata = forumRes.json();
+        var userArray = Object.entries(userdata);
+        var forumArray = Object.entries(forumdata);
+        var info = Object.values(userArray[userArray.length-1][1]);
+
+        console.log(info);
+        displayInfo(info);
+
     }catch(err){
         console.error(err);
     }
 })
+
+function displayInfo(info){
+
+    const displayUserName = document.querySelector('.profile-username h2');
+    const displayProfile = document.querySelector('.profile-container');
+
+    displayUserName.textContent = info[2];
+
+}
 
 
 document.addEventListener("DOMContentLoaded", function () {
