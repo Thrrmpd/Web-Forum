@@ -2,6 +2,17 @@
 var userArray, forumArray;
 
 document.addEventListener("DOMContentLoaded", async ()=>{
+    const pathway = localStorage.getItem('path');
+
+    if(Object.entries(pathway)[0][1] == '1')
+        isLogin();
+    else if(Object.entries(pathway)[0][1] == '2')
+        isSignup();
+    
+})
+
+async function isSignup(){
+    console.log("Enter Signup");
     try{
         const userRes = await fetch('/getUsers');
         const userdata = await userRes.json();
@@ -17,7 +28,35 @@ document.addEventListener("DOMContentLoaded", async ()=>{
     }catch(err){
         console.error(err);
     }
-})
+
+}
+
+async function isLogin(){
+    console.log("Enter Login");
+    const ID = parseInt(localStorage.getItem('loginID'));
+    try{
+        const userRes = await fetch('/getUsers');
+        const userdata = await userRes.json();
+        const forumRes = await fetch('/getForums')
+        const forumdata = forumRes.json();
+        var userArray = Object.entries(userdata);
+        var forumArray = Object.entries(forumdata);
+
+        for(var i = 0; i < userArray.length; i++)
+        {
+            if(ID == Object.values(userArray[i][1])[1]){
+                var info = Object.values(userArray[i][1]);
+            }
+        }
+
+        console.log(info);
+        displayInfo(info);
+
+    }catch(err){
+        console.error(err);
+    }
+
+}
 
 function displayInfo(info){
 

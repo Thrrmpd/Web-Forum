@@ -6,6 +6,7 @@ function login() {
 		const res = await fetch('/getUsers'); //fetch users from getUsers API
 		const userdata = await res.json(); //returns object to userdata from res.json()
 		var userentries = Object.entries(userdata); //returns array of key/value pairs to userentries 
+		var index;
 		//a single entry from userentries is an object
 		
 
@@ -13,6 +14,7 @@ function login() {
 			if(username == Object.values(userentries[i][1])[3]){
 				if(password == Object.values(userentries[i][1])[4]){
 					isEqual = true;
+					index = i;
 					break;
 				}
 				else{
@@ -24,7 +26,11 @@ function login() {
 		}
 		
 		if(isEqual == true)
-			window.location.replace("./index_userprofile.html");
+			{
+				localStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1]));
+				localStorage.setItem('path', '1');
+				window.location.replace("./index_userprofile.html");
+			}
 		else
 			alert("username or password might be wrong");
 
@@ -88,7 +94,7 @@ function signup() {
 			})
 
 			const result = await res.json();
-
+			localStorage.setItem('path', '2');
 			window.location.replace("./index_userprofile.html");
 		}
 
