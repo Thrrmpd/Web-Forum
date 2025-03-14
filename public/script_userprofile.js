@@ -22,9 +22,12 @@ document.addEventListener("DOMContentLoaded", async ()=>{
 function displayInfo(info){
 
     const displayUserName = document.querySelector('.profile-username h2');
-    const displayProfile = document.querySelector('.profile-container');
+    const displayEmail = document.querySelector('.profile-username h3');
+    const displayProfile = document.querySelector('.profile-img');
 
     displayUserName.textContent = info[2];
+    displayEmail.textContent = info[3];
+    displayProfile.src = info[6];
 
 }
 

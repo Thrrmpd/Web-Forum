@@ -30,7 +30,8 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
                     name: req.body.name,
                     email: req.body.email,
                     password: req.body.password,
-                    isForumCreator: false
+                    isForumCreator: false,
+                    picture: "pfp.png"
                 });
                 const addedUser = await newUser.save();
                 
