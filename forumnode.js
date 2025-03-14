@@ -22,21 +22,23 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
     })
 
 /***********************************CREATE***************************************/
-    function addUsers(){
-        conn.post('/addingUser', async (req, res) => {
+    
+
+    function addUsers(){ //Add User API
+        conn.post('/addingUser', async (req, res) => { //This is actually a function
             try{
-                const newUser = await new users({
-                    ID: req.body.ID,
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: req.body.password,
-                    isForumCreator: false,
-                    picture: "pfp.png"
+                const newUser = await new users({ //Create new user object to be stored in db
+                    ID: req.body.ID, //get ID from html page (index_userprofile.html)
+                    name: req.body.name, //get username from html page (index_userprofile.html)
+                    email: req.body.email, // ^
+                    password: req.body.password, // ^
+                    isForumCreator: false, // default forum creator is false since new user
+                    picture: "pfp.png" //standard pfp of new user is pfp.png
                 });
                 const addedUser = await newUser.save();
                 
                 console.log(addedUser);
-                res.status(201).json(addedUser);
+                res.status(201).json(addedUser); //adds newly made user data to db
                 
 
             }catch(exception){
@@ -46,8 +48,8 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
 
     }
 
-    function addForums(){
-        conn.post('/addingForums', async (req, res) => {
+    function addForums(){ //Add Forum API, same function as add user api but differing number of attributes
+        conn.post('/addingForums', async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/addingForums')
             try{
                 const newForum = await new forums({
                     forID: ID,
@@ -69,8 +71,8 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
 
     }
 
-    function addPosts(){
-        conn.post('/addingPost', async (req, res) => {
+    function addPosts(){ //Add Post API, same function as add user api but differing number of attributes
+        conn.post('/addingPost', async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/addingPost')
             try{
                 const newPost = await new posts({
                     postID: 10000,
@@ -95,24 +97,24 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
 /********************************************************************************/
 
 /***********************************READ*****************************************/
-    function getUsers(){
-        conn.get("/getUsers", async (req, res) => {
+    function getUsers(){ //Read API for users; gets data from db 
+        conn.get("/getUsers", async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/getUsers')
             let get = await users.find({})
             console.log(get);
             res.json(get);
         })
         }
 
-    function getForums(){
-        conn.get("/getForums", async (req, res) => {
+    function getForums(){ //Read API for forums; gets data from db 
+        conn.get("/getForums", async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/getForums')
             let get = await forums.find({})
             console.log(get);
             res.json(get);
         })
         }
 
-    function getPosts(){
-        conn.get("/getPosts", async (req, res) => {
+    function getPosts(){ //Read API for posts; gets data from db 
+        conn.get("/getPosts", async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/getPosts')
             let get = await posts.find({})
             console.log(get);
             res.json(get);

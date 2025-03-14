@@ -1,8 +1,8 @@
-function login() {
+function login() { 
 	const password = document.getElementById("password").value;
 	const username  = document.getElementById("username").value;
 	var isEqual;
-	document.getElementById("loginbutton").addEventListener('click', async()=>{
+	document.getElementById("loginbutton").addEventListener('click', async()=>{ //event listener where if user clicks login button then the function below will be executed
 		const res = await fetch('/getUsers'); //fetch users from getUsers API
 		const userdata = await res.json(); //returns object to userdata from res.json()
 		var userentries = Object.entries(userdata); //returns array of key/value pairs to userentries 
@@ -10,7 +10,7 @@ function login() {
 		//a single entry from userentries is an object
 		
 
-		for(let i = 0; i < userentries.length; i++){
+		for(let i = 0; i < userentries.length; i++){ //for loop check for validity
 			if(username == Object.values(userentries[i][1])[3]){
 				if(password == Object.values(userentries[i][1])[4]){
 					isEqual = true;
@@ -27,8 +27,8 @@ function login() {
 		
 		if(isEqual == true)
 			{
-				localStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1]));
-				localStorage.setItem('path', '1');
+				localStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1])); //Stores user ID so that vars are passed between js and html pages
+				localStorage.setItem('path', '1'); //Stores pathway so that vars are passed between js and html pages; 1 = login go to login function, 2 = signup go to signup function
 				window.location.replace("./index_userprofile.html");
 			}
 		else
@@ -94,7 +94,7 @@ function signup() {
 			})
 
 			const result = await res.json();
-			localStorage.setItem('path', '2');
+			localStorage.setItem('path', '2'); //Stores pathway so that vars are passed between js and html pages; 1 = login go to login function, 2 = signup go to signup function
 			window.location.replace("./index_userprofile.html");
 		}
 
