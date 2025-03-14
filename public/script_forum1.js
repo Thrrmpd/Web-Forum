@@ -1,121 +1,123 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const forumDescription = document.getElementById("forumDescription");
-
-  // Simulated dynamic forum description
-  const descriptionText = "Sample Forum Description";
-  forumDescription.textContent = descriptionText;
+  fetchPosts();
 });
 
-function createPost() {
-  const visibilityInput = document.getElementById("postVisibility");
-  const titleInput = document.getElementById("postTitle");
-  const contentInput = document.getElementById("postContent");
-  const mediaInput = document.getElementById("postMedia");
+const API_URL = "http://localhost:3000"; 
 
-  const title = titleInput.value.trim();
-  const content = contentInput.value.trim();
-  const visibility = visibilityInput.value;
-  const file = mediaInput.files[0];
 
-  if (!title || !content) {
+async function fetchPosts() {
+  try {
+    const response = await fetch(`${API_URL}/getPosts`);
+    const posts = await response.json();
+
+    const postContainer = document.getElementById("postsContainer");
+    postContainer.innerHTML = ""; 
+
+    posts.forEach(post => {
+      const postDiv = createPostElement(post);
+      postContainer.appendChild(postDiv);
+    });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
+}
+
+function createPostElement(post) {
+  const postDiv = document.createElement("div");
+  postDiv.classList.add("post");
+  postDiv.dataset.id = post._id; 
+
+  postDiv.innerHTML = `
+    <small>Visibility: ${post.type}</small>
+    <h3>${post.title}</h3>
+    <p>${post.description}</p>
+    <div class="edit-delete">
+      <button onclick="editPost(this)">Edit</button>
+      <button onclick="deletePost(this)">Delete</button>
+    </div>
+  `;
+
+  return postDiv;
+}
+
+async function createPost() {
+  const title = document.getElementById("postTitle").value.trim();
+  const description = document.getElementById("postContent").value.trim();
+  const type = document.getElementById("postVisibility").value;
+
+  if (!title || !description) {
     alert("Title and content are required!");
     return;
   }
 
-  const postContainer = document.getElementById("postsContainer");
-  const postDiv = document.createElement("div");
-  postDiv.classList.add("post");
+  const newPost = { title, description, type };
 
-  postDiv.innerHTML = `
-        <small>Visibility: ${visibility}</small>
-        <h3>${title}</h3>
-        <p>${content}</p>
-        <div class="edit-delete">
-          <button onclick="editPost(this)">Edit</button>
-          <button onclick="deletePost(this)">Delete</button>
-        </div>
-        <div class="image-container"></div>
-        <div class="comments-section">
-          <input type="text" class="commentInput" placeholder="Write a comment...">
-          <button onclick="addComment(this)">Comment</button>
-          <div class="comments-container"></div>
-        </div>
-      `;
+  try {
+    const response = await fetch(`${API_URL}/addingPost`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newPost),
+    });
 
-  postContainer.prepend(postDiv);
+    if (!response.ok) throw new Error("Failed to create post");
 
-  if (file) {
-    if (!["image/jpeg"].includes(file.type)) {
-      alert("Only JPG and JPEG images are allowed.");
-      return;
-    }
+    const createdPost = await response.json();
+    document.getElementById("postsContainer").prepend(createPostElement(createdPost));
 
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const imageContainer = postDiv.querySelector(".image-container");
-      imageContainer.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
-    };
-    reader.readAsDataURL(file);
+    document.getElementById("postTitle").value = "";
+    document.getElementById("postContent").value = "";
+  } catch (error) {
+    console.error("Error creating post:", error);
   }
-
-  titleInput.value = "";
-  contentInput.value = "";
-  visibilityInput.value = "public";
-  mediaInput.value = "";
 }
 
-function editPost(button) {
-  const post = button.closest(".post");
-  const title = post.querySelector("h3");
-  const content = post.querySelector("p");
+async function editPost(button) {
+  const postDiv = button.closest(".post");
+  const postId = postDiv.dataset.id;
+  const title = postDiv.querySelector("h3").textContent;
+  const description = postDiv.querySelector("p").textContent;
 
-  const newTitle = prompt("Edit Title:", title.textContent);
-  const newContent = prompt("Edit Content:", content.textContent);
+  const newTitle = prompt("Edit Title:", title);
+  const newDescription = prompt("Edit Content:", description);
 
-  if (newTitle.trim() !== "" && newContent.trim() !== "") {
-    title.textContent = newTitle;
-    content.textContent = newContent;
-  } else {
+  if (!newTitle || !newDescription) {
     alert("Title and content cannot be empty.");
+    return;
+  }
+
+  const updatedPost = { title: newTitle, description: newDescription };
+
+  try {
+    const response = await fetch(`${API_URL}/updatePost/${postId}`, {
+      method: "POST", // 
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedPost),
+    });
+
+    if (!response.ok) throw new Error("Failed to update post");
+
+    postDiv.querySelector("h3").textContent = newTitle;
+    postDiv.querySelector("p").textContent = newDescription;
+  } catch (error) {
+    console.error("Error updating post:", error);
   }
 }
 
-function deletePost(button) {
-  button.closest(".post").remove();
-}
+async function deletePost(button) {
+  const postDiv = button.closest(".post");
+  const postId = postDiv.dataset.id;
 
-function addComment(button) {
-  const commentInput = button.previousElementSibling;
-  const commentText = commentInput.value.trim();
-  if (!commentText) return;
+  if (!confirm("Are you sure you want to delete this post?")) return;
 
-  const commentsContainer = button.nextElementSibling;
-  const commentDiv = document.createElement("div");
-  commentDiv.classList.add("comment");
-  commentDiv.innerHTML = `
-        <p>${commentText}</p>
-        <div class="edit-delete">
-          <button onclick="editComment(this)">Edit</button>
-          <button onclick="deleteComment(this)">Delete</button>
-        </div>
-      `;
+  try {
+    const response = await fetch(`${API_URL}/deletePost/${postId}`, {
+      method: "DELETE",
+    });
 
-  commentsContainer.appendChild(commentDiv);
-  commentInput.value = "";
-}
+    if (!response.ok) throw new Error("Failed to delete post");
 
-function editComment(button) {
-  const comment = button.closest(".comment");
-  const commentText = comment.querySelector("p");
-
-  const newText = prompt("Edit Comment:", commentText.textContent);
-  if (newText.trim() !== "") {
-    commentText.textContent = newText;
-  } else {
-    alert("Comment cannot be empty.");
+    postDiv.remove();
+  } catch (error) {
+    console.error("Error deleting post:", error);
   }
-}
-
-function deleteComment(button) {
-  button.closest(".comment").remove();
 }
