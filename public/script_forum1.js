@@ -1,139 +1,89 @@
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", function () {
   const forumDescription = document.getElementById("forumDescription");
-  const postContainer = document.getElementById("postsContainer");
 
-  // Fetch posts from backend
-  async function loadPosts() {
-    try {
-      const response = await fetch("/getPosts");
-      const posts = await response.json();
-      postContainer.innerHTML = ""; // Clear posts before reloading
-
-      posts.forEach((post) => {
-        const postDiv = document.createElement("div");
-        postDiv.classList.add("post");
-        postDiv.setAttribute("data-id", post._id);
-
-        postDiv.innerHTML = `
-          <small>Visibility: ${post.type}</small>
-          <h3>${post.title}</h3>
-          <p>${post.description}</p>
-          <div class="edit-delete">
-            <button onclick="editPost(this)">Edit</button>
-            <button onclick="deletePost(this)">Delete</button>
-          </div>
-          <div class="comments-section">
-            <input type="text" class="commentInput" placeholder="Write a comment...">
-            <button onclick="addComment(this)">Comment</button>
-            <div class="comments-container"></div>
-          </div>
-        `;
-
-        postContainer.prepend(postDiv);
-      });
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    }
-  }
-
-  // Load posts when page loads
-  await loadPosts();
+  // Simulated dynamic forum description
+  const descriptionText = "Sample Forum Description";
+  forumDescription.textContent = descriptionText;
 });
 
-// CREATE POST
-async function createPost() {
-  const titleInput = document.getElementById("postTitle").value.trim();
-  const contentInput = document.getElementById("postContent").value.trim();
-  const visibilityInput = document.getElementById("postVisibility").value;
+function createPost() {
+  const visibilityInput = document.getElementById("postVisibility");
+  const titleInput = document.getElementById("postTitle");
+  const contentInput = document.getElementById("postContent");
+  const mediaInput = document.getElementById("postMedia");
 
-  if (!titleInput || !contentInput) {
+  const title = titleInput.value.trim();
+  const content = contentInput.value.trim();
+  const visibility = visibilityInput.value;
+  const file = mediaInput.files[0];
+
+  if (!title || !content) {
     alert("Title and content are required!");
     return;
   }
 
-  const newPost = {
-    title: titleInput,
-    description: contentInput,
-    type: visibilityInput,
-  };
+  const postContainer = document.getElementById("postsContainer");
+  const postDiv = document.createElement("div");
+  postDiv.classList.add("post");
 
-  try {
-    const response = await fetch("/addingPost", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newPost),
-    });
+  postDiv.innerHTML = `
+        <small>Visibility: ${visibility}</small>
+        <h3>${title}</h3>
+        <p>${content}</p>
+        <div class="edit-delete">
+          <button onclick="editPost(this)">Edit</button>
+          <button onclick="deletePost(this)">Delete</button>
+        </div>
+        <div class="image-container"></div>
+        <div class="comments-section">
+          <input type="text" class="commentInput" placeholder="Write a comment...">
+          <button onclick="addComment(this)">Comment</button>
+          <div class="comments-container"></div>
+        </div>
+      `;
 
-    if (response.ok) {
-      alert("Post created successfully!");
-      location.reload();
-    } else {
-      alert("Failed to create post");
+  postContainer.prepend(postDiv);
+
+  if (file) {
+    if (!["image/jpeg"].includes(file.type)) {
+      alert("Only JPG and JPEG images are allowed.");
+      return;
     }
-  } catch (error) {
-    console.error("Error creating post:", error);
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const imageContainer = postDiv.querySelector(".image-container");
+      imageContainer.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+    };
+    reader.readAsDataURL(file);
   }
+
+  titleInput.value = "";
+  contentInput.value = "";
+  visibilityInput.value = "public";
+  mediaInput.value = "";
 }
 
-// UPDATE POST
-async function editPost(button) {
-  const postDiv = button.closest(".post");
-  const postId = postDiv.getAttribute("data-id");
+function editPost(button) {
+  const post = button.closest(".post");
+  const title = post.querySelector("h3");
+  const content = post.querySelector("p");
 
-  const newTitle = prompt(
-    "Edit Title:",
-    postDiv.querySelector("h3").textContent
-  );
-  const newContent = prompt(
-    "Edit Content:",
-    postDiv.querySelector("p").textContent
-  );
+  const newTitle = prompt("Edit Title:", title.textContent);
+  const newContent = prompt("Edit Content:", content.textContent);
 
-  if (!newTitle.trim() || !newContent.trim()) {
+  if (newTitle.trim() !== "" && newContent.trim() !== "") {
+    title.textContent = newTitle;
+    content.textContent = newContent;
+  } else {
     alert("Title and content cannot be empty.");
-    return;
-  }
-
-  try {
-    const response = await fetch(`/updatePost/${postId}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: newTitle, description: newContent }),
-    });
-
-    if (response.ok) {
-      alert("Post updated successfully!");
-      location.reload();
-    } else {
-      alert("Failed to update post");
-    }
-  } catch (error) {
-    console.error("Error updating post:", error);
   }
 }
 
-// DELETE POST
-async function deletePost(button) {
-  const postDiv = button.closest(".post");
-  const postId = postDiv.getAttribute("data-id");
-
-  if (!confirm("Are you sure you want to delete this post?")) return;
-
-  try {
-    const response = await fetch(`/deletePost/${postId}`, { method: "DELETE" });
-
-    if (response.ok) {
-      alert("Post deleted successfully!");
-      location.reload();
-    } else {
-      alert("Failed to delete post");
-    }
-  } catch (error) {
-    console.error("Error deleting post:", error);
-  }
+function deletePost(button) {
+  button.closest(".post").remove();
 }
 
-// ADD COMMENT
 function addComment(button) {
   const commentInput = button.previousElementSibling;
   const commentText = commentInput.value.trim();
@@ -143,18 +93,17 @@ function addComment(button) {
   const commentDiv = document.createElement("div");
   commentDiv.classList.add("comment");
   commentDiv.innerHTML = `
-      <p>${commentText}</p>
-      <div class="edit-delete">
-        <button onclick="editComment(this)">Edit</button>
-        <button onclick="deleteComment(this)">Delete</button>
-      </div>
-    `;
+        <p>${commentText}</p>
+        <div class="edit-delete">
+          <button onclick="editComment(this)">Edit</button>
+          <button onclick="deleteComment(this)">Delete</button>
+        </div>
+      `;
 
   commentsContainer.appendChild(commentDiv);
   commentInput.value = "";
 }
 
-// EDIT COMMENT
 function editComment(button) {
   const comment = button.closest(".comment");
   const commentText = comment.querySelector("p");
@@ -167,7 +116,6 @@ function editComment(button) {
   }
 }
 
-// DELETE COMMENT
 function deleteComment(button) {
   button.closest(".comment").remove();
 }
