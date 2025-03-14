@@ -2,8 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchPosts();
 });
 
-const API_URL = "http://localhost:3000"; 
-
+const API_URL = "http://localhost:3000";
 
 async function fetchPosts() {
   try {
@@ -11,9 +10,9 @@ async function fetchPosts() {
     const posts = await response.json();
 
     const postContainer = document.getElementById("postsContainer");
-    postContainer.innerHTML = ""; 
+    postContainer.innerHTML = "";
 
-    posts.forEach(post => {
+    posts.forEach((post) => {
       const postDiv = createPostElement(post);
       postContainer.appendChild(postDiv);
     });
@@ -25,7 +24,7 @@ async function fetchPosts() {
 function createPostElement(post) {
   const postDiv = document.createElement("div");
   postDiv.classList.add("post");
-  postDiv.dataset.id = post._id; 
+  postDiv.dataset.id = post._id;
 
   postDiv.innerHTML = `
     <small>Visibility: ${post.type}</small>
@@ -44,16 +43,35 @@ async function createPost() {
   const title = document.getElementById("postTitle").value.trim();
   const description = document.getElementById("postContent").value.trim();
   const type = document.getElementById("postVisibility").value;
+  const filename = document.getElementById("postFile")
+    ? document.getElementById("postFile").value
+    : ""; // Optional file input
+  const creatorID = "0000"; // Fixed creator ID
+
+  let postID;
 
   if (!title || !description) {
     alert("Title and content are required!");
     return;
   }
 
-  const newPost = { title, description, type };
-
   try {
-    const response = await fetch(`${API_URL}/addingPost`, {
+    // Fetch existing posts to determine postID
+    const res = await fetch("/getPosts");
+    const postsData = await res.json();
+    const postsArray = Object.entries(postsData);
+
+    if (postsArray.length > 0) {
+      postID = Object.values(postsArray[postsArray.length - 1][1]).postID + 1;
+    } else {
+      postID = 1;
+    }
+
+    // Construct new post object
+    const newPost = { postID, filename, description, title, type, creatorID };
+
+    // Send request to add post
+    const response = await fetch("/addingPost", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPost),
@@ -62,10 +80,16 @@ async function createPost() {
     if (!response.ok) throw new Error("Failed to create post");
 
     const createdPost = await response.json();
-    document.getElementById("postsContainer").prepend(createPostElement(createdPost));
+    document
+      .getElementById("postsContainer")
+      .prepend(createPostElement(createdPost));
 
+    // Clear input fields after posting
     document.getElementById("postTitle").value = "";
     document.getElementById("postContent").value = "";
+    if (document.getElementById("postFile")) {
+      document.getElementById("postFile").value = "";
+    }
   } catch (error) {
     console.error("Error creating post:", error);
   }
@@ -89,7 +113,7 @@ async function editPost(button) {
 
   try {
     const response = await fetch(`${API_URL}/updatePost/${postId}`, {
-      method: "POST", // 
+      method: "POST", //
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedPost),
     });
