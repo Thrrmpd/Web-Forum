@@ -8,7 +8,7 @@
       "id": "d2da0dd2-2375-4b92-af08-e797e39f277e",
       "lastUsed": {
         "$date": {
-          "$numberLong": "1741696666831"
+          "$numberLong": "1741838214553"
         }
       },
       "favorite": {
@@ -17,7 +17,9 @@
       "savedConnectionType": "recent",
       "connectionOptions": {
         "connectionString": "mongodb://localhost:27017/",
-        "oidc": {}
+        "oidc": {
+          "serializedState": "eyJvaWRjUGx1Z2luU3RhdGVWZXJzaW9uIjowLCJzdGF0ZSI6W119"
+        }
       }
     }
   ]
