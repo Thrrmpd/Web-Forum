@@ -24,7 +24,7 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
 /***********************************CREATE***************************************/
     
 
-    function addUsers(){ //Add User API
+ //Add User API
         conn.post('/addingUser', async (req, res) => { //This is actually a function
             try{
                 const newUser = await new users({ //Create new user object to be stored in db
@@ -46,9 +46,9 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
             }
         })
 
-    }
+    
 
-    function addForums(){ //Add Forum API, same function as add user api but differing number of attributes
+     //Add Forum API, same function as add user api but differing number of attributes
         conn.post('/addingForums', async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/addingForums')
             try{
                 const newForum = await new forums({
@@ -69,9 +69,9 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
             }
         })
 
-    }
+    
 
-    function addPosts(){ //Add Post API, same function as add user api but differing number of attributes
+    //Add Post API, same function as add user api but differing number of attributes
         conn.post('/addingPost', async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/addingPost')
             try{
                 const newPost = await new posts({
@@ -93,39 +93,39 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
             }
         })
 
-    }
+    
 /********************************************************************************/
 
 /***********************************READ*****************************************/
-    function getUsers(){ //Read API for users; gets data from db 
+     //Read API for users; gets data from db 
         conn.get("/getUsers", async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/getUsers')
             let get = await users.find({})
             console.log(get);
             res.json(get);
         })
-        }
+        
 
-    function getForums(){ //Read API for forums; gets data from db 
+     //Read API for forums; gets data from db 
         conn.get("/getForums", async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/getForums')
             let get = await forums.find({})
             console.log(get);
             res.json(get);
         })
-        }
+        
 
-    function getPosts(){ //Read API for posts; gets data from db 
+     //Read API for posts; gets data from db 
         conn.get("/getPosts", async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/getPosts')
             let get = await posts.find({})
             console.log(get);
             res.json(get);
         })
-    }
+    
 
 /********************************************************************************/
 
 /***********************************UPDATE***************************************/
 
-function updateUser(){
+
 conn.post('/updateUser/:userID', async (req, res) => {
     const userID = req.params.userID;
     try{
@@ -146,9 +146,9 @@ conn.post('/updateUser/:userID', async (req, res) => {
     }
 
 })
-}
 
-function updateForum(){
+
+
     conn.post('/updateForum/:forumID', async (req, res) => {
         const forumID = req.params.forumID;
         try{
@@ -169,9 +169,8 @@ function updateForum(){
         }
     
     })
-    }
+    
 
-    function updatePost(){
         conn.post('/updatePost/:postID', async (req, res) => {
             const postID = req.params.postID;
             try{
@@ -192,13 +191,13 @@ function updateForum(){
             }
         
         })
-        }
+        
 
 
 /********************************************************************************/
 
 /***********************************DELETE***************************************/
-function deleteUser(){
+
     conn.delete('/deleteUser/:userID', async (req, res) =>{
         const userID = req.params.userID;
         try{
@@ -215,9 +214,9 @@ function deleteUser(){
         }
 
     })
-}
 
-function deleteForum(){
+
+
     conn.delete('/deleteForum/:forumID', async (req, res) =>{
         const forumID = req.params.forumID;
         try{
@@ -235,9 +234,7 @@ function deleteForum(){
 
     })
 
-}
 
-function deletePost(){
     conn.delete('/deletePost/:postID', async (req, res) =>{
         const postID = req.params.postID;
         try{
@@ -255,24 +252,10 @@ function deletePost(){
 
     })
 
-}
+
 /********************************************************************************/
 
-conn.listen(3000, () => {
-    getUsers();
-    getForums();
-    getPosts();
-
-    addUsers();
-    addForums();
-    addPosts();
-
-    updateUser();
-    updateForum();
-    updatePost();
-
-    deleteUser();
-    deleteForum();
-    deletePost();
+conn.listen(port, () => {
+    
 console.log("Server is Running...");
 })
