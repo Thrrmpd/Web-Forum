@@ -115,6 +115,18 @@ body {
     min-height: 415px;
 }
 
+.hidden-div {
+    background-color: #ffffff;
+    border: 2px outset blue;
+    padding: 10px 10px;
+    text-align: left;
+    height: 150px;
+    width: 300px;
+    margin: auto;
+    display:none;
+
+}
+
 .right-container {
     display: flex;
     flex-direction: column; 
@@ -164,6 +176,30 @@ body {
     background: var(--button-background-hover);
 }
 
+.pfp-button {
+    --button-color: #2369da;
+    --button-background: #ffffff;
+    --button-background-hover: #cccccc;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--button-background);
+    color: var(--button-color);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    padding: 6px 12px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 340px;
+}
+
+.pfp-button:hover {
+    background-color: #cccccc;
+}
+
 .forum-entry {
     display: flex;
     justify-content: space-between;
@@ -174,6 +210,18 @@ body {
     border-radius: 5px;
     margin-top: 10px;
 }
+
+/*.hidden-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--button-background);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    display:none;
+}*/
 
 .forum-title {
     font-size: 16px;

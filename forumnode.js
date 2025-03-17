@@ -131,14 +131,14 @@ conn.post('/updateUser/:userID', async (req, res) => {
     try{
     const updateInfo = await users.findByIdAndUpdate(
         userID,
-        {name: "Thomas Anderson"}
+        //{name: "Thomas Anderson"}
     );
 
     if(!updateInfo){
         return res.status(404).json({error: "User not found"});
     }
 
-    console.log("Task Updated: ", updateInfo);
+    console.log("User Updated: ", updateInfo);
     res.status(200).json(updateInfo);
     }catch(exception){
         console.error(exception);
@@ -184,7 +184,7 @@ function updateForum(){
                 return res.status(404).json({error: "Comment not found"});
             }
         
-            console.log("Task Updated: ", updateInfo);
+            console.log("Post Updated: ", updateInfo);
             res.status(200).json(updateInfo);
             }catch(exception){
                 console.error(exception);

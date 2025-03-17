@@ -1,0 +1,66 @@
+[{
+  "_id": {
+    "$oid": "67ca5bd8107bdab9bcfa4214"
+  },
+  "ID": 1001,
+  "name": "John Doe",
+  "email": "john_doe@gmail.com",
+  "pasword": "helloworld",
+  "isForumCreator": true,
+  "picture": "pfp.png"
+},
+{
+  "_id": {
+    "$oid": "67ca5c15107bdab9bcfa4215"
+  },
+  "ID": 1002,
+  "name": "Jane Fisher",
+  "email": "janefisher22@gmail.com",
+  "pasword": "goodbyemydei",
+  "isForumCreator": false,
+  "picture": "CryingChopper.png"
+},
+{
+  "_id": {
+    "$oid": "67ca5e12107bdab9bcfa4219"
+  },
+  "ID": 1003,
+  "name": "Jenny Parker",
+  "email": "jennyparker432@gmail.com",
+  "pasword": "hellomyworld",
+  "isForumCreator": true,
+  "picture": "pfp.png"
+},
+{
+  "_id": {
+    "$oid": "67d1c85e91b78680ccc99637"
+  },
+  "ID": 1004,
+  "name": "Jenny Crocker",
+  "email": "crockercorp@gmail.com",
+  "pasword": "crockertier",
+  "isForumCreator": false,
+  "picture": "FunnyEnel.jpg"
+},
+{
+  "_id": {
+    "$oid": "67d1c86b91b78680ccc99638"
+  },
+  "ID": 1005,
+  "name": "Jane Alison",
+  "email": "alisonjrjr@gmail.com",
+  "pasword": "portyhooty",
+  "isForumCreator": false,
+  "picture": "Psyduck.jpg"
+},
+{
+  "_id": {
+    "$oid": "67d1dd8149615a972b49c61b"
+  },
+  "ID": 1006,
+  "name": "Hannah Corpuz",
+  "email": "hannahcorpuz2003@gmail.com",
+  "password": "hello",
+  "__v": 0,
+  "picture": "pfp.png"
+}]

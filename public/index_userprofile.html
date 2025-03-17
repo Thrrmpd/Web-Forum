@@ -24,11 +24,8 @@
 
     <div class="user-container">
         <div class="left-container">
-            <div class="profile-container">
-                <button style="background-color:white; border:none" title="Add New Photo?" class="pfp-button">
-                 <!--button tag to add option to user on changing profile pic-->   
+            <div class="profile-container"> 
                 <img src="pfp.png" class="profile-img"> <!--Will get changed upon login on displayInfo() of script_userprofile.js; signup default pfp is pfp.png-->
-                </button>
                 <div class="profile-username">
                     <h2>AvaLee</h2> <!--Will get edited on displayInfo() of script_userprofile.js-->
                     <h3>Question everything; learn anything.</h3>
@@ -39,14 +36,20 @@
                 <span class="material-symbols-outlined">add_circle</span>
                 <span>Create Forum</span>
             </button>
+
+            <button class="pfp-button" type="button">
+                <span class="material-symbols-outlined">add_circle</span>
+                <span>Update Information</span>
+            </button>
+
+            <div class="hidden-div">
+
+            </div>
     
             <div class="created-container">
                     <h2>Created Forums</h2>
                     <div id="forum-list">
-                        <div class="forum-entry">
-                            <span class="forum-title">Computer Science vs. Computer Engineering?</span>
-                            <button class="info-button">...</button>
-                        </div>
+                        
                     </div>
                 </div>
         </div>

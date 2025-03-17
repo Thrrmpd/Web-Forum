@@ -1,5 +1,5 @@
 
-var userArray, forumArray;
+var userArray, forumArray, userID;
 
 document.addEventListener("DOMContentLoaded", async ()=>{
     const pathway = localStorage.getItem('path');
@@ -47,11 +47,10 @@ async function isLogin(){ //login function
         for(var i = 0; i < userArray.length; i++) //for loop to get user with ID == const ID 
         {
             if(ID == Object.values(userArray[i][1])[1]){ //if ID == const ID, info = user info with ID = const iD
+                
                 info = Object.values(userArray[i][1]);
             }
         }
-
-        
 
         for(var i = 0; i < forumArray.length; i++)
         {
@@ -60,8 +59,7 @@ async function isLogin(){ //login function
             }
 
         }
-
-
+        userID = info[0];
         displayInfo(info); 
 
         if(forums.length != 0)
@@ -118,7 +116,7 @@ function displayForums(forums, creatorName){
                 var show = document.querySelector(`div[name=forum${i}]`);
 
                 if(display == 0){
-                    show.style.display = 'block';                   
+                    show.style.display = 'flex';                   
                     display = 1;
                 }
                 else{
@@ -156,11 +154,92 @@ function displayInfo(info){ //For displaying corresponding username, email, and 
 
 document.addEventListener("DOMContentLoaded", function () {
     const createForumButton = document.querySelector(".createforum-button");
+    const profileInfo = document.querySelector(".hidden-div");
+
+    const nameInfo = document.createTextNode("Username: ");
+    const email = document.createTextNode("Email: ");
+    const pfp = document.createTextNode("Choose one: ");
+    const inputUsername = document.createElement('input');
+    const inputEmail = document.createElement('input');
+    const inputPFP = document.createElement('input');
+    const submit = document.createElement('button');
+
+    inputUsername.type = 'text';
+    inputUsername.className = "newUsername";
+
+    inputEmail.type = 'text';
+    inputEmail.className = "newEmail";
+
+    inputPFP.type = 'file';
+    inputPFP.accept = '.jpg, .jpeg, .png';
+    inputUsername.className = "newPFP";
+
+    submit.className = "infoChanges";
+    submit.appendChild(document.createTextNode("Submit"));
+    submit.style.color = 'white';
+    submit.style.backgroundColor = 'blue';
+    submit.addEventListener("click", async function(){
+        const updateUsername = document.querySelector(".newUsername");
+        const updateEmail = document.querySelector(".newEmail");
+        const updatePFP = document.querySelector(".newPFP");
+
+            const res = await fetch(`/updateUser/${userID}`, {
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    newName:updateUsername,
+                    newEmail:updateEmail,
+                    newPFP:updatePFP
+                })
+            })
+        
+
+        
+    });
+
+    profileInfo.appendChild(nameInfo);
+    profileInfo.appendChild(inputUsername);
+    profileInfo.appendChild(document.createElement('br'));
+    profileInfo.appendChild(document.createElement('br'));
+    profileInfo.appendChild(email);
+    profileInfo.appendChild(inputEmail);
+    profileInfo.appendChild(document.createElement('br'));
+    profileInfo.appendChild(document.createElement('br'));
+    profileInfo.appendChild(pfp);
+    profileInfo.appendChild(inputPFP);
+    profileInfo.appendChild(document.createElement('br'));
+    profileInfo.appendChild(document.createElement('br'));
+    profileInfo.appendChild(submit);
+
+    var openEdit = 0;
+
+    document.querySelector(".pfp-button").addEventListener("click", function(){
+        const editProfile = document.querySelector(".hidden-div");
+
+        if(openEdit == 0)
+            {
+                editProfile.style.display = 'block';
+                openEdit = 1;
+            }
+            else{
+                editProfile.style.display = 'none';
+                openEdit = 0;
+            }
+
+    });
+
 
     if (createForumButton) {
         createForumButton.addEventListener("click", function () {
             window.location.href = "createforum.html"; // placeholder html
         });
     }
+
+    
+
+
 });
+
 

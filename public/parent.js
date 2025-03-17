@@ -1,7 +1,7 @@
 function login() { 
 	const password = document.getElementById("password").value;
 	const username  = document.getElementById("username").value;
-	var isEqual;
+	var isEqual = false;
 	document.getElementById("loginbutton").addEventListener('click', async()=>{ //event listener where if user clicks login button then the function below will be executed
 		const res = await fetch('/getUsers'); //fetch users from getUsers API
 		const userdata = await res.json(); //returns object to userdata from res.json()
