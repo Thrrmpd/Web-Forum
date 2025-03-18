@@ -22,6 +22,8 @@ async function isSignup(){ //signup function
         var forumArray = Object.entries(forumdata); //get array of objects from forumdata
         var info = Object.values(userArray[userArray.length-1][1]); //Will change this, but otherwise gets corresponding user info array
 
+        localStorage.setItem('loginID', info[0]); //STORES THE ID OF THE USER THAT LOGGED IN IN LOCAL STORAGE
+        
         displayInfo(info); //display info
 
     }catch(err){
@@ -49,6 +51,7 @@ async function isLogin(){ //login function
             if(ID == Object.values(userArray[i][1])[1]){ //if ID == const ID, info = user info with ID = const iD
                 
                 info = Object.values(userArray[i][1]);
+                localStorage.setItem('loginID', info[0]); //STORES THE ID OF THE USER THAT LOGGED IN IN LOCAL STORAGE
             }
         }
 

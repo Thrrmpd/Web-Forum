@@ -119,6 +119,31 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
             console.log(get);
             res.json(get);
         })
+
+    // Function to get user data from the database
+    async function getUserFromDatabase(userID) {
+        try {
+            const user = await users.findById(userID);
+            return user;
+        } catch (err) {
+            throw new Error('Database query failed');
+        }
+    }
+
+    // READ API for users by ID
+        conn.get('/getUser/:id', async (req, res) => {
+            const userID = req.params.id;
+            try {
+                const user = await getUserFromDatabase(userID); 
+                if (user) {
+                    res.json(user);
+                } else {
+                    res.status(404).send('User not found');
+                }
+            } catch (err) {
+                res.status(500).send('Server error');
+            }
+        });
     
 
 /********************************************************************************/
