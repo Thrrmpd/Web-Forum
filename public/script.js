@@ -35,6 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function logout() {
-    localStorage.removeItem('loginID');
+    localStorage.removeItem('loginObject');
     window.location.href = 'index.html'; 
 }
