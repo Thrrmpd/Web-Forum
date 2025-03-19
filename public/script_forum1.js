@@ -145,3 +145,66 @@ async function deletePost(button) {
     console.error("Error deleting post:", error);
   }
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+  // Load forum data dynamically based on the forumID query parameter
+  const params = new URLSearchParams(window.location.search);
+  const forumID = params.get("forumID");
+
+  if (!forumID) {
+    alert("Forum ID is missing!");
+    return;
+  }
+
+  try {
+    // Fetch forum data from the backend
+    const res = await fetch(`/getForum/${forumID}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch forum data");
+    }
+
+    const forumData = await res.json();
+    console.log("Forum Data:", forumData);
+
+    // Update the forum title and description
+    document.getElementById("forumTitle").textContent = forumData.title;
+    document.getElementById("forumDescription").textContent = forumData.description;
+  } catch (err) {
+    console.error("Error loading forum data:", err);
+    alert("Failed to load forum data.");
+  }
+
+  // Handle user login state
+  const loginID = localStorage.getItem("loginID");
+  console.log("loginID from localStorage:", loginID); // Debugging statement
+
+  const navRight = document.getElementById("nav-right");
+  console.log("navRight element:", navRight); // Debugging statement
+
+  if (loginID) {
+    try {
+      const userRes = await fetch(`/getUser/${loginID}`);
+      console.log("Response from /getUser endpoint:", userRes); // Debugging statement
+
+      const userData = await userRes.json();
+      console.log("User Data:", userData); // Debugging statement
+
+      const userName = userData.name; // Assuming the user data has a 'name' field
+      console.log("User Name:", userName); // Debugging statement
+
+      navRight.innerHTML = `Logged in: ${userName} | <a href="#" onclick="logout()">Log Out</a>`;
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+    }
+  } else {
+    console.log("No loginID found in localStorage");
+  }
+});
+
+// Logout function
+function logout() {
+  localStorage.removeItem("loginID");
+  window.location.href = "index.html"; // Redirect to the main page
+}
+
+

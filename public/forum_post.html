@@ -7,25 +7,28 @@
     <link rel="stylesheet" href="styles_forum.css" />
   </head>
   <body>
-    <div class="nav-bar">
-      <div class="nav-left">
-        <a href="about.html">About</a> | <a href="faq.html">FAQ</a> |
-        <a href="index.html">Forums</a>
+    <header>
+      <div class="nav-bar">
+        <div class="nav-left">
+          <a href="about.html">About</a> | <a href="faq.html">FAQ</a> | <a href="index.html">Forums</a>
+        </div>
+        <div class="nav-right" id="nav-right">
+          <a href="signup.html">Sign Up</a> | <a href="login.html">Log In</a>
+        </div>
       </div>
-      <div class="nav-right">
-        <a href="signup.html">Sign Up</a> | <a href="login.html">Log In</a>
-      </div>
-    </div>
+    </header>
 
+    <!-- Forum Name Section -->
     <div class="forum-name">
-      <h1>Forum 1</h1>
+      <h1 id="forumTitle">Loading forum title...</h1>
     </div>
 
-    <!-- New Forum Description Section -->
+    <!-- Forum Description Section -->
     <div class="forum-description">
       <p id="forumDescription">Loading forum description...</p>
     </div>
 
+    <!-- Post Creation Form -->
     <div class="post-form">
       <h2>Create a Post</h2>
       <select id="postVisibility">
@@ -33,15 +36,12 @@
         <option value="private">Private</option>
       </select>
       <input type="text" id="postTitle" placeholder="Post Title" required />
-      <textarea
-        id="postContent"
-        placeholder="Write something..."
-        required
-      ></textarea>
+      <textarea id="postContent" placeholder="Write something..." required></textarea>
       <input type="file" id="postMedia" accept=".jpg,.jpeg" />
-      <button onclick="createPost()">Post</button>
+      <button id="createPostButton">Post</button>
     </div>
 
+    <!-- Posts Section -->
     <div class="posts-section">
       <h2>Forum Posts</h2>
       <div id="postsContainer"></div>

@@ -49,25 +49,37 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
     
 
      //Add Forum API, same function as add user api but differing number of attributes
-        conn.post('/addingForums', async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/addingForums')
-            try{
-                const newForum = await new forums({
-                    forID: ID,
-                    title: username,
-                    description: email,
-                    code: password,
-                    creatID: null
-                });
-                const addedForum = await newForum.save();
-                
-                console.log(addedForum);
-                res.status(201).json(addedForum);
-                
-
-            }catch(exception){
-                console.log("error...\n", exception)
+        conn.post('/addingForums', async (req, res) => {
+            try {
+            const { title, description, code, creatID } = req.body;
+        
+            // Check if the forum code is unique
+            const existingForum = await forums.findOne({ code });
+            if (existingForum) {
+                return res.status(400).json({ message: 'Forum code must be unique.' });
             }
-        })
+        
+            // Generate the next forum ID
+            const lastForum = await forums.findOne().sort({ forID: -1 }); // Get the forum with the highest forID
+            const nextForID = lastForum ? lastForum.forID + 1 : 10000; // Start at 10000 if no forums exist
+        
+            // Create a new forum
+            const newForum = new forums({
+                forID: nextForID,
+                title,
+                description,
+                code,
+                creatID
+            });
+        
+            const addedForum = await newForum.save();
+            console.log('Forum created:', addedForum);
+            res.status(201).json(addedForum);
+            } catch (err) {
+            console.error('Error creating forum:', err);
+            res.status(500).json({ message: 'Failed to create forum.' });
+            }
+        });
 
     
 
@@ -121,13 +133,13 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
         })
 
     // Function to get user data from the database
-    async function getUserFromDatabase(userID) {
-        try {
-            const user = await users.findById(userID);
-            return user;
-        } catch (err) {
-            throw new Error('Database query failed');
-        }
+        async function getUserFromDatabase(userID) {
+            try {
+                const user = await users.findById(userID);
+                return user;
+            } catch (err) {
+                throw new Error('Database query failed');
+            }
     }
 
     // READ API for users by ID
@@ -144,6 +156,22 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
                 res.status(500).send('Server error');
             }
         });
+
+        conn.get('/getForum/:id', async (req, res) => {
+            const forumID = req.params.id;
+            try {
+              const forum = await forums.findById(forumID);
+              if (forum) {
+                res.json(forum);
+              } else {
+                res.status(404).json({ message: 'Forum not found.' });
+              }
+            } catch (err) {
+              console.error('Error fetching forum:', err);
+              res.status(500).json({ message: 'Failed to fetch forum.' });
+            }
+          });
+
     
 
 /********************************************************************************/

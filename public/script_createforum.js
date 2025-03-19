@@ -1,142 +1,75 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const forumDescriptionText = document.getElementById("forumDescriptionText");
-    
-    forumDescriptionText.textContent = "Loading forum description...";
-  });
-  
-function setupForum() {
-    const forumTitleInput = document.getElementById("forumTitle");
-    const forumDescriptionInput = document.getElementById("forumDescription");
-    
-    const forumTitle = forumTitleInput.value.trim();
-    const forumDescription = forumDescriptionInput.value.trim();
-    
-    if (!forumTitle || !forumDescription) {
-      alert("Forum title and description are required!");
-      return;
-    }
-    
-    const forumNameElement = document.getElementById("forumName");
-    const forumDescriptionTextElement = document.getElementById("forumDescriptionText");
-    
-    forumNameElement.textContent = forumTitle;
-    forumDescriptionTextElement.textContent = forumDescription;
-    
-    // Hide the setup section and show the forum content section
-    document.querySelector(".forum-setup").style.display = "none";
-    document.getElementById("forumContent").style.display = "block";
-  }
-  
-  function createPost() {
-    const visibilityInput = document.getElementById("postVisibility");
-    const titleInput = document.getElementById("postTitle");
-    const contentInput = document.getElementById("postContent");
-    const mediaInput = document.getElementById("postMedia");
-  
-    const title = titleInput.value.trim();
-    const content = contentInput.value.trim();
-    const visibility = visibilityInput.value;
-    const file = mediaInput.files[0];
-  
-    if (!title || !content) {
-      alert("Title and content are required!");
-      return;
-    }
-  
-    const postContainer = document.getElementById("postsContainer");
-    const postDiv = document.createElement("div");
-    postDiv.classList.add("post");
-  
-    postDiv.innerHTML = `
-      <small>Visibility: ${visibility}</small>
-      <h3>${title}</h3>
-      <p>${content}</p>
-      <div class="edit-delete">
-        <button onclick="editPost(this)">Edit</button>
-        <button onclick="deletePost(this)">Delete</button>
-      </div>
-      <div class="image-container"></div>
-      <div class="comments-section">
-        <input type="text" class="commentInput" placeholder="Write a comment...">
-        <button onclick="addComment(this)">Comment</button>
-        <div class="comments-container"></div>
-      </div>
-    `;
-  
-    postContainer.prepend(postDiv);
-  
-    if (file) {
-      if (!["image/jpeg"].includes(file.type)) {
-        alert("Only JPG and JPEG images are allowed.");
-        return;
+document.addEventListener("DOMContentLoaded", async () => {
+  const loginID = localStorage.getItem('loginID');
+  console.log('loginID from localStorage:', loginID); // NEED FOR DEBUGG
+
+  const navRight = document.getElementById('nav-right');
+  console.log('navRight element:', navRight); // another debug
+
+  if (loginID) {
+      try {
+          const userRes = await fetch(`/getUser/${loginID}`); 
+          console.log('Response from /getUser endpoint:', userRes); // debug
+
+          const userData = await userRes.json();
+          console.log('User Data:', userData); // console debug
+
+          const userName = userData.name; // name
+          console.log('User Name:', userName); // console debuf
+
+          navRight.innerHTML = `Logged in: ${userName} | <a href="#" onclick="logout()">Log Out</a>`; // change and display user name and logout link
+      } catch (err) {
+          console.error('Error fetching user data:', err);
       }
-  
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const imageContainer = postDiv.querySelector(".image-container");
-        imageContainer.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
-      };
-      reader.readAsDataURL(file);
-    }
-  
-    titleInput.value = "";
-    contentInput.value = "";
-    visibilityInput.value = "public";
-    mediaInput.value = "";
+  } else {
+      console.log('No loginID found in localStorage');
   }
-  
-  function editPost(button) {
-    const post = button.closest(".post");
-    const title = post.querySelector("h3");
-    const content = post.querySelector("p");
-  
-    const newTitle = prompt("Edit Title:", title.textContent);
-    const newContent = prompt("Edit Content:", content.textContent);
-  
-    if (newTitle.trim() !== "" && newContent.trim() !== "") {
-      title.textContent = newTitle;
-      content.textContent = newContent;
+});
+
+document.getElementById('createForumButton').addEventListener('click', async () => {
+  const forumName = document.getElementById('forumName').value;
+  const forumDescription = document.getElementById('forumDescription').value;
+  const forumCode = document.getElementById('forumCode').value;
+  const creatorID = localStorage.getItem('loginID'); // Get the logged-in user's ID
+
+  // Validate input fields
+  if (!forumName || !forumDescription || !forumCode) {
+    alert('Please fill out all fields.');
+    return;
+  }
+
+  try {
+    // Send the forum data to the backend
+    const res = await fetch('/addingForums', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: forumName,
+        description: forumDescription,
+        code: forumCode,
+        creatID: creatorID
+      })
+    });
+
+    if (res.ok) {
+      const forumData = await res.json();
+      console.log('Forum created:', forumData);
+
+      // Redirect to the new forum page
+      window.location.href = `forum_post.html?forumID=${forumData._id}`;
     } else {
-      alert("Title and content cannot be empty.");
+      const error = await res.json();
+      alert(`Error: ${error.message}`);
     }
+  } catch (err) {
+    console.error('Error creating forum:', err);
+    alert('An error occurred while creating the forum.');
   }
-  
-  function deletePost(button) {
-    button.closest(".post").remove();
-  }
-  
-  function addComment(button) {
-    const commentInput = button.previousElementSibling;
-    const commentText = commentInput.value.trim();
-    if (!commentText) return;
-  
-    const commentsContainer = button.nextElementSibling;
-    const commentDiv = document.createElement("div");
-    commentDiv.classList.add("comment");
-    commentDiv.innerHTML = `
-      <p>${commentText}</p>
-      <div class="edit-delete">
-        <button onclick="editComment(this)">Edit</button>
-        <button onclick="deleteComment(this)">Delete</button>
-      </div>
-    `;
-  
-    commentsContainer.appendChild(commentDiv);
-    commentInput.value = "";
-  }
-  
-  function editComment(button) {
-    const comment = button.closest(".comment");
-    const commentText = comment.querySelector("p");
-  
-    const newText = prompt("Edit Comment:", commentText.textContent);
-    if (newText.trim() !== "") {
-      commentText.textContent = newText;
-    } else {
-      alert("Comment cannot be empty.");
-    }
-  }
-  
-  function deleteComment(button) {
-    button.closest(".comment").remove();
-  }
+});
+
+function logout() {
+  localStorage.removeItem('loginID');
+  window.location.href = 'index.html'; 
+}
+

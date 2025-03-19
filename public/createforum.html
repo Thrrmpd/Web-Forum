@@ -7,55 +7,29 @@
     <link rel="stylesheet" href="style_createforum.css" />
   </head>
   <body>
-    <div class="nav-bar">
-      <div class="nav-left">
-        <a href="#">About</a> | <a href="#">FAQ</a> |
-        <a href="index.html">Forums</a>
+    <header>
+      <div class="nav-bar">
+          <div class="nav-left">
+              <a href="about.html">About</a> | <a href="faq.html">FAQ</a> | <a href="#">Forums</a>
+          </div>
+          <div class="nav-right" id="nav-right">
+              <a href="signup.html">Sign Up</a> | <a href="login.html">Log In</a>
+          </div>
       </div>
-      <div class="nav-right">
-        <a href="#">Sign Up</a> | <a href="#">Log In</a>
-      </div>
-    </div>
+    </header>
 
-    <!-- Forum Setup Section -->
     <div class="forum-setup">
-      <h1>Setup Your Forum</h1>
-      <label for="forumTitle">Forum Title:</label>
-      <input type="text" id="forumTitle" placeholder="Enter Forum Title" required />
-      
+      <h1>Create a New Forum</h1>
+      <label for="forumName">Forum Name:</label>
+      <input type="text" id="forumName" placeholder="Enter Forum Name" required>
+
       <label for="forumDescription">Forum Description:</label>
       <textarea id="forumDescription" placeholder="Enter Forum Description" required></textarea>
-      
-      <button onclick="setupForum()">Set Up Forum</button>
-    </div>
 
-    <!-- Forum Content Section (Initially hidden until the forum is set up) -->
-    <div id="forumContent" style="display: none;">
-      <div class="forum-name">
-        <h1 id="forumName">Forum 1</h1>
-      </div>
+      <label for="forumCode">Forum Code (must be unique):</label>
+      <input type="text" id="forumCode" placeholder="Enter Forum Code" required>
 
-      <!-- Forum Description Section -->
-      <div class="forum-description">
-        <p id="forumDescriptionText">Loading forum description...</p>
-      </div>
-
-      <div class="post-form">
-        <h2>Create a Post</h2>
-        <select id="postVisibility">
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </select>
-        <input type="text" id="postTitle" placeholder="Post Title" required />
-        <textarea id="postContent" placeholder="Write something..." required></textarea>
-        <input type="file" id="postMedia" accept=".jpg,.jpeg" />
-        <button onclick="createPost()">Post</button>
-      </div>
-
-      <div class="posts-section">
-        <h2>Forum Posts</h2>
-        <div id="postsContainer"></div>
-      </div>
+      <button id="createForumButton">Create Forum</button>
     </div>
 
     <script src="script_createforum.js"></script>
