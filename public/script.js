@@ -8,7 +8,7 @@ function joinForum() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const loginID = localStorage.getItem('loginID');
+    const loginID = localStorage.getItem('loginObject');
     console.log('loginID from localStorage:', loginID); // NEED FOR DEBUGG
 
     const navRight = document.getElementById('nav-right');

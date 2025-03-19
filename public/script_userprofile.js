@@ -1,22 +1,41 @@
 
-var userArray, forumArray, userID;
+var userArray, forumArray, userObject;
 
 document.addEventListener("DOMContentLoaded", async ()=>{
     const pathway = localStorage.getItem('path');
 
-    if(Object.entries(pathway)[0][1] == '1')
-        isLogin();
-    else if(Object.entries(pathway)[0][1] == '2')
-        isSignup();
+    if(Object.entries(pathway)[0][1] == '1'){
+        try{
+        const userRes = await fetch('/getUsers');
+        const forumRes = await fetch('/getForums');
+        
+        isLogin(userRes, forumRes);
+
+            }catch(err){
+                console.error(err);
+            }
+        }
+    else if(Object.entries(pathway)[0][1] == '2'){
+        try{
+            const userRes = await fetch('/getUsers');
+            const forumRes = await fetch('/getForums');
+            console.log(userRes);
+            
+            isSignup(userRes, forumRes);
+
+                }catch(err){
+                    console.error(err);
+                }
+    }
     
 })
 
-async function isSignup(){ //signup function
+async function isSignup(userRes, forumRes){ //signup function
     try{ //Try catch block needed in case promise error occurs because of fetch()
 
-        const userRes = await fetch('/getUsers'); //calls /getUsers api on forumnode.js and gets data from them; for user info
+         //calls /getUsers api on forumnode.js and gets data from them; for user info
         const userdata = await userRes.json();//converts userRes to an object var to be passed to userData
-        const forumRes = await fetch('/getForums') //calls /getForums api on forumnode.js and gets data from them; for forum info
+         //calls /getForums api on forumnode.js and gets data from them; for forum info
         const forumdata = await forumRes.json(); //converts forumRes to an object var to be passed to forumData
         var userArray = Object.entries(userdata); //get array of objects from userdata
         var forumArray = Object.entries(forumdata); //get array of objects from forumdata
@@ -32,14 +51,14 @@ async function isSignup(){ //signup function
 
 }
 
-async function isLogin(){ //login function
+async function isLogin(userRes, forumRes){ //login function
     const ID = parseInt(localStorage.getItem('loginID')); //used this to get user data of user that logged in
-    
+    console.log(ID);
     try{//Try catch block needed in case promise error occurs because of fetch()
-
-        const userRes = await fetch('/getUsers'); //calls /getUsers api on forumnode.js and gets data from them; for user info
+        
+        
         const userdata = await userRes.json();//converts userRes to an object var to be passed to userData
-        const forumRes = await fetch('/getForums') //calls /getForums api on forumnode.js and gets data from them; for forum info
+        
         const forumdata = await forumRes.json(); //converts forumRes to an object var to be passed to forumData
         var userArray = Object.entries(userdata); //get array of objects from userdata
         var forumArray = Object.entries(forumdata); //get array of objects from forumdata
@@ -51,7 +70,8 @@ async function isLogin(){ //login function
             if(ID == Object.values(userArray[i][1])[1]){ //if ID == const ID, info = user info with ID = const iD
                 
                 info = Object.values(userArray[i][1]);
-                localStorage.setItem('loginID', info[0]); //STORES THE ID OF THE USER THAT LOGGED IN IN LOCAL STORAGE
+                localStorage.setItem('loginObject', info[0]);
+                break;
             }
         }
 
@@ -62,7 +82,13 @@ async function isLogin(){ //login function
             }
 
         }
-        userID = info[0];
+        
+        userObject = info[0];
+        console.log(userObject);
+
+        localStorage.setItem('loginInfo', JSON.stringify(info));
+        localStorage.setItem('loginForums', JSON.stringify(forums))
+
         displayInfo(info); 
 
         if(forums.length != 0)
@@ -182,10 +208,13 @@ document.addEventListener("DOMContentLoaded", function () {
     submit.style.color = 'white';
     submit.style.backgroundColor = 'blue';
     submit.addEventListener("click", async function(){
-        const updateUsername = document.querySelector(".newUsername");
-        const updateEmail = document.querySelector(".newEmail");
-        const updatePFP = document.querySelector(".newPFP");
+        const updateUsername = document.querySelector(".newUsername").value;
+        const updateEmail = document.querySelector(".newEmail").value;
+        const updatePFP = document.querySelector(".newPFP").files[0];
 
+        if(updateUsername === '' && updateEmail === '' && !updatePFP)
+            alert("Please fill out at least one field to update.");
+            else{
             const res = await fetch(`/updateUser/${userID}`, {
                 method:'POST',
                 headers:{
@@ -196,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     newEmail:updateEmail,
                     newPFP:updatePFP
                 })
-            })
+            })}
         
 
         
