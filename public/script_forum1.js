@@ -34,6 +34,19 @@ function createPostElement(post) {
       <button onclick="editPost(this)">Edit</button>
       <button onclick="deletePost(this)">Delete</button>
     </div>
+
+    <div class="comments">
+      <h4>Comments</h4>
+      <div id="comments-${post._id}">
+        ${post.comments && post.comments.length > 0 
+          ? post.comments.map(comment => `<p class="comment">${comment}</p>`).join('') 
+          : '<p class="comment">No comments yet.</p>'}
+      </div>
+      <div class="comment-input">
+        <input type="text" id="commentInput-${post._id}" placeholder="Write a comment..." />
+        <button onclick="addComment('${post._id}')">Comment</button>
+      </div>
+    </div>
   `;
 
   return postDiv;
