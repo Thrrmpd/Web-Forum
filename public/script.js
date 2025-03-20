@@ -8,6 +8,7 @@ function joinForum() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+    console.log(localStorage.getItem('path'));
     const loginID = localStorage.getItem('loginObject');
     console.log('loginID from localStorage:', loginID); // NEED FOR DEBUGG
 
@@ -37,5 +38,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function logout() {
     localStorage.removeItem('loginObject');
+    localStorage.removeItem('path');
     window.location.href = 'index.html'; 
 }

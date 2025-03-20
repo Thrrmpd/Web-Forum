@@ -28,7 +28,7 @@ function login() {
 		if(isEqual == true)
 			{
 				localStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1])); //Stores user ID so that vars are passed between js and html pages
-				localStorage.setItem('path', '1'); //Stores pathway so that vars are passed between js and html pages; 1 = login go to login function, 2 = signup go to signup function
+				
 				window.location.replace("./index_userprofile.html");
 			}
 		else
@@ -92,9 +92,8 @@ function signup() {
 					password:password
 				})
 			})
-
-			const result = await res.json();
-			localStorage.setItem('path', '2'); //Stores pathway so that vars are passed between js and html pages; 1 = login go to login function, 2 = signup go to signup function
+			
+			localStorage.setItem('loginID', JSON.stringify(ID));
 			window.location.replace("./index_userprofile.html");
 		}
 

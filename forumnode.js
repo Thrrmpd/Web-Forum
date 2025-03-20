@@ -6,15 +6,12 @@ const logins = require('./loginModel.js');
 const forums = require('./forumModels');
 const posts = require('./postsModel');
 const cookieParser = require('cookie-parser'); //For phase 3
-const mult = require('multer');
 const path = require('path');
 const port = 3000;
 const conn = express();
 
 var username = "Test", email = "helloworld.to", password = "password", objectID;
 
-const files = mult({dest: './public/uploads'});
-conn.use(files.single('file'));
 
 mongoose.connect('mongodb://localhost:27017/forumappdb')
 
@@ -38,7 +35,8 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
                     email: req.body.email, // ^
                     password: req.body.password, // ^
                     isForumCreator: false, // default forum creator is false since new user
-                    picture: "pfp.png" //standard pfp of new user is pfp.png
+                    picture: "pfp.png", //standard pfp of new user is pfp.png
+                    loginID: 0
                 });
                 const addedUser = await newUser.save();
                 

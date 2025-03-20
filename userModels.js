@@ -7,7 +7,9 @@ const userschema = mongoose.Schema({
     name: String,
     email: String,
     password: String,
-    isCreator: Boolean
+    isCreator: Boolean,
+    picture:String,
+    loginID:Number
 })
 
 module.exports = mongoose.model("users", userschema)

@@ -1,10 +1,8 @@
 
-var userArray, forumArray, userObject, loggedinUsers, loggedinForums;
+var userArray, forumArray, userObject, loggedinUsers, loggedinForums, pathway;
 
 document.addEventListener("DOMContentLoaded", async ()=>{
-    const pathway = localStorage.getItem('path');
-
-    if(Object.entries(pathway)[0][1] == '1'){
+    
         try{
         const userRes = await fetch('/getUsers');
         const forumRes = await fetch('/getForums');
@@ -14,44 +12,8 @@ document.addEventListener("DOMContentLoaded", async ()=>{
             }catch(err){
                 console.error(err);
             }
-        }
-    else if(Object.entries(pathway)[0][1] == '2'){
-        try{
-            const userRes = await fetch('/getUsers');
-            const forumRes = await fetch('/getForums');
-            const loginRes = await fetch('/getLoggedIn');
-            console.log(loginRes);
-            
-            isSignup(userRes, forumRes, loginRes);
-
-                }catch(err){
-                    console.error(err);
-                }
-    }
     
 })
-
-async function isSignup(userRes, forumRes, loginRes){ //signup function
-    try{ //Try catch block needed in case promise error occurs because of fetch()
-
-        
-        const userdata = await userRes.json();//converts userRes to an object var to be passed to userData
-       
-        const forumdata = await forumRes.json(); //converts forumRes to an object var to be passed to forumData
-        
-        var userArray = Object.entries(userdata); //get array of objects from userdata
-        var forumArray = Object.entries(forumdata); //get array of objects from forumdata
-        var info = Object.values(userArray[userArray.length-1][1]); //Will change this, but otherwise gets corresponding user info array
-
-        localStorage.setItem('loginID', info[0]); //STORES THE ID OF THE USER THAT LOGGED IN IN LOCAL STORAGE
-        
-        displayInfo(info); //display info
-
-    }catch(err){
-        console.error(err);
-    }
-
-}
 
 async function isLogin(userRes, forumRes, loginRes){ //login function
     const ID = parseInt(localStorage.getItem('loginID')); //used this to get user data of user that logged in
@@ -180,7 +142,7 @@ function displayInfo(info){ //For displaying corresponding username, email, and 
 
     displayUserName.textContent = info[2]; //display username (ex. "Ava Lee") to index_userprofile.html
     displayEmail.textContent = info[3]; //display email (ex. "hannahcorpuz2003@gmail.com") to index_userprofile.html
-    displayProfile.src = info[6]; //display corresponding pfp of user to index_userprofile.html
+    displayProfile.src = info[5]; //display corresponding pfp of user to index_userprofile.html
     
 }
 
@@ -188,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const createForumButton = document.querySelector(".createforum-button");
     const profileInfo = document.querySelector(".hidden-div");
     const deactivateAccount = document.querySelector(".deactivate-account");
+    const logout = document.querySelector(".logout");
 
     deactivateAccount.addEventListener("click",async function(){
         
@@ -195,7 +158,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const res = await fetch(`/deleteUser/${userObject}`, {
             method:'DELETE'
         })
+        localStorage.removeItem('path');
+        localStorage.removeItem('loginObject');
+        window.location.href = 'index.html';
 
+    })
+
+    logout.addEventListener("click", function(){
+        localStorage.removeItem('path');
+        console.log(localStorage.getItem('path'));
+        pathway = 0;
+        localStorage.removeItem('loginObject');
+        window.location.href = 'index.html';
     })
 
     const nameInfo = document.createTextNode("Username: ");
@@ -228,8 +202,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const updateEmail = document.querySelector(".newEmail");
         const updatePFP = document.querySelector(".newPFP");
 
-        //console.log(updatePFP.files[0].name);
-
         
         if(updateUsername.value == '' && updateEmail.value == '' && !updatePFP.files[0])
             alert("Please fill out at least one field to update.");
@@ -253,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
         }
         
-
+        window.location.reload();
         
     });
 
