@@ -22,7 +22,7 @@ conn.use(express.json());
 conn.use(parser.urlencoded({ extended: true }));
 conn.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://localhost:27017/webForum");
+mongoose.connect("mongodb://localhost:27017/WebForum");
 
 conn.use(express.static(path.join(__dirname, "public")));
 conn.use(parser.json());
@@ -137,6 +137,34 @@ conn.post("/addingPost", async (req, res) => {
   } catch (error) {
     console.error("Error creating post:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+//Add comment to a post
+conn.post("/addingComment/:postID", async (req, res) => {
+  const { postID } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(postID)) { // Ensures postID is passed
+    return res.status(400).json({ error: "Invalid post ID format" });
+  }
+
+  const { userID, text } = req.body;
+
+  try {
+    const updatedPost = await posts.findByIdAndUpdate( 
+      new mongoose.Types.ObjectId(postID),
+      { $push: { comments: { userID, text } } }, // push comment to array
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.json(updatedPost);
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ error: "Failed to add a comment" });
   }
 });
 

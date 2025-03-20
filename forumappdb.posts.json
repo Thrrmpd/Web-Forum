@@ -7,7 +7,8 @@
   "description": "",
   "title": "title",
   "type": "Public",
-  "creatID": 1001
+  "creatorID": 1001,
+  "comments": []
 },
 {
   "_id": {
@@ -18,7 +19,8 @@
   "description": "",
   "title": "helloworld",
   "type": "Public",
-  "creatID": 1001
+  "creatorID": 1001,
+  "comments": []
 },
 {
   "_id": {
@@ -29,7 +31,8 @@
   "description": "blablabla",
   "title": "please help my hamster's eating my food",
   "type": "Public",
-  "creatID": 1003
+  "creatorID": 1003,
+  "comments": []
 },
 {
   "_id": {
@@ -40,7 +43,8 @@
   "description": "hueoqwho",
   "title": "Hello There",
   "type": "Private",
-  "creatID": 1003
+  "creatorID": 1003,
+  "comments": []
 },
 {
   "_id": {
@@ -51,7 +55,8 @@
   "description": "trwegferge",
   "title": "fgerge",
   "type": "Private",
-  "creatID": 1002
+  "creatorID": 1002,
+  "comments": []
 },
 {
   "_id": {
