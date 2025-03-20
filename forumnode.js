@@ -394,7 +394,7 @@ conn.post('/updateUser/:userID', async (req, res) => {
                 return res.status(404).json({error: "Forum not found"});
             }
 
-            console.log("User Removed", forumID);
+            console.log('Forum Deleted:', deletedForum);
             res.status(200).json({message:"Forum Deleted Successfully"});
         }catch(exception){
             console.log(exception);

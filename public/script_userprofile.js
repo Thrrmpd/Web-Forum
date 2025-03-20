@@ -121,14 +121,20 @@ function displayForums(forums, creatorName){
             };
         })(i)); // Pass the current index to the closure
 
-        // Add event listener for deleting the forum
         deleteButton.addEventListener('click', ((index) => {
-            return () => {
+            return async () => {
                 if (confirm('Are you sure you want to delete this forum?')) {
-                    deleteForum(forums[index][0]); // Pass forum ID
+                    try {
+                        deleteForum(forums[index][0]); // Pass forum ID
+                        alert('Forum deleted successfully!');
+                        window.location.reload();
+                    } catch (err) {
+                        console.error('Error deleting forum:', err);
+                        alert('Failed to delete forum.');
+                    }
                 }
             };
-        })(i)); // Pass the current index to the closure
+        })(i)); 
 
         newButton.addEventListener('click', (function(i){
             var display = 0;
@@ -183,6 +189,25 @@ async function updateForum(forumID, newTitle, newDescription){
     catch(err){
         console.error('Error updating forum:', err);
 
+    }
+}
+
+async function deleteForum(forumID) {
+    try {
+        const res = await fetch(`/deleteForum/${forumID}`, {
+            method: 'DELETE'
+        });
+
+        if (!res.ok) {
+            const error = await res.json();
+            throw new Error(error.message || 'Failed to delete forum');
+        }
+
+        console.log('Forum deleted successfully, reloading page...');
+        window.location.reload(); // Force a page reload
+    } catch (err) {
+        console.error('Error deleting forum:', err);
+        throw err; 
     }
 }
 
