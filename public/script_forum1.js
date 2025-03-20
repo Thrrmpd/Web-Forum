@@ -38,12 +38,18 @@ function createPostElement(post) {
     <div class="comments">
       <h4>Comments</h4>
       <div id="comments-${post._id}">
-        ${post.comments && post.comments.length > 0 
-          ? post.comments.map(comment => `<p class="comment">${comment}</p>`).join('') 
-          : '<p class="comment">No comments yet.</p>'}
+        ${
+          post.comments && post.comments.length > 0
+            ? post.comments
+                .map((comment) => `<p class="comment">${comment}</p>`)
+                .join("")
+            : '<p class="comment">No comments yet.</p>'
+        }
       </div>
       <div class="comment-input">
-        <input type="text" id="commentInput-${post._id}" placeholder="Write a comment..." />
+        <input type="text" id="commentInput-${
+          post._id
+        }" placeholder="Write a comment..." />
         <button onclick="addComment('${post._id}')">Comment</button>
       </div>
     </div>
@@ -52,39 +58,78 @@ function createPostElement(post) {
   return postDiv;
 }
 
+// async function createPost() {
+//   const title = document.getElementById("postTitle").value.trim();
+//   const description = document.getElementById("postContent").value.trim();
+//   const type = document.getElementById("postVisibility").value;
+//   const filename = document.getElementById("postFile")
+//     ? document.getElementById("postFile").value
+//     : ""; // Optional file input
+//   const creatorID = "0000"; // Fixed creator ID
+
+//   let postID;
+
+//   if (!title || !description) {
+//     alert("Title and content are required!");
+//     return;
+//   }
+
+//   try {
+//     // Fetch existing posts to determine postID
+//     const res = await fetch("/getPosts");
+//     const postsData = await res.json();
+//     const postsArray = Object.entries(postsData);
+
+//     if (postsArray.length > 0) {
+//       postID = Object.values(postsArray[postsArray.length - 1][1]).postID + 1;
+//     } else {
+//       postID = 1;
+//     }
+
+//     // Construct new post object
+//     const newPost = { postID, filename, description, title, type, creatorID };
+
+//     // Send request to add post
+//     const response = await fetch("/addingPost", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(newPost),
+//     });
+
+//     if (!response.ok) throw new Error("Failed to create post");
+
+//     const createdPost = await response.json();
+//     document
+//       .getElementById("postsContainer")
+//       .prepend(createPostElement(createdPost));
+
+//     // Clear input fields after posting
+//     document.getElementById("postTitle").value = "";
+//     document.getElementById("postContent").value = "";
+//     if (document.getElementById("postFile")) {
+//       document.getElementById("postFile").value = "";
+//     }
+//   } catch (error) {
+//     console.error("Error creating post:", error);
+//   }
+// }
+
 async function createPost() {
   const title = document.getElementById("postTitle").value.trim();
   const description = document.getElementById("postContent").value.trim();
   const type = document.getElementById("postVisibility").value;
-  const filename = document.getElementById("postFile")
-    ? document.getElementById("postFile").value
-    : ""; // Optional file input
-  const creatorID = "0000"; // Fixed creator ID
-
-  let postID;
+  const filename = document.getElementById("postMedia").value || "";
+  const creatorID = "0000";
 
   if (!title || !description) {
     alert("Title and content are required!");
     return;
   }
 
+  const newPost = { title, description, type, filename, creatorID };
+
   try {
-    // Fetch existing posts to determine postID
-    const res = await fetch("/getPosts");
-    const postsData = await res.json();
-    const postsArray = Object.entries(postsData);
-
-    if (postsArray.length > 0) {
-      postID = Object.values(postsArray[postsArray.length - 1][1]).postID + 1;
-    } else {
-      postID = 1;
-    }
-
-    // Construct new post object
-    const newPost = { postID, filename, description, title, type, creatorID };
-
-    // Send request to add post
-    const response = await fetch("/addingPost", {
+    const response = await fetch(`${API_URL}/addingPost`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPost),
@@ -97,12 +142,10 @@ async function createPost() {
       .getElementById("postsContainer")
       .prepend(createPostElement(createdPost));
 
-    // Clear input fields after posting
+    // Clear input fields
     document.getElementById("postTitle").value = "";
     document.getElementById("postContent").value = "";
-    if (document.getElementById("postFile")) {
-      document.getElementById("postFile").value = "";
-    }
+    document.getElementById("postMedia").value = "";
   } catch (error) {
     console.error("Error creating post:", error);
   }
@@ -181,7 +224,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Update the forum title and description
     document.getElementById("forumTitle").textContent = forumData.title;
-    document.getElementById("forumDescription").textContent = forumData.description;
+    document.getElementById("forumDescription").textContent =
+      forumData.description;
   } catch (err) {
     console.error("Error loading forum data:", err);
     alert("Failed to load forum data.");
@@ -219,5 +263,3 @@ function logout() {
   localStorage.removeItem("loginID");
   window.location.href = "index.html"; // Redirect to the main page
 }
-
-

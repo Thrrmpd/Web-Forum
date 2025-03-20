@@ -10,7 +10,8 @@
     <header>
       <div class="nav-bar">
         <div class="nav-left">
-          <a href="about.html">About</a> | <a href="faq.html">FAQ</a> | <a href="index.html">Forums</a>
+          <a href="about.html">About</a> | <a href="faq.html">FAQ</a> |
+          <a href="index.html">Forums</a>
         </div>
         <div class="nav-right" id="nav-right">
           <a href="signup.html">Sign Up</a> | <a href="login.html">Log In</a>
@@ -36,9 +37,13 @@
         <option value="private">Private</option>
       </select>
       <input type="text" id="postTitle" placeholder="Post Title" required />
-      <textarea id="postContent" placeholder="Write something..." required></textarea>
+      <textarea
+        id="postContent"
+        placeholder="Write something..."
+        required
+      ></textarea>
       <input type="file" id="postMedia" accept=".jpg,.jpeg" />
-      <button id="createPostButton">Post</button>
+      <button onclick="createPost()">Post</button>
     </div>
 
     <!-- Posts Section -->

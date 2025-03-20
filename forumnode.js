@@ -22,7 +22,7 @@ conn.use(express.json());
 conn.use(parser.urlencoded({ extended: true }));
 conn.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://localhost:27017/forumdbapp");
+mongoose.connect("mongodb://localhost:27017/webForum");
 
 conn.use(express.static(path.join(__dirname, "public")));
 conn.use(parser.json());
@@ -111,22 +111,32 @@ conn.post("/addingForums", async (req, res) => {
 
 //Add Post API, same function as add user api but differing number of attributes
 conn.post("/addingPost", async (req, res) => {
-  //invoke via fetch() api and inputting url link ex. const x = await fetch('/addingPost')
   try {
-    const newPost = await new posts({
-      postID: 10000,
-      filename: username,
-      description: email,
-      title: password,
-      type: "Public",
-      creatID: null,
-    });
-    const addedPost = await newPost.save();
+    const { title, description, type, filename, creatorID } = req.body;
 
-    console.log(addedPost);
-    res.status(201).json(addedPost);
-  } catch (exception) {
-    console.log("error...\n", exception);
+    if (!title || !description) {
+      return res.status(400).json({ error: "Title and content are required!" });
+    }
+
+    // Auto-generate Post ID
+    const lastPost = await posts.findOne().sort({ postID: -1 });
+    const postID = lastPost ? lastPost.postID + 1 : 1;
+
+    const newPost = new posts({
+      postID,
+      title,
+      description,
+      type,
+      filename: filename || "",
+      creatorID: creatorID || "0000", // Default creator ID if not provided
+    });
+
+    const savedPost = await newPost.save();
+    console.log("Post Created:", savedPost);
+    res.status(201).json(savedPost);
+  } catch (error) {
+    console.error("Error creating post:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
