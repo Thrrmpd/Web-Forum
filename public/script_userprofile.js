@@ -68,26 +68,32 @@ async function isLogin(userRes, forumRes, loginRes){ //login function
 function displayForums(forums, creatorName){
     const forumEntries = document.getElementById("forum-list"); //get contents of forum-entry class in index_userprofile.html
     forumEntries.innerHTML = '';
-    var index;
+
     console.log(forums);
 
     
 
-    for(var i = 0; i < forums.length; i++)
+    for(let i = 0; i < forums.length; i++)
     {
 
         const newDiv = document.createElement('div');
         const newSpan = document.createElement('span');
         const newButton = document.createElement('button');
         const forumDescription = document.createElement('div');
+        const updateButton = document.createElement('button');
+        const deleteButton = document.createElement('button');
 
 
         newDiv.className = 'forum-entry';
         newSpan.className = 'forum-title';
+        updateButton.className = 'update-forum';
+        deleteButton.className = 'delete-forum';
         newButton.className = 'info-button';
 
-        
         newSpan.textContent = forums[i][2];
+
+        updateButton.textContent = 'Update';
+        deleteButton.textContent = 'Delete';
         newButton.textContent = '...';
 
         forumDescription.className = `forum-entry`;
@@ -102,6 +108,27 @@ function displayForums(forums, creatorName){
         forumDescription.style.display = 'none';
 
         index = i;
+
+        // Add event listener for updating the forum
+        updateButton.addEventListener('click', ((index) => {
+            return () => {
+                const newTitle = prompt('Enter new title:', forums[index][2]);
+                const newDescription = prompt('Enter new description:', forums[index][3]);
+
+                if (newTitle && newDescription) {
+                    updateForum(forums[index][0], newTitle, newDescription); // Pass forum ID and new details
+                }
+            };
+        })(i)); // Pass the current index to the closure
+
+        // Add event listener for deleting the forum
+        deleteButton.addEventListener('click', ((index) => {
+            return () => {
+                if (confirm('Are you sure you want to delete this forum?')) {
+                    deleteForum(forums[index][0]); // Pass forum ID
+                }
+            };
+        })(i)); // Pass the current index to the closure
 
         newButton.addEventListener('click', (function(i){
             var display = 0;
@@ -123,14 +150,40 @@ function displayForums(forums, creatorName){
         })(i));
 
         newDiv.appendChild(newSpan);
+        newDiv.appendChild(updateButton);
+        newDiv.appendChild(deleteButton);
         newDiv.appendChild(newButton);
         forumEntries.appendChild(newDiv);
         forumEntries.appendChild(forumDescription);
 
     }
 
+}
 
+async function updateForum(forumID, newTitle, newDescription){
+    try{
+        const res = await fetch(`/updateForum/${forumID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: newTitle,
+                description: newDescription
+            })
+        });
 
+        if(res.ok){
+            alert('Forum updated!');
+            window.location.reload();
+        }else{
+            alert('Failed to update forum');
+        }
+    }
+    catch(err){
+        console.error('Error updating forum:', err);
+
+    }
 }
 
 function displayInfo(info){ //For displaying corresponding username, email, and pfp

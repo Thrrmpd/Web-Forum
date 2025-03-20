@@ -277,25 +277,48 @@ conn.post('/updateUser/:userID', async (req, res) => {
 
     conn.post('/updateForum/:forumID', async (req, res) => {
         const forumID = req.params.forumID;
-        try{
-        const updateInfo = await forums.findByIdAndUpdate(
-            forumID,
-            {title: "New Title"}
-        );
-    
-        if(!updateInfo){
-            return res.status(404).json({error: "Forum not found"});
-        }
-    
-        console.log("Forum Updated: ", updateInfo);
-        res.status(200).json(updateInfo);
-        }catch(exception){
+        const { title, description } = req.body; // Extract title and description from the request body
+
+        try {
+            const updateInfo = await forums.findByIdAndUpdate(
+                forumID,
+                { title, description }, // Use the values from the request body
+                { new: true } // Return the updated document
+            );
+
+            if (!updateInfo) {
+                return res.status(404).json({ error: "Forum not found" });
+            }
+
+            console.log("Forum Updated: ", updateInfo);
+            res.status(200).json(updateInfo);
+        } catch (exception) {
             console.error(exception);
-            res.status(500).json({error: "Failed to update Forum"});
+            res.status(500).json({ error: "Failed to update Forum" });
         }
+    });
     
-    })
+    conn.put('/updateForum/:id', async (req, res) => {
+        const forumID = req.params.id;
+        const { title, description } = req.body;
     
+        try {
+            const updatedForum = await forums.findByIdAndUpdate(
+                forumID,
+                { title, description },
+                { new: true } // Return the updated document
+            );
+    
+            if (updatedForum) {
+                res.status(200).json(updatedForum);
+            } else {
+                res.status(404).json({ message: 'Forum not found.' });
+            }
+        } catch (err) {
+            console.error('Error updating forum:', err);
+            res.status(500).json({ message: 'Failed to update forum.' });
+        }
+    });
 
         conn.post('/updatePost/:postID', async (req, res) => {
             const postID = req.params.postID;
