@@ -4,7 +4,7 @@ const forumschema = mongoose.Schema({
     title:String,
     description:String,
     code:String,
-    creatorID:Number
+    creatID:Number
 })
 
 module.exports = mongoose.model("forums", forumschema)

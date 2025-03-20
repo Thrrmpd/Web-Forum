@@ -61,11 +61,24 @@ button:hover {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   position: relative;
 }
-.comment {
-  background: #c8c8c8;
+.comments {
+  margin-top: 15px;
   padding: 10px;
-  margin-top: 10px;
+  background: #f9f9f9;
   border-radius: 5px;
+}
+.comments h4 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  color: #333;
+}
+.comment {
+  background: #e6e6e6;
+  padding: 8px;
+  border-radius: 5px;
+  margin: 5px 0;
+  font-size: 12px;
 }
 .edit-delete {
   display: list-item;

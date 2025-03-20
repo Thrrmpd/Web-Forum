@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const loginID = localStorage.getItem('loginID');
+  const loginID = localStorage.getItem('loginObject');
   console.log('loginID from localStorage:', loginID); // NEED FOR DEBUGG
 
   const navRight = document.getElementById('nav-right');
@@ -29,15 +29,40 @@ document.getElementById('createForumButton').addEventListener('click', async () 
   const forumName = document.getElementById('forumName').value;
   const forumDescription = document.getElementById('forumDescription').value;
   const forumCode = document.getElementById('forumCode').value;
-  const creatorID = localStorage.getItem('loginID'); // Get the logged-in user's ID
 
-  // Validate input fields
-  if (!forumName || !forumDescription || !forumCode) {
-    alert('Please fill out all fields.');
+  // Get the MongoDB _id from localStorage
+  const loginObject = localStorage.getItem('loginObject');
+  console.log("loginObject from localStorage:", loginObject); // Debugging statement
+
+  if (!loginObject) {
+    alert("Error: You are not logged in. Please log in again.");
     return;
   }
 
   try {
+    // Fetch the user data to get the correct ID
+    const userRes = await fetch(`/getUser/${loginObject}`);
+    if (!userRes.ok) {
+      throw new Error("Failed to fetch user data");
+    }
+
+    const userData = await userRes.json();
+    console.log("User Data:", userData); // Debugging statement
+
+    const creatorID = userData.ID; // Extract the user ID (e.g., 1007)
+    console.log("creatorID:", creatorID); // Debugging statement
+
+    // Validate input fields
+    if (!forumName || !forumDescription || !forumCode) {
+      alert('Please fill out all fields.');
+      return;
+    }
+
+    if (!creatorID) {
+      alert("Error: Creator ID is missing. Please log in again.");
+      return;
+    }
+
     // Send the forum data to the backend
     const res = await fetch('/addingForums', {
       method: 'POST',
@@ -48,7 +73,7 @@ document.getElementById('createForumButton').addEventListener('click', async () 
         title: forumName,
         description: forumDescription,
         code: forumCode,
-        creatID: creatorID
+        creatID: creatorID // Use the correct user ID
       })
     });
 
@@ -69,7 +94,7 @@ document.getElementById('createForumButton').addEventListener('click', async () 
 });
 
 function logout() {
-  localStorage.removeItem('loginID');
+  localStorage.removeItem('loginObject');
   window.location.href = 'index.html'; 
 }
 
