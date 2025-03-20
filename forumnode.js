@@ -22,7 +22,7 @@ conn.use(express.json());
 conn.use(parser.urlencoded({ extended: true }));
 conn.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://localhost:27017/forumappdb");
+mongoose.connect("mongodb://localhost:27017/webForum");
 
 conn.use(express.static(path.join(__dirname, "public")));
 conn.use(parser.json());
@@ -324,25 +324,53 @@ conn.put("/updateForum/:id", async (req, res) => {
   }
 });
 
-conn.post("/updatePost/:postID", async (req, res) => {
-  const postID = req.params.postID;
-  try {
-    const updateInfo = await posts.findByIdAndUpdate(postID, {
-      filename: "new.txt",
-    });
+// conn.post("/updatePost/:postID", async (req, res) => {
+//   const postID = req.params.postID;
+//   try {
+//     const updateInfo = await posts.findByIdAndUpdate(postID, {
+//       filename: "new.txt",
+//     });
 
-    if (!updateInfo) {
-      return res.status(404).json({ error: "Comment not found" });
+//     if (!updateInfo) {
+//       return res.status(404).json({ error: "Comment not found" });
+//     }
+
+//     console.log("Post Updated: ", updateInfo);
+//     res.status(200).json(updateInfo);
+//   } catch (exception) {
+//     console.error(exception);
+//     res.status(500).json({ error: "Failed to update Post" });
+//   }
+// });
+
+conn.post("/updatePost/:id", async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const { title, description } = req.body;
+
+    if (!title || !description) {
+      return res
+        .status(400)
+        .json({ error: "Title and content cannot be empty." });
     }
 
-    console.log("Post Updated: ", updateInfo);
-    res.status(200).json(updateInfo);
-  } catch (exception) {
-    console.error(exception);
-    res.status(500).json({ error: "Failed to update Post" });
+    const updatedPost = await posts.findByIdAndUpdate(
+      postId,
+      { title, description },
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    console.log("Post Updated:", updatedPost);
+    res.json(updatedPost);
+  } catch (error) {
+    console.error("Error updating post:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 /********************************************************************************/
 
 /***********************************DELETE***************************************/
