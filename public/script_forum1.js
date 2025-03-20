@@ -1,3 +1,43 @@
+async function addComment(postID) {
+
+  if (!postID) { // Ensures post is existing
+    console.error("Invalid postID:", postID);
+    alert("Error: Invalid post ID.");
+    return;
+  }
+
+  const commentInput = document.getElementById(`commentInput-${postID}`);
+  const commentText = commentInput.value.trim();
+  const userID = Number(localStorage.getItem("loginID")) || 0; // Convert to Number
+
+  if (!commentText) {
+    alert("Comment cannot be empty!");
+    return;
+  }
+
+  try {
+    const response = await fetch(`/addingComment/${postID}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userID, text: commentText }), 
+    });
+
+    if (!response.ok) throw new Error("Failed to add comment");
+
+    const updatedPost = await response.json();
+
+    const commentsContainer = document.getElementById(`comments-${postID}`);
+    const newCommentElement = document.createElement("p");
+    newCommentElement.classList.add("comment");
+    newCommentElement.innerHTML = `<b>User ${userID}:</b> ${commentText}`;
+
+    commentsContainer.appendChild(newCommentElement);
+    commentInput.value = ""; 
+  } catch (error) {
+    console.error("Error adding comment:", error);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   fetchPosts();
 });
@@ -22,34 +62,28 @@ async function fetchPosts() {
 }
 
 function createPostElement(post) {
+  console.log("Post data in createPostElement:", post); // Debugging log
+
   const postDiv = document.createElement("div");
   postDiv.classList.add("post");
-  postDiv.dataset.id = post._id;
+  postDiv.dataset.id = post._id; // Store the post ID properly
 
   postDiv.innerHTML = `
-    <small>Visibility: ${post.type}</small>
     <h3>${post.title}</h3>
     <p>${post.description}</p>
-    <div class="edit-delete">
-      <button onclick="editPost(this)">Edit</button>
-      <button onclick="deletePost(this)">Delete</button>
-    </div>
-
     <div class="comments">
       <h4>Comments</h4>
       <div id="comments-${post._id}">
         ${
           post.comments && post.comments.length > 0
             ? post.comments
-                .map((comment) => `<p class="comment">${comment}</p>`)
+                .map((comment) => `<p class="comment"><b>User ${comment.userID}:</b> ${comment.text}</p>`)
                 .join("")
             : '<p class="comment">No comments yet.</p>'
         }
       </div>
       <div class="comment-input">
-        <input type="text" id="commentInput-${
-          post._id
-        }" placeholder="Write a comment..." />
+        <input type="text" id="commentInput-${post._id}" placeholder="Write a comment..." />
         <button onclick="addComment('${post._id}')">Comment</button>
       </div>
     </div>
