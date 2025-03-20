@@ -8,7 +8,7 @@ function login() {
 		var userentries = Object.entries(userdata); //returns array of key/value pairs to userentries 
 		var index;
 		//a single entry from userentries is an object
-		
+		console.log(userdata);
 
 		for(let i = 0; i < userentries.length; i++){ //for loop check for validity
 			if(username == Object.values(userentries[i][1])[3]){
