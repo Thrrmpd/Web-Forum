@@ -1,21 +1,26 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const parser = require('body-parser')
-const users = require('./userModels')
-const forums = require('./forumModels')
-const posts = require('./postsModel')
-const path = require('path')
-const port = 3000
-
+const express = require('express');
+const mongoose = require('mongoose');
+const parser = require('body-parser');
+const users = require('./userModels');
+const logins = require('./loginModel.js');
+const forums = require('./forumModels');
+const posts = require('./postsModel');
+const cookieParser = require('cookie-parser'); //For phase 3
+const mult = require('multer');
+const path = require('path');
+const port = 3000;
+const conn = express();
 
 var username = "Test", email = "helloworld.to", password = "password", objectID;
 
-const conn = express();
+const files = mult({dest: './public/uploads'});
+conn.use(files.single('file'));
 
 mongoose.connect('mongodb://localhost:27017/forumappdb')
 
     conn.use(express.static(path.join(__dirname,'public')))
     conn.use(parser.json());
+    conn.use(cookieParser());
 
     conn.get('/', (req,res)=>{
         res.sendFile(path.join(__dirname, 'index.html'))
@@ -39,6 +44,27 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
                 
                 console.log(addedUser);
                 res.status(201).json(addedUser); //adds newly made user data to db
+                
+
+            }catch(exception){
+                console.log("error...\n", exception)
+            }
+        })
+
+        //Add user as logged in
+        conn.post('/addLogin', async (req, res) => { //This is actually a function
+            
+            try{
+
+                const newLogin = await new logins({ 
+                    loginID: 100,
+                    userID: 1001
+                });
+
+                const addedLogin = await newLogin.save();
+                
+                console.log(addedLogin);
+                res.status(201).json(addedLogin); //adds newly made user data to db
                 
 
             }catch(exception){
@@ -79,7 +105,7 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
             console.error('Error creating forum:', err);
             res.status(500).json({ message: 'Failed to create forum.' });
             }
-        });
+        })
 
     
 
@@ -112,6 +138,12 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
      //Read API for users; gets data from db 
         conn.get("/getUsers", async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/getUsers')
             let get = await users.find({})
+            console.log(get);
+            res.json(get);
+        })
+
+        conn.get("/getLoggedIn", async (req, res) => { //invoke via fetch() api and inputting url link ex. const x = await fetch('/getUsers')
+            let get = await logins.find({})
             console.log(get);
             res.json(get);
         })
@@ -181,18 +213,61 @@ mongoose.connect('mongodb://localhost:27017/forumappdb')
 
 conn.post('/updateUser/:userID', async (req, res) => {
     const userID = req.params.userID;
+    console.log(userID);
+    console.log(req.body.newUsername);
+    console.log(req.body.newEmail);
+    console.log(typeof(req.body.newPFP));
+
+    const updatePFP = {};
+
     try{
+        if(req.body.newUsername){
+            console.log("newUsername happen");
     const updateInfo = await users.findByIdAndUpdate(
         userID,
-        //{name: "Thomas Anderson"}
+        {$set:{name:req.body.newUsername}}
     );
 
     if(!updateInfo){
         return res.status(404).json({error: "User not found"});
     }
-
     console.log("User Updated: ", updateInfo);
     res.status(200).json(updateInfo);
+    }
+
+    if(req.body.newEmail){
+        console.log("newEmail happen");
+
+        const updateInfo = await users.findByIdAndUpdate(
+            userID,
+            {$set:{email:req.body.newEmail}}
+        );
+    
+        if(!updateInfo){
+            return res.status(404).json({error: "User not found"});
+        }
+
+        console.log("User Updated: ", updateInfo);
+        res.status(200).json(updateInfo);
+        }
+
+        if(req.body.newPFP){
+            console.log("newPFP happen");
+            updatePFP.picture = req.body.newPFP;
+            const updateInfo = await users.findByIdAndUpdate(
+                userID,
+                {$set: updatePFP}
+            );
+        
+            if(!updateInfo){
+                return res.status(404).json({error: "User not found"});
+            }
+
+            console.log("User Updated: ", updateInfo);
+            res.status(200).json(updateInfo);
+            }
+
+    
     }catch(exception){
         console.error(exception);
         res.status(500).json({error: "Failed to update user"});
@@ -262,6 +337,23 @@ conn.post('/updateUser/:userID', async (req, res) => {
 
             console.log("User Removed", userID);
             res.status(200).json({message:"User Deleted Successfully"});
+        }catch(exception){
+            console.log(exception);
+        }
+
+    })
+
+    conn.delete('/deleteLogin/:loginID', async (req, res) =>{
+        const loginID = req.params.loginID;
+        try{
+            const deleteLogin = await logins.findByIdAndDelete(loginID);
+
+            if(!deleteLogin){
+                return res.status(404).json({error: "User not logged in"});
+            }
+
+            console.log("Login Removed", userID);
+            res.status(200).json({message:"Login Deleted Successfully"});
         }catch(exception){
             console.log(exception);
         }

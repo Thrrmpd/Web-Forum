@@ -1,5 +1,5 @@
 
-var userArray, forumArray, userObject;
+var userArray, forumArray, userObject, loggedinUsers, loggedinForums;
 
 document.addEventListener("DOMContentLoaded", async ()=>{
     const pathway = localStorage.getItem('path');
@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", async ()=>{
         try{
         const userRes = await fetch('/getUsers');
         const forumRes = await fetch('/getForums');
-        
-        isLogin(userRes, forumRes);
+        const loginRes = await fetch('/getLoggedIn');
+        isLogin(userRes, forumRes, loginRes);
 
             }catch(err){
                 console.error(err);
@@ -19,9 +19,10 @@ document.addEventListener("DOMContentLoaded", async ()=>{
         try{
             const userRes = await fetch('/getUsers');
             const forumRes = await fetch('/getForums');
-            console.log(userRes);
+            const loginRes = await fetch('/getLoggedIn');
+            console.log(loginRes);
             
-            isSignup(userRes, forumRes);
+            isSignup(userRes, forumRes, loginRes);
 
                 }catch(err){
                     console.error(err);
@@ -30,13 +31,14 @@ document.addEventListener("DOMContentLoaded", async ()=>{
     
 })
 
-async function isSignup(userRes, forumRes){ //signup function
+async function isSignup(userRes, forumRes, loginRes){ //signup function
     try{ //Try catch block needed in case promise error occurs because of fetch()
 
-         //calls /getUsers api on forumnode.js and gets data from them; for user info
+        
         const userdata = await userRes.json();//converts userRes to an object var to be passed to userData
-         //calls /getForums api on forumnode.js and gets data from them; for forum info
+       
         const forumdata = await forumRes.json(); //converts forumRes to an object var to be passed to forumData
+        
         var userArray = Object.entries(userdata); //get array of objects from userdata
         var forumArray = Object.entries(forumdata); //get array of objects from forumdata
         var info = Object.values(userArray[userArray.length-1][1]); //Will change this, but otherwise gets corresponding user info array
@@ -51,9 +53,10 @@ async function isSignup(userRes, forumRes){ //signup function
 
 }
 
-async function isLogin(userRes, forumRes){ //login function
+async function isLogin(userRes, forumRes, loginRes){ //login function
     const ID = parseInt(localStorage.getItem('loginID')); //used this to get user data of user that logged in
     console.log(ID);
+    console.log(Object.entries(await loginRes.json()).length);
     try{//Try catch block needed in case promise error occurs because of fetch()
         
         
@@ -184,6 +187,16 @@ function displayInfo(info){ //For displaying corresponding username, email, and 
 document.addEventListener("DOMContentLoaded", function () {
     const createForumButton = document.querySelector(".createforum-button");
     const profileInfo = document.querySelector(".hidden-div");
+    const deactivateAccount = document.querySelector(".deactivate-account");
+
+    deactivateAccount.addEventListener("click",async function(){
+        
+
+        const res = await fetch(`/deleteUser/${userObject}`, {
+            method:'DELETE'
+        })
+
+    })
 
     const nameInfo = document.createTextNode("Username: ");
     const email = document.createTextNode("Email: ");
@@ -195,37 +208,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
     inputUsername.type = 'text';
     inputUsername.className = "newUsername";
+    
 
     inputEmail.type = 'text';
     inputEmail.className = "newEmail";
+    
 
     inputPFP.type = 'file';
     inputPFP.accept = '.jpg, .jpeg, .png';
-    inputUsername.className = "newPFP";
+    inputPFP.className = "newPFP";
+    
 
     submit.className = "infoChanges";
     submit.appendChild(document.createTextNode("Submit"));
     submit.style.color = 'white';
     submit.style.backgroundColor = 'blue';
     submit.addEventListener("click", async function(){
-        const updateUsername = document.querySelector(".newUsername").value;
-        const updateEmail = document.querySelector(".newEmail").value;
-        const updatePFP = document.querySelector(".newPFP").files[0];
+        const updateUsername = document.querySelector(".newUsername");
+        const updateEmail = document.querySelector(".newEmail");
+        const updatePFP = document.querySelector(".newPFP");
 
-        if(updateUsername === '' && updateEmail === '' && !updatePFP)
+        //console.log(updatePFP.files[0].name);
+
+        
+        if(updateUsername.value == '' && updateEmail.value == '' && !updatePFP.files[0])
             alert("Please fill out at least one field to update.");
             else{
-            const res = await fetch(`/updateUser/${userID}`, {
-                method:'POST',
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    newName:updateUsername,
-                    newEmail:updateEmail,
-                    newPFP:updatePFP
+                const data = {};
+                if(updateUsername.value) 
+                    Object.assign(data, {newUsername: updateUsername.value});
+                if(updateEmail.value) 
+                    Object.assign(data, {newEmail: updateEmail.value});
+                if(updatePFP.files[0]) 
+                 Object.assign(data, {newPFP: updatePFP.files[0].name});
+
+                console.log(data);
+
+                const res = await fetch(`/updateUser/${userObject}`, {
+                    method:'POST',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
                 })
-            })}
+        }
         
 
         

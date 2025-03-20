@@ -200,6 +200,31 @@ body {
     background-color: #cccccc;
 }
 
+.deactivate-account {
+    --button-color: #2369da;
+    --button-background: #ffffff;
+    --button-background-hover: #cccccc;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--button-background);
+    color: var(--button-color);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    padding: 6px 12px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-width: 340px;
+}
+
+.deactivate-account:hover {
+    background-color: #cccccc;
+}
+
+
 .forum-entry {
     display: flex;
     justify-content: space-between;

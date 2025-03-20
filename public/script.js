@@ -25,7 +25,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             const userName = userData.name; // name
             console.log('User Name:', userName); // console debuf
 
-            navRight.innerHTML = `Logged in: ${userName} | <a href="#" onclick="logout()">Log Out</a>`; // change and display user name and logout link
+            navRight.innerHTML = `Logged in: <a href="index_userprofile.html"> ${userName}</a> | <a href="#" onclick="logout()">Log Out</a>`; // change and display user name and logout link
+            
         } catch (err) {
             console.error('Error fetching user data:', err);
         }
@@ -35,6 +36,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function logout() {
-    localStorage.removeItem('loginID');
+    localStorage.removeItem('loginObject');
     window.location.href = 'index.html'; 
 }
