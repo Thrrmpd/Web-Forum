@@ -229,9 +229,11 @@ conn.post('/updateUser/:userID', async (req, res) => {
     if(!updateInfo){
         return res.status(404).json({error: "User not found"});
     }
-    console.log("User Updated: ", updateInfo);
-    res.status(200).json(updateInfo);
+        console.log("User Updated: ", updateInfo);
+        success = updateInfo;
     }
+
+    var success;
 
     if(req.body.newEmail){
         console.log("newEmail happen");
@@ -246,25 +248,25 @@ conn.post('/updateUser/:userID', async (req, res) => {
         }
 
         console.log("User Updated: ", updateInfo);
-        res.status(200).json(updateInfo);
+        success = updateInfo;
+        
         }
 
         if(req.body.newPFP){
             console.log("newPFP happen");
-            updatePFP.picture = req.body.newPFP;
             const updateInfo = await users.findByIdAndUpdate(
                 userID,
-                {$set: updatePFP}
+                {$set:{picture:req.body.newPFP}}
             );
         
             if(!updateInfo){
                 return res.status(404).json({error: "User not found"});
             }
 
-            console.log("User Updated: ", updateInfo);
-            res.status(200).json(updateInfo);
+            success = updateInfo
             }
-
+            console.log("User Updated:", success);
+            res.status(200).json(success);
     
     }catch(exception){
         console.error(exception);
