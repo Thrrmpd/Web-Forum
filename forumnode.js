@@ -18,11 +18,11 @@ var username = "Test",
 
 // Middleware
 conn.use(cors());
-conn.use(express.json());
-conn.use(parser.urlencoded({ extended: true }));
-conn.use(express.static(path.join(__dirname, "public")));
+// conn.use(express.json());
+// conn.use(parser.urlencoded({ extended: true }));
+// conn.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://localhost:27017/WebForum");
+mongoose.connect("mongodb://localhost:27017/webForum");
 
 conn.use(express.static(path.join(__dirname, "public")));
 conn.use(parser.json());
@@ -144,14 +144,15 @@ conn.post("/addingPost", async (req, res) => {
 conn.post("/addingComment/:postID", async (req, res) => {
   const { postID } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(postID)) { // Ensures postID is passed
+  if (!mongoose.Types.ObjectId.isValid(postID)) {
+    // Ensures postID is passed
     return res.status(400).json({ error: "Invalid post ID format" });
   }
 
   const { userID, text } = req.body;
 
   try {
-    const updatedPost = await posts.findByIdAndUpdate( 
+    const updatedPost = await posts.findByIdAndUpdate(
       new mongoose.Types.ObjectId(postID),
       { $push: { comments: { userID, text } } }, // push comment to array
       { new: true }
