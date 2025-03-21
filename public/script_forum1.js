@@ -357,7 +357,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Handle user login state
-  const loginID = localStorage.getItem("loginID");
+  const loginID = localStorage.getItem('loginObject');
   console.log("loginID from localStorage:", loginID); // Debugging statement
 
   const navRight = document.getElementById("nav-right");
@@ -374,7 +374,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const userName = userData.name; // Assuming the user data has a 'name' field
       console.log("User Name:", userName); // Debugging statement
 
-      navRight.innerHTML = `Logged in: ${userName} | <a href="#" onclick="logout()">Log Out</a>`;
+      navRight.innerHTML = `Logged in: <a href="index_userprofile.html"> ${userName}</a> | <a href="#" onclick="logout()">Log Out</a>`;
     } catch (err) {
       console.error("Error fetching user data:", err);
     }
