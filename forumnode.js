@@ -144,8 +144,7 @@ conn.post("/addingPost", async (req, res) => {
 conn.post("/addingComment/:postID", async (req, res) => {
   const { postID } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(postID)) {
-    // Ensures postID is passed
+  if (!mongoose.Types.ObjectId.isValid(postID)) { // Ensures postID is passed
     return res.status(400).json({ error: "Invalid post ID format" });
   }
 
@@ -251,23 +250,6 @@ conn.get("/getForum/:id", async (req, res) => {
   } catch (err) {
     console.error("Error fetching forum:", err);
     res.status(500).json({ message: "Failed to fetch forum." });
-  }
-});
-
-conn.get('/getForumByCode/:forumCode', async (req, res) => {
-  const forumCode = req.params.forumCode;
-
-  try {
-      const forum = await forums.findOne({ code: forumCode }); 
-
-      if (!forum) {
-          return res.status(404).json({ message: 'Forum not found.' });
-      }
-
-      res.status(200).json(forum); 
-  } catch (err) {
-      console.error('Error finding forum:', err);
-      res.status(500).json({ message: 'Failed to find forum.' });
   }
 });
 
@@ -427,6 +409,32 @@ conn.post("/updatePost/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// Update a comment
+conn.put("/updateComment/:postID/:commentID", async (req, res) => {
+  const { postID, commentID } = req.params;
+  const { text } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(postID)) {
+    return res.status(400).json({ error: "Invalid post ID format" });
+  }
+
+  try {
+    const post = await posts.findOneAndUpdate(
+      { _id: postID, "comments._id": commentID }, 
+      { $set: { "comments.$.text": text } }, 
+      { new: true }
+    );
+
+    if (!post) return res.status(404).json({ error: "Post or comment not found" });
+
+    res.json(post);
+  } catch (error) {
+    console.error("Error updating comment:", error);
+    res.status(500).json({ error: "Failed to update a comment" });
+  }
+});
+
 /********************************************************************************/
 
 /***********************************DELETE***************************************/
@@ -492,6 +500,30 @@ conn.delete("/deletePost/:postID", async (req, res) => {
     res.status(200).json({ message: "Post Deleted Successfully" });
   } catch (exception) {
     console.log(exception);
+  }
+});
+
+// Delete a comment
+conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
+  const { postID, commentID } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(postID)) {
+    return res.status(400).json({ error: "Invalid post ID format" });
+  }
+
+  try {
+    const post = await posts.findOneAndUpdate(
+      { _id: postID },
+      { $pull: { comments: { _id: commentID } } }, // Removed from array
+      { new: true }
+    );
+
+    if (!post) return res.status(404).json({ error: "Post or comment not found" });
+
+    res.json(post);
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ error: "Failed to delete a comment" });
   }
 });
 

@@ -98,3 +98,43 @@ h1 {
   margin-bottom: 15px;
   text-align: center;
 }
+
+.comment-container {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+  padding: 5px 10px; 
+  margin: 3px 0; 
+  background: white;
+  border-radius: 6px; 
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+  font-size: 12px; 
+  min-height: 30px;
+}
+
+.comment-text {
+  flex-grow: 1;
+  text-align: left;
+  margin: 0;
+  font-size: 12px;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.action-btn:hover {
+  color: #007bff;
+  text-decoration: underline;
+}

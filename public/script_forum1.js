@@ -1,6 +1,6 @@
+// Add a comment
 async function addComment(postID) {
-
-  if (!postID) { // Ensures post is existing
+  if (!postID) {
     console.error("Invalid postID:", postID);
     alert("Error: Invalid post ID.");
     return;
@@ -19,23 +19,97 @@ async function addComment(postID) {
     const response = await fetch(`/addingComment/${postID}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userID, text: commentText }), 
+      body: JSON.stringify({ userID, text: commentText }),
     });
 
     if (!response.ok) throw new Error("Failed to add comment");
 
-    const updatedPost = await response.json();
+    const updatedPost = await response.json(); // Fetch updated comments
 
-    const commentsContainer = document.getElementById(`comments-${postID}`);
-    const newCommentElement = document.createElement("p");
-    newCommentElement.classList.add("comment");
-    newCommentElement.innerHTML = `<b>User ${userID}:</b> ${commentText}`;
+    renderUpdatedComments(postID, updatedPost.comments); // Re-render all comments
 
-    commentsContainer.appendChild(newCommentElement);
     commentInput.value = ""; 
   } catch (error) {
     console.error("Error adding comment:", error);
   }
+}
+
+// Read a comment
+async function fetchComments(postID) {
+  try {
+    const response = await fetch(`/getComments/${postID}`);
+    if (!response.ok) throw new Error("Failed to fetch comments");
+
+    const comments = await response.json();
+    const commentsContainer = document.getElementById(`comments-${postID}`);
+
+    commentsContainer.innerHTML = comments.length
+      ? comments
+          .map((comment) => `<p class="comment"><b>User ${comment.userID}:</b> ${comment.text}</p>`)
+          .join("")
+      : '<p class="comment">No comments yet.</p>';
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+  }
+}
+
+// Edit a comment
+async function editComment(postID, commentID) {
+  const newText = prompt("Edit your comment:");
+
+  if (!newText) return;
+
+  try {
+    const response = await fetch(`/updateComment/${postID}/${commentID}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: newText }),
+    });
+
+    if (!response.ok) throw new Error("Failed to update comment");
+
+    const updatedPost = await response.json();
+
+    renderUpdatedComments(postID, updatedPost.comments);
+  } catch (error) {
+    console.error("Error updating comment:", error);
+  }
+}
+
+// Delete a comment
+async function deleteComment(postID, commentID) {
+  try {
+    const response = await fetch(`/deleteComment/${postID}/${commentID}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) throw new Error("Failed to delete comment");
+
+    const updatedPost = await response.json(); 
+
+    renderUpdatedComments(postID, updatedPost.comments); // Re-render comments
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+  }
+}
+
+// Render again to reflect the updated comments
+function renderUpdatedComments(postID, comments) {
+  const commentsContainer = document.getElementById(`comments-${postID}`);
+  commentsContainer.innerHTML = comments
+    .map(
+      (comment) => `
+      <div class="comment-container">
+        <p class="comment-text">
+          <b>User ${comment.userID}:</b> ${comment.text}
+        </p>
+        <div class="comment-actions">
+          <button onclick="editComment('${postID}', '${comment._id}')" class="action-btn">Edit</button>
+          <button onclick="deleteComment('${postID}', '${comment._id}')" class="action-btn">Delete</button>
+        </div>
+      </div>`
+    )
+    .join("");
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -69,15 +143,32 @@ function createPostElement(post) {
   postDiv.dataset.id = post._id; // Store the post ID properly
 
   postDiv.innerHTML = `
+    <small>Visibility: ${post.type}</small>
     <h3>${post.title}</h3>
     <p>${post.description}</p>
+    <div class="edit-delete">
+      <button onclick="editPost(this)">Edit</button>
+      <button onclick="deletePost(this)">Delete</button>
+    </div>
+
     <div class="comments">
       <h4>Comments</h4>
       <div id="comments-${post._id}">
         ${
           post.comments && post.comments.length > 0
             ? post.comments
-                .map((comment) => `<p class="comment"><b>User ${comment.userID}:</b> ${comment.text}</p>`)
+                .map(
+                  (comment) => `
+                  <div class="comment-container">
+                    <p class="comment-text">
+                      <b>User ${comment.userID}:</b> ${comment.text}
+                    </p>
+                    <div class="comment-actions">
+                      <button onclick="editComment('${post._id}', '${comment._id}')" class="action-btn">Edit</button>
+                      <button onclick="deleteComment('${post._id}', '${comment._id}')" class="action-btn">Delete</button>
+                    </div>
+                  </div>`
+                )
                 .join("")
             : '<p class="comment">No comments yet.</p>'
         }
