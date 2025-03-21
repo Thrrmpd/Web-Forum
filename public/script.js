@@ -1,9 +1,30 @@
-function joinForum() {
-    const code = document.getElementById("forumCode").value;
-    if (code === "FORUM1") {
-        window.location.href = "forum_post.html"; 
-    } else {
-        alert("Please enter a forum code!");
+async function joinForum() {
+    const forumCode = document.getElementById('forumCode').value.trim(); // Get the entered forum code
+
+    if (!forumCode) {
+        alert('Please enter a forum code.');
+        return;
+    }
+
+    try {
+        const res = await fetch(`/getForumByCode/${forumCode}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (res.ok) {
+            const forum = await res.json();
+            console.log('Forum found:', forum);
+
+            window.location.href = `forum_post.html?forumID=${forum._id}`;
+        } else {
+            const error = await res.json();
+            alert(error.message || 'Forum not found.');
+        }
+    } catch (err) {
+        alert('An error occurred while trying to join the forum.');
     }
 }
 

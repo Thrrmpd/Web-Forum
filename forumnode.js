@@ -254,6 +254,23 @@ conn.get("/getForum/:id", async (req, res) => {
   }
 });
 
+conn.get('/getForumByCode/:forumCode', async (req, res) => {
+  const forumCode = req.params.forumCode;
+
+  try {
+      const forum = await forums.findOne({ code: forumCode }); 
+
+      if (!forum) {
+          return res.status(404).json({ message: 'Forum not found.' });
+      }
+
+      res.status(200).json(forum); 
+  } catch (err) {
+      console.error('Error finding forum:', err);
+      res.status(500).json({ message: 'Failed to find forum.' });
+  }
+});
+
 /********************************************************************************/
 
 /***********************************UPDATE***************************************/
