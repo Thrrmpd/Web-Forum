@@ -253,6 +253,42 @@ conn.get("/getForum/:id", async (req, res) => {
   }
 });
 
+// Read comments
+conn.get("/getComments/:postID", async (req, res) => {
+  const { postID } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(postID)) {
+    return res.status(400).json({ error: "Invalid post ID format" });
+  }
+
+  try {
+    const post = await posts.findById(postID).select("comments");
+    if (!post) return res.status(404).json({ error: "Post not found" });
+
+    res.json(post.comments); 
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ error: "Failed to fetch comment" });
+  }
+});
+
+conn.get('/getForumByCode/:forumCode', async (req, res) => {
+  const forumCode = req.params.forumCode;
+
+  try {
+      const forum = await forums.findOne({ code: forumCode }); // Search for the forum by its code
+
+      if (!forum) {
+          return res.status(404).json({ message: 'Forum not found.' });
+      }
+
+      res.status(200).json(forum); // Return the forum details
+  } catch (err) {
+      console.error('Error finding forum:', err);
+      res.status(500).json({ message: 'Failed to find forum.' });
+  }
+});
+
 /********************************************************************************/
 
 /***********************************UPDATE***************************************/
