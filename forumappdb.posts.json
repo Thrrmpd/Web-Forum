@@ -20,7 +20,18 @@
   "title": "helloworld",
   "type": "Public",
   "creatorID": 1001,
-  "comments": []
+  "comments": [
+    {
+      "userID": 1005,
+      "text": "my first program!",
+      "_id": {
+        "$oid": "67dd5f176a866bb574a90547"
+      },
+      "createdAt": {
+        "$date": "2025-03-21T12:44:07.334Z"
+      }
+    }
+  ]
 },
 {
   "_id": {
@@ -32,7 +43,28 @@
   "title": "please help my hamster's eating my food",
   "type": "Public",
   "creatorID": 1003,
-  "comments": []
+  "comments": [
+    {
+      "userID": 1001,
+      "text": "cool then",
+      "_id": {
+        "$oid": "67dc593cfd39bdffc06b949a"
+      },
+      "createdAt": {
+        "$date": "2025-03-20T18:06:52.077Z"
+      }
+    },
+    {
+      "userID": 1004,
+      "text": "yo what hahahaha",
+      "_id": {
+        "$oid": "67dc5c6320ca62ad9a9f7703"
+      },
+      "createdAt": {
+        "$date": "2025-03-20T18:20:19.704Z"
+      }
+    }
+  ]
 },
 {
   "_id": {
@@ -44,7 +76,18 @@
   "title": "Hello There",
   "type": "Private",
   "creatorID": 1003,
-  "comments": []
+  "comments": [
+    {
+      "userID": 1001,
+      "text": "yippieeee",
+      "_id": {
+        "$oid": "67dc592bfd39bdffc06b9494"
+      },
+      "createdAt": {
+        "$date": "2025-03-20T18:06:35.315Z"
+      }
+    }
+  ]
 },
 {
   "_id": {
@@ -56,7 +99,18 @@
   "title": "fgerge",
   "type": "Private",
   "creatorID": 1002,
-  "comments": []
+  "comments": [
+    {
+      "userID": 1001,
+      "text": "yo what is this",
+      "_id": {
+        "$oid": "67dc5c2a20ca62ad9a9f76f7"
+      },
+      "createdAt": {
+        "$date": "2025-03-20T18:19:22.526Z"
+      }
+    }
+  ]
 },
 {
   "_id": {
