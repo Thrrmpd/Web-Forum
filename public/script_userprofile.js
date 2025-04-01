@@ -350,4 +350,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+document.querySelector('.search-input').addEventListener('input', async (event) => {
+    const searchQuery = event.target.value.trim(); 
+    console.log('Search Query:', searchQuery); 
+
+    const searchResults = document.getElementById('search-results'); 
+    searchResults.innerHTML = ''; 
+
+    if (searchQuery.length === 0) {
+        return; 
+    }
+
+    try {
+        const fetchURL = `/searchForums?q=${encodeURIComponent(searchQuery)}`;
+        console.log('Fetch URL:', fetchURL); 
+
+        const res = await fetch(fetchURL);
+        if (res.ok) {
+            const forums = await res.json();
+            console.log('Matching Forums:', forums); 
+            forums.forEach(forum => {
+                const forumDiv = document.createElement('div');
+                forumDiv.className = 'forum-container';
+
+                // Display forum title and creator ID
+                forumDiv.innerHTML = `
+                    <a href="forum_post.html?forumID=${forum._id}">
+                        <strong>${forum.title}</strong> <br>
+                        <small>Created by: ${forum.creatID || 'Unknown'}</small>
+                    </a>
+                `;
+
+                searchResults.appendChild(forumDiv);
+            });
+        } else {
+            console.error('Failed to fetch search results');
+        }
+    } catch (err) {
+        console.error('Error searching forums:', err);
+    }
+});
+
+
 

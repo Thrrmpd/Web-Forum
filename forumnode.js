@@ -289,6 +289,23 @@ conn.get('/getForumByCode/:forumCode', async (req, res) => {
   }
 });
 
+conn.get('/searchForums', async (req, res) => {
+  const searchQuery = req.query.q; 
+  console.log('Search Query Received:', searchQuery); 
+
+  try {
+      const matchingForums = await forums.find({
+          title: { $regex: searchQuery, $options: 'i' } 
+      }).select('title creatID'); 
+
+      console.log('Matching Forums:', matchingForums); 
+      res.status(200).json(matchingForums); 
+  } catch (err) {
+      console.error('Error searching forums:', err);
+      res.status(500).json({ message: 'Failed to search forums.' });
+  }
+});
+
 /********************************************************************************/
 
 /***********************************UPDATE***************************************/
