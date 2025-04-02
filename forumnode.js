@@ -112,7 +112,7 @@ conn.post("/addingForums", async (req, res) => {
 //Add Post API, same function as add user api but differing number of attributes
 conn.post("/addingPost", async (req, res) => {
   try {
-    const { title, description, type, filename, creatorID } = req.body;
+    const { title, description, type, filename, creatorID, forID } = req.body;
 
     if (!title || !description) {
       return res.status(400).json({ error: "Title and content are required!" });
@@ -129,6 +129,7 @@ conn.post("/addingPost", async (req, res) => {
       type,
       filename: filename || "",
       creatorID: creatorID || "0000", // Default creator ID if not provided
+      forID: forID,
     });
 
     const savedPost = await newPost.save();
@@ -144,7 +145,8 @@ conn.post("/addingPost", async (req, res) => {
 conn.post("/addingComment/:postID", async (req, res) => {
   const { postID } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(postID)) { // Ensures postID is passed
+  if (!mongoose.Types.ObjectId.isValid(postID)) {
+    // Ensures postID is passed
     return res.status(400).json({ error: "Invalid post ID format" });
   }
 
@@ -265,44 +267,46 @@ conn.get("/getComments/:postID", async (req, res) => {
     const post = await posts.findById(postID).select("comments");
     if (!post) return res.status(404).json({ error: "Post not found" });
 
-    res.json(post.comments); 
+    res.json(post.comments);
   } catch (error) {
     console.error("Error fetching comments:", error);
     res.status(500).json({ error: "Failed to fetch comment" });
   }
 });
 
-conn.get('/getForumByCode/:forumCode', async (req, res) => {
+conn.get("/getForumByCode/:forumCode", async (req, res) => {
   const forumCode = req.params.forumCode;
 
   try {
-      const forum = await forums.findOne({ code: forumCode }); // Search for the forum by its code
+    const forum = await forums.findOne({ code: forumCode }); // Search for the forum by its code
 
-      if (!forum) {
-          return res.status(404).json({ message: 'Forum not found.' });
-      }
+    if (!forum) {
+      return res.status(404).json({ message: "Forum not found." });
+    }
 
-      res.status(200).json(forum); // Return the forum details
+    res.status(200).json(forum); // Return the forum details
   } catch (err) {
-      console.error('Error finding forum:', err);
-      res.status(500).json({ message: 'Failed to find forum.' });
+    console.error("Error finding forum:", err);
+    res.status(500).json({ message: "Failed to find forum." });
   }
 });
 
-conn.get('/searchForums', async (req, res) => {
-  const searchQuery = req.query.q; 
-  console.log('Search Query Received:', searchQuery); 
+conn.get("/searchForums", async (req, res) => {
+  const searchQuery = req.query.q;
+  console.log("Search Query Received:", searchQuery);
 
   try {
-      const matchingForums = await forums.find({
-          title: { $regex: searchQuery, $options: 'i' } 
-      }).select('title creatID'); 
+    const matchingForums = await forums
+      .find({
+        title: { $regex: searchQuery, $options: "i" },
+      })
+      .select("title creatID");
 
-      console.log('Matching Forums:', matchingForums); 
-      res.status(200).json(matchingForums); 
+    console.log("Matching Forums:", matchingForums);
+    res.status(200).json(matchingForums);
   } catch (err) {
-      console.error('Error searching forums:', err);
-      res.status(500).json({ message: 'Failed to search forums.' });
+    console.error("Error searching forums:", err);
+    res.status(500).json({ message: "Failed to search forums." });
   }
 });
 
@@ -474,12 +478,13 @@ conn.put("/updateComment/:postID/:commentID", async (req, res) => {
 
   try {
     const post = await posts.findOneAndUpdate(
-      { _id: postID, "comments._id": commentID }, 
-      { $set: { "comments.$.text": text } }, 
+      { _id: postID, "comments._id": commentID },
+      { $set: { "comments.$.text": text } },
       { new: true }
     );
 
-    if (!post) return res.status(404).json({ error: "Post or comment not found" });
+    if (!post)
+      return res.status(404).json({ error: "Post or comment not found" });
 
     res.json(post);
   } catch (error) {
@@ -571,7 +576,8 @@ conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
       { new: true }
     );
 
-    if (!post) return res.status(404).json({ error: "Post or comment not found" });
+    if (!post)
+      return res.status(404).json({ error: "Post or comment not found" });
 
     res.json(post);
   } catch (error) {
