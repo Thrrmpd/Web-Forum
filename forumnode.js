@@ -22,7 +22,7 @@ conn.use(express.json());
 // conn.use(parser.urlencoded({ extended: true }));
 // conn.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://localhost:27017/WebForum");
+mongoose.connect("mongodb://localhost:27017/forumappdb");
 
 conn.use(express.static(path.join(__dirname, "public")));
 conn.use(parser.json());
