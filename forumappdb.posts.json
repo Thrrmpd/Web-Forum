@@ -8,7 +8,9 @@
   "title": "title",
   "type": "Public",
   "creatorID": 1001,
-  "comments": []
+  "comments": [],
+  "upvotes": 0,
+  "downvotes": 0
 },
 {
   "_id": {
@@ -31,7 +33,9 @@
         "$date": "2025-03-21T12:44:07.334Z"
       }
     }
-  ]
+  ],
+  "upvotes": 0,
+  "downvotes": 0
 },
 {
   "_id": {
@@ -64,7 +68,9 @@
         "$date": "2025-03-20T18:20:19.704Z"
       }
     }
-  ]
+  ],
+  "upvotes": 0,
+  "downvotes": 0
 },
 {
   "_id": {
@@ -87,7 +93,9 @@
         "$date": "2025-03-20T18:06:35.315Z"
       }
     }
-  ]
+  ],
+  "upvotes": 0,
+  "downvotes": 0
 },
 {
   "_id": {
@@ -110,7 +118,9 @@
         "$date": "2025-03-20T18:19:22.526Z"
       }
     }
-  ]
+  ],
+  "upvotes": 0,
+  "downvotes": 0
 },
 {
   "_id": {
@@ -121,5 +131,8 @@
   "description": "helloworld.to",
   "title": "password",
   "type": "Public",
-  "__v": 0
+  "__v": 0,
+  "comments": [],
+  "upvotes": 0,
+  "downvotes": 0
 }]

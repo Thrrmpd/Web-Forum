@@ -5,7 +5,7 @@ const users = require("./userModels");
 const logins = require("./loginModel.js");
 const forums = require("./forumModels");
 const posts = require("./postsModel");
-const cookieParser = require("cookie-parser"); //For phase 3
+const cookieParser = require("cookie-parser"); 
 const path = require("path");
 const cors = require("cors");
 const port = 3000;
@@ -22,7 +22,7 @@ conn.use(express.json());
 // conn.use(parser.urlencoded({ extended: true }));
 // conn.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://localhost:27017/forumappdb");
+mongoose.connect("mongodb://localhost:27017/WebForum");
 
 conn.use(express.static(path.join(__dirname, "public")));
 conn.use(parser.json());
@@ -583,6 +583,46 @@ conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
   } catch (error) {
     console.error("Error deleting comment:", error);
     res.status(500).json({ error: "Failed to delete a comment" });
+  }
+});
+
+/********************************************************************************/
+
+/*******************************UPVOTE/DOWNVOTE**********************************/
+
+conn.put('/upvote/:postId', async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const post = await Post.findById(postId); // Find the post by ID
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+
+    await post.upvote();
+
+    res.status(200).json({ upvotes: post.upvotes }); // Return updated upvote count
+  } catch (error) {
+    console.error("Error upvoting:", error);
+    res.status(500).send('Server error');
+  }
+});
+
+conn.put('/downvote/:postId', async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const post = await Post.findById(postId); // Find the post by ID
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+
+    await post.downvote();
+
+    res.status(200).json({ downvotes: post.downvotes }); // Return updated downvote count
+  } catch (error) {
+    console.error("Error downvoting:", error);
+    res.status(500).send('Server error');
   }
 });
 
