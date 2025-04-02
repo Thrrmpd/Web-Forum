@@ -360,14 +360,12 @@ async function deletePost(button) {
 
 async function loadPosts() {
   try {
-    const res = await fetch("/getPosts"); // This route fetches posts from your backend
+    const res = await fetch("/getPosts"); 
     const posts = await res.json();
     const postsContainer = document.getElementById("posts-container");
-
-    // Render posts dynamically
+    
     postsContainer.innerHTML = posts.map(renderPost).join("");
 
-    // Attach upvote/downvote listeners after rendering
     attachVoteListeners();
   } catch (error) {
     console.error("Error loading posts:", error);
@@ -393,46 +391,46 @@ function renderPost(post) {
   `;
 }
 
-document.querySelectorAll(".upvote-btn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const postId = btn.getAttribute("data-post-id");
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.addEventListener("click", async (event) => {
+    if (event.target.closest(".upvote-btn")) {
+      const btn = event.target.closest(".upvote-btn");
+      const postId = btn.getAttribute("data-postid");
 
       try {
         const res = await fetch(`/upvote/${postId}`, { method: "PUT" });
         const data = await res.json();
 
         if (res.ok) {
-          // Find the element displaying the upvote count and update it
-          const voteCount = btn.closest(".post").querySelector(".upvote-count");
-          voteCount.textContent = data.upvotes;
+          const voteCount = document.getElementById(`upvote-count-${postId}`);
+          voteCount.textContent = data.upvotes;  
         } else {
           console.error("Failed to upvote:", data);
         }
       } catch (error) {
         console.error("Error upvoting:", error);
       }
-    });
-});
+    }
 
-  document.querySelectorAll(".downvote-btn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const postId = btn.getAttribute("data-post-id");
+    if (event.target.closest(".downvote-btn")) {
+      const btn = event.target.closest(".downvote-btn");
+      const postId = btn.getAttribute("data-postid");
 
       try {
         const res = await fetch(`/downvote/${postId}`, { method: "PUT" });
         const data = await res.json();
 
         if (res.ok) {
-          // Find the element displaying the downvote count and update it
-          const voteCount = btn.closest(".post").querySelector(".downvote-count");
-          voteCount.textContent = data.downvotes;
+          const voteCount = document.getElementById(`downvote-count-${postId}`);
+          voteCount.textContent = data.downvotes;  
         } else {
           console.error("Failed to downvote:", data);
         }
       } catch (error) {
         console.error("Error downvoting:", error);
       }
-    });
+    }
+  });
 });
 
 // Logout function
