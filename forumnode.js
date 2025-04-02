@@ -594,14 +594,14 @@ conn.put('/upvote/:postId', async (req, res) => {
   const { postId } = req.params;
 
   try {
-    const post = await Post.findById(postId); // Find the post by ID
+    const post = await posts.findById(postId);  
     if (!post) {
       return res.status(404).send('Post not found');
     }
 
-    await post.upvote();
+    await post.upvote();  // Increment the upvote count
 
-    res.status(200).json({ upvotes: post.upvotes }); // Return updated upvote count
+    res.status(200).json({ upvotes: post.upvotes });  
   } catch (error) {
     console.error("Error upvoting:", error);
     res.status(500).send('Server error');
@@ -612,14 +612,14 @@ conn.put('/downvote/:postId', async (req, res) => {
   const { postId } = req.params;
 
   try {
-    const post = await Post.findById(postId); // Find the post by ID
+    const post = await posts.findById(postId);  
     if (!post) {
       return res.status(404).send('Post not found');
     }
 
-    await post.downvote();
+    await post.downvote();  // Decrement the downvote count
 
-    res.status(200).json({ downvotes: post.downvotes }); // Return updated downvote count
+    res.status(200).json({ downvotes: post.downvotes });  
   } catch (error) {
     console.error("Error downvoting:", error);
     res.status(500).send('Server error');
