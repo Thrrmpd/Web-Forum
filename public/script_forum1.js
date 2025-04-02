@@ -210,6 +210,18 @@ function createPostElement(post) {
       <button onclick="deletePost(this)">Delete</button>
     </div>
 
+    <div class="votes">
+      <button class="vote-btn upvote-btn" data-postid="${post._id}">
+        <i class="fas fa-thumbs-up"></i>
+      </button>
+      <span class="upvote-count" id="upvote-count-${post._id}">${post.upvotes}</span>
+
+      <button class="vote-btn downvote-btn" data-postid="${post._id}">
+        <i class="fas fa-thumbs-down"></i>
+      </button>
+      <span class="downvote-count" id="downvote-count-${post._id}">${post.downvotes}</span>
+    </div>
+
     <div class="comments">
       <h4>Comments</h4>
       <div id="comments-${post._id}">
@@ -345,6 +357,83 @@ async function deletePost(button) {
     console.error("Error deleting post:", error);
   }
 }
+
+async function loadPosts() {
+  try {
+    const res = await fetch("/getPosts"); // This route fetches posts from your backend
+    const posts = await res.json();
+    const postsContainer = document.getElementById("posts-container");
+
+    // Render posts dynamically
+    postsContainer.innerHTML = posts.map(renderPost).join("");
+
+    // Attach upvote/downvote listeners after rendering
+    attachVoteListeners();
+  } catch (error) {
+    console.error("Error loading posts:", error);
+  }
+}
+
+function renderPost(post) {
+  return `
+    <div class="post" data-id="${post._id}">
+      <h3>${post.title}</h3>
+      <p>${post.description}</p>
+      <div class="post-actions">
+        <button class="delete-btn" data-postid="${post._id}">Delete</button>
+        
+        <div class="vote-buttons">
+          <button class="upvote-btn" data-postid="${post._id}">↑</button>
+          <span class="upvote-count">${post.upvotes}</span>
+          <button class="downvote-btn" data-postid="${post._id}">↓</button>
+          <span class="downvote-count">${post.downvotes}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+document.querySelectorAll(".upvote-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const postId = btn.getAttribute("data-post-id");
+
+      try {
+        const res = await fetch(`/upvote/${postId}`, { method: "PUT" });
+        const data = await res.json();
+
+        if (res.ok) {
+          // Find the element displaying the upvote count and update it
+          const voteCount = btn.closest(".post").querySelector(".upvote-count");
+          voteCount.textContent = data.upvotes;
+        } else {
+          console.error("Failed to upvote:", data);
+        }
+      } catch (error) {
+        console.error("Error upvoting:", error);
+      }
+    });
+});
+
+  document.querySelectorAll(".downvote-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const postId = btn.getAttribute("data-post-id");
+
+      try {
+        const res = await fetch(`/downvote/${postId}`, { method: "PUT" });
+        const data = await res.json();
+
+        if (res.ok) {
+          // Find the element displaying the downvote count and update it
+          const voteCount = btn.closest(".post").querySelector(".downvote-count");
+          voteCount.textContent = data.downvotes;
+        } else {
+          console.error("Failed to downvote:", data);
+        }
+      } catch (error) {
+        console.error("Error downvoting:", error);
+      }
+    });
+});
 
 // Logout function
 function logout() {

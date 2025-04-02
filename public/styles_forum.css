@@ -4,6 +4,7 @@ body {
   padding: 0;
   background-color: #f4f4f4;
 }
+
 .nav-bar {
   background: #2369da;
   color: white;
@@ -13,11 +14,13 @@ body {
   align-items: center;
   border-radius: 20px;
 }
+
 .nav-bar a {
   color: white;
   margin: 0 10px;
   text-decoration: none;
 }
+
 .post-form,
 .posts-section,
 .forum-description {
@@ -28,11 +31,13 @@ body {
   margin: 20px auto;
   max-width: 800px;
 }
+
 .forum-description {
   text-align: center;
   font-size: 16px;
   color: #555;
 }
+
 input,
 textarea,
 select,
@@ -44,15 +49,18 @@ button {
   border-radius: 5px;
   box-sizing: border-box;
 }
+
 button {
   background: #007bff;
   color: white;
   border: none;
   cursor: pointer;
 }
+
 button:hover {
   background: #0056b3;
 }
+
 .post {
   background: white;
   padding: 10px;
@@ -61,18 +69,21 @@ button:hover {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   position: relative;
 }
+
 .comments {
   margin-top: 15px;
   padding: 10px;
   background: #f9f9f9;
   border-radius: 5px;
 }
+
 .comments h4 {
   margin-top: 5px;
   margin-bottom: 5px;
   font-size: 18px;
   color: #333;
 }
+
 .comment {
   background: #e6e6e6;
   padding: 8px;
@@ -80,11 +91,13 @@ button:hover {
   margin: 5px 0;
   font-size: 12px;
 }
+
 .edit-delete {
   display: list-item;
   gap: 5px;
   margin-top: 5px;
 }
+
 img {
   max-width: 100%;
   height: auto;
@@ -92,6 +105,7 @@ img {
   border-radius: 5px;
   display: block;
 }
+
 h1 {
   font-size: 30px;
   color: #333;
@@ -137,4 +151,58 @@ h1 {
 .action-btn:hover {
   color: #007bff;
   text-decoration: underline;
+}
+
+/* New Styles for Voting System */
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.vote-buttons {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  align-items: center;
+}
+
+.upvote-btn, .downvote-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 30px; /* Small box size */
+  margin-bottom: 5px;
+}
+
+.upvote-btn:hover, .downvote-btn:hover {
+  background-color: #0056b3;
+}
+
+.vote-counts {
+  display: flex;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.vote-counts span {
+  color: #333;
+}
+
+/* Styling for the delete button */
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
 }
