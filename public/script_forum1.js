@@ -28,7 +28,7 @@ async function addComment(postID) {
 
     renderUpdatedComments(postID, updatedPost.comments); // Re-render all comments
 
-    commentInput.value = ""; 
+    commentInput.value = "";
   } catch (error) {
     console.error("Error adding comment:", error);
   }
@@ -45,7 +45,10 @@ async function fetchComments(postID) {
 
     commentsContainer.innerHTML = comments.length
       ? comments
-          .map((comment) => `<p class="comment"><b>User ${comment.userID}:</b> ${comment.text}</p>`)
+          .map(
+            (comment) =>
+              `<p class="comment"><b>User ${comment.userID}:</b> ${comment.text}</p>`
+          )
           .join("")
       : '<p class="comment">No comments yet.</p>';
   } catch (error) {
@@ -85,7 +88,7 @@ async function deleteComment(postID, commentID) {
 
     if (!response.ok) throw new Error("Failed to delete comment");
 
-    const updatedPost = await response.json(); 
+    const updatedPost = await response.json();
 
     renderUpdatedComments(postID, updatedPost.comments); // Re-render comments
   } catch (error) {
@@ -174,7 +177,9 @@ function createPostElement(post) {
         }
       </div>
       <div class="comment-input">
-        <input type="text" id="commentInput-${post._id}" placeholder="Write a comment..." />
+        <input type="text" id="commentInput-${
+          post._id
+        }" placeholder="Write a comment..." />
         <button onclick="addComment('${post._id}')">Comment</button>
       </div>
     </div>
@@ -183,68 +188,12 @@ function createPostElement(post) {
   return postDiv;
 }
 
-// async function createPost() {
-//   const title = document.getElementById("postTitle").value.trim();
-//   const description = document.getElementById("postContent").value.trim();
-//   const type = document.getElementById("postVisibility").value;
-//   const filename = document.getElementById("postFile")
-//     ? document.getElementById("postFile").value
-//     : ""; // Optional file input
-//   const creatorID = "0000"; // Fixed creator ID
-
-//   let postID;
-
-//   if (!title || !description) {
-//     alert("Title and content are required!");
-//     return;
-//   }
-
-//   try {
-//     // Fetch existing posts to determine postID
-//     const res = await fetch("/getPosts");
-//     const postsData = await res.json();
-//     const postsArray = Object.entries(postsData);
-
-//     if (postsArray.length > 0) {
-//       postID = Object.values(postsArray[postsArray.length - 1][1]).postID + 1;
-//     } else {
-//       postID = 1;
-//     }
-
-//     // Construct new post object
-//     const newPost = { postID, filename, description, title, type, creatorID };
-
-//     // Send request to add post
-//     const response = await fetch("/addingPost", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(newPost),
-//     });
-
-//     if (!response.ok) throw new Error("Failed to create post");
-
-//     const createdPost = await response.json();
-//     document
-//       .getElementById("postsContainer")
-//       .prepend(createPostElement(createdPost));
-
-//     // Clear input fields after posting
-//     document.getElementById("postTitle").value = "";
-//     document.getElementById("postContent").value = "";
-//     if (document.getElementById("postFile")) {
-//       document.getElementById("postFile").value = "";
-//     }
-//   } catch (error) {
-//     console.error("Error creating post:", error);
-//   }
-// }
-
 async function createPost() {
   const title = document.getElementById("postTitle").value.trim();
   const description = document.getElementById("postContent").value.trim();
   const type = document.getElementById("postVisibility").value;
   const filename = document.getElementById("postMedia").value || "";
-  const creatorID = "0000";
+  const creatorID = Number(localStorage.getItem("loginID")) || 0; // Convert to Number
 
   if (!title || !description) {
     alert("Title and content are required!");
@@ -357,7 +306,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Handle user login state
-  const loginID = localStorage.getItem('loginObject');
+  const loginID = localStorage.getItem("loginObject");
   console.log("loginID from localStorage:", loginID); // Debugging statement
 
   const navRight = document.getElementById("nav-right");
