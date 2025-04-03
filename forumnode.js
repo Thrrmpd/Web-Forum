@@ -146,16 +146,19 @@ conn.post("/addingComment/:postID", async (req, res) => {
   const { postID } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(postID)) {
-    // Ensures postID is passed
     return res.status(400).json({ error: "Invalid post ID format" });
   }
 
   const { userID, text } = req.body;
 
+  if (!userID) {
+    return res.status(400).json({ error: "You need to be logged in to add a comment" });
+  }
+
   try {
     const updatedPost = await posts.findByIdAndUpdate(
       new mongoose.Types.ObjectId(postID),
-      { $push: { comments: { userID, text } } }, // push comment to array
+      { $push: { comments: { userID, text } } }, 
       { new: true }
     );
 
@@ -478,26 +481,34 @@ conn.post("/updatePost/:id", async (req, res) => {
 // Update a comment
 conn.put("/updateComment/:postID/:commentID", async (req, res) => {
   const { postID, commentID } = req.params;
-  const { text } = req.body;
+  const { text, userID } = req.body; 
+
+  if (!userID) {
+    return res.status(401).json({ error: "You must be logged in to edit a comment." });
+  }
 
   if (!mongoose.Types.ObjectId.isValid(postID)) {
     return res.status(400).json({ error: "Invalid post ID format" });
   }
 
   try {
-    const post = await posts.findOneAndUpdate(
-      { _id: postID, "comments._id": commentID },
-      { $set: { "comments.$.text": text } },
-      { new: true }
-    );
+    const post = await posts.findOne({ _id: postID, "comments._id": commentID });
 
-    if (!post)
+    if (!post) {
       return res.status(404).json({ error: "Post or comment not found" });
+    }
 
+    const comment = post.comments.id(commentID);
+    if (comment.userID !== userID) {
+      return res.status(403).json({ error: "You can only edit your own comments" });
+    }
+
+    comment.text = text;
+    await post.save();
     res.json(post);
   } catch (error) {
     console.error("Error updating comment:", error);
-    res.status(500).json({ error: "Failed to update a comment" });
+    res.status(500).json({ error: "Failed to update comment" });
   }
 });
 
@@ -572,6 +583,11 @@ conn.delete("/deletePost/:postID", async (req, res) => {
 // Delete a comment
 conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
   const { postID, commentID } = req.params;
+  const { userID } = req.body; 
+
+  if (!userID) {
+    return res.status(401).json({ error: "You must be logged in to delete a comment." });
+  }
 
   if (!mongoose.Types.ObjectId.isValid(postID)) {
     return res.status(400).json({ error: "Invalid post ID format" });
@@ -579,15 +595,16 @@ conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
 
   try {
     const post = await posts.findOneAndUpdate(
-      { _id: postID },
-      { $pull: { comments: { _id: commentID } } }, // Removed from array
+      { _id: postID, "comments._id": commentID, "comments.userID": userID }, 
+      { $pull: { comments: { _id: commentID } } }, 
       { new: true }
     );
 
-    if (!post)
-      return res.status(404).json({ error: "Post or comment not found" });
+    if (!post) {
+      return res.status(404).json({ error: "Post or comment not found, or you're not authorized to delete this comment" });
+    }
 
-    res.json(post);
+    res.json(post); 
   } catch (error) {
     console.error("Error deleting comment:", error);
     res.status(500).json({ error: "Failed to delete a comment" });
@@ -600,38 +617,48 @@ conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
 
 // Handle upvote action
 conn.put("/upvote/:postId", async (req, res) => {
-  const { postId } = req.params;
-  const { userID } = req.body; // Assuming userID is sent in the request body
-  
+  const { postId } = req.params;  
+  const { userID } = req.body;
+
   try {
-    console.log("UserID from request:", userID); // Log the userID to debug
+    console.log("UserID from request:", userID);
 
     const post = await posts.findById(postId);
-    if (!post) {
-      return res.status(404).send("Post not found");
-    }
+    if (!post) return res.status(404).send("Post not found");
 
-    // Find the existing vote of the user on the post
+    const user = await users.findOne({ ID: userID });
+    if (!user) return res.status(404).send("User not found");
+
     const existingVote = post.votedUsers.find(vote => vote.userID === userID);
-    
+
     if (existingVote) {
       if (existingVote.voteType === 'upvote') {
-        // If the user has already upvoted, remove their vote entirely
+        // Remove upvote
         post.upvotes -= 1;
         post.votedUsers = post.votedUsers.filter(vote => vote.userID !== userID);
+        // Remove post from votes
+        user.votes = user.votes.filter(vote => vote.postID.toString() !== postId);  
       } else if (existingVote.voteType === 'downvote') {
-        // If the user had downvoted, change to upvote
+        // Change vote from downvote to upvote
         post.upvotes += 1;
         post.downvotes -= 1;
-        existingVote.voteType = 'upvote';  // Update the vote to upvote
+        existingVote.voteType = 'upvote';
+        // Update votes array
+        user.votes = user.votes.map(vote =>
+          vote.postID.toString() === postId ? { postID: new mongoose.Types.ObjectId(postId), voteType: 'upvote' } : vote
+        );
       }
     } else {
-      // If the user hasn't voted yet, add their upvote
+      // New upvote
       post.upvotes += 1;
       post.votedUsers.push({ userID, voteType: 'upvote' });
+      // Add post to votes array 
+      user.votes.push({ postID: new mongoose.Types.ObjectId(postId), voteType: 'upvote' });
     }
 
-    await post.save(); // Save the changes to the post
+    await post.save();
+    await user.save();
+
     res.status(200).json({ upvotes: post.upvotes, downvotes: post.downvotes });
   } catch (error) {
     console.error("Error upvoting:", error);
@@ -641,38 +668,48 @@ conn.put("/upvote/:postId", async (req, res) => {
 
 // Handle downvote action
 conn.put("/downvote/:postId", async (req, res) => {
-  const { postId } = req.params;
-  const { userID } = req.body; // Assuming userID is sent in the request body
-  
+  const { postId } = req.params;  
+  const { userID } = req.body;
+
   try {
-    console.log("UserID from request:", userID); // Log the userID to debug
+    console.log("UserID from request:", userID);
 
     const post = await posts.findById(postId);
-    if (!post) {
-      return res.status(404).send("Post not found");
-    }
+    if (!post) return res.status(404).send("Post not found");
 
-    // Find the existing vote of the user on the post
+    const user = await users.findOne({ ID: userID });
+    if (!user) return res.status(404).send("User not found");
+
     const existingVote = post.votedUsers.find(vote => vote.userID === userID);
-    
+
     if (existingVote) {
       if (existingVote.voteType === 'downvote') {
-        // If the user has already downvoted, remove their vote entirely
+        // Remove downvote
         post.downvotes -= 1;
         post.votedUsers = post.votedUsers.filter(vote => vote.userID !== userID);
+        // Remove post from votes
+        user.votes = user.votes.filter(vote => vote.postID.toString() !== postId); 
       } else if (existingVote.voteType === 'upvote') {
-        // If the user had upvoted, change to downvote
+        // Change vote from upvote to downvote
         post.upvotes -= 1;
         post.downvotes += 1;
-        existingVote.voteType = 'downvote';  // Update the vote to downvote
+        existingVote.voteType = 'downvote';
+        // Update votes array
+        user.votes = user.votes.map(vote =>
+          vote.postID.toString() === postId ? { postID: new mongoose.Types.ObjectId(postId), voteType: 'downvote' } : vote
+        );
       }
     } else {
-      // If the user hasn't voted yet, add their downvote
+      // New downvote
       post.downvotes += 1;
       post.votedUsers.push({ userID, voteType: 'downvote' });
+      // Add post to votes array 
+      user.votes.push({ postID: new mongoose.Types.ObjectId(postId), voteType: 'downvote' });
     }
 
-    await post.save(); // Save the changes to the post
+    await post.save();
+    await user.save();
+
     res.status(200).json({ upvotes: post.upvotes, downvotes: post.downvotes });
   } catch (error) {
     console.error("Error downvoting:", error);

@@ -1,25 +1,53 @@
 [{
-  "_id": { "$oid": "67ca5bd8107bdab9bcfa4214" },
+  "_id": {
+    "$oid": "67ca5bd8107bdab9bcfa4214"
+  },
   "ID": 1001,
   "name": "John Doe",
   "email": "john_doe@gmail.com",
   "password": "helloworld",
   "picture": "pfp.png",
   "loginID": 0,
-  "votes": []
+  "votes": [
+    {
+      "postID": {
+        "$oid": "67caa15ad6d715aa87fa4219"
+      },
+      "voteType": "downvote",
+      "_id": {
+        "$oid": "67eeb612f362e70e03baa72a"
+      }
+    }
+  ],
+  "__v": 5
 },
 {
-  "_id": { "$oid": "67ca5bd8107bdab9bcfa4215" },
+  "_id": {
+    "$oid": "67ca5bd8107bdab9bcfa4215"
+  },
   "ID": 1002,
   "name": "Jane Doe",
   "email": "jane_doe@gmail.com",
   "password": "password123",
   "picture": "pfp2.png",
   "loginID": 1,
-  "votes": []
+  "votes": [
+    {
+      "postID": {
+        "$oid": "67cab08027fc9a044e9e9d3e"
+      },
+      "voteType": "upvote",
+      "_id": {
+        "$oid": "67eeb7fd82785e40ff5e1fae"
+      }
+    }
+  ],
+  "__v": 1
 },
 {
-  "_id": { "$oid": "67ca5bd8107bdab9bcfa4216" },
+  "_id": {
+    "$oid": "67ca5bd8107bdab9bcfa4216"
+  },
   "ID": 1003,
   "name": "Alice",
   "email": "alice@gmail.com",
@@ -29,37 +57,45 @@
   "votes": []
 },
 {
-  "_id": { "$oid": "67ca5bd8107bdab9bcfa4217" },
+  "_id": {
+    "$oid": "67ca5bd8107bdab9bcfa4217"
+  },
   "ID": 1004,
   "name": "Bob",
   "email": "bob@gmail.com",
   "password": "bobpassword",
   "picture": "bob.png",
   "loginID": 3,
-  "votes": []
+  "votes": [],
+  "__v": 6
 },
 {
-  "_id": { "$oid": "67ca5bd8107bdab9bcfa4218" },
-  "ID": 1005,
-  "name": "Eve",
-  "email": "eve@gmail.com",
-  "password": "evepassword",
-  "picture": "eve.png",
-  "loginID": 4,
-  "votes": []
-},
-{
-  "_id": { "$oid": "67ca5bd8107bdab9bcfa4219" },
+  "_id": {
+    "$oid": "67ca5bd8107bdab9bcfa4219"
+  },
   "ID": 1007,
   "name": "Charlie",
   "email": "charlie@gmail.com",
   "password": "charliepassword",
   "picture": "charlie.png",
   "loginID": 5,
-  "votes": []
+  "votes": [
+    {
+      "postID": {
+        "$oid": "67cab08027fc9a044e9e9d3e"
+      },
+      "voteType": "downvote",
+      "_id": {
+        "$oid": "67eec03c0b273297f9df5b78"
+      }
+    }
+  ],
+  "__v": 4
 },
 {
-  "_id": { "$oid": "67ca5bd8107bdab9bcfa4220" },
+  "_id": {
+    "$oid": "67ca5bd8107bdab9bcfa4220"
+  },
   "ID": 1008,
   "name": "David",
   "email": "david@gmail.com",
@@ -67,4 +103,36 @@
   "picture": "david.png",
   "loginID": 6,
   "votes": []
+},
+{
+  "_id": {
+    "$oid": "67ca5bd8107bdab9bcfa4218"
+  },
+  "ID": 1005,
+  "name": "Eve",
+  "email": "eve@gmail.com",
+  "password": "evepassword",
+  "picture": "eve.png",
+  "loginID": 4,
+  "votes": [
+    {
+      "postID": {
+        "$oid": "67cab0c327fc9a044e9e9d3f"
+      },
+      "voteType": "upvote",
+      "_id": {
+        "$oid": "67eeb1ea9c64ab7713618ea7"
+      }
+    },
+    {
+      "postID": {
+        "$oid": "67cab08027fc9a044e9e9d3e"
+      },
+      "voteType": "upvote",
+      "_id": {
+        "$oid": "67eebbbefd40830810cb140d"
+      }
+    }
+  ],
+  "__v": 19
 }]

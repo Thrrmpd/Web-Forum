@@ -10,8 +10,8 @@ const userschema = mongoose.Schema({
     isCreator: Boolean,
     votes: [
         {
-            postID: Number,
-            voteType: { type: String, enum: ['upvote', 'downvote'] }, // Vote type (upvote or downvote)
+            postID: { type: mongoose.Schema.Types.ObjectId, ref: 'posts' }, // Change to ObjectId
+            voteType: { type: String, enum: ['upvote', 'downvote'] },
         }
     ]
 });

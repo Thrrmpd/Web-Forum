@@ -11,8 +11,17 @@
   "forID": 10000,
   "comments": [],
   "upvotes": 0,
-  "downvotes": 0,
-  "votedUsers": []
+  "downvotes": 1,
+  "votedUsers": [
+    {
+      "userID": 1001,
+      "voteType": "downvote",
+      "_id": {
+        "$oid": "67eeb612f362e70e03baa729"
+      }
+    }
+  ],
+  "__v": 7
 },
 {
   "_id": {
@@ -37,10 +46,32 @@
       }
     }
   ],
-  "upvotes": 0,
-  "downvotes": 0,
-  "votedUsers": [],
-  "__v": 14
+  "upvotes": 2,
+  "downvotes": 1,
+  "votedUsers": [
+    {
+      "userID": 1002,
+      "voteType": "upvote",
+      "_id": {
+        "$oid": "67eeb7fd82785e40ff5e1fad"
+      }
+    },
+    {
+      "userID": 1005,
+      "voteType": "upvote",
+      "_id": {
+        "$oid": "67eebbbefd40830810cb140c"
+      }
+    },
+    {
+      "userID": 1007,
+      "voteType": "downvote",
+      "_id": {
+        "$oid": "67eec0390b273297f9df5b59"
+      }
+    }
+  ],
+  "__v": 43
 },
 {
   "_id": {
@@ -56,7 +87,7 @@
   "comments": [
     {
       "userID": 1001,
-      "text": "cool then",
+      "text": "woah really?",
       "_id": {
         "$oid": "67dc593cfd39bdffc06b949a"
       },
@@ -75,10 +106,18 @@
       }
     }
   ],
-  "upvotes": 0,
+  "upvotes": 1,
   "downvotes": 0,
-  "votedUsers": [],
-  "__v": 2
+  "votedUsers": [
+    {
+      "userID": 1005,
+      "voteType": "upvote",
+      "_id": {
+        "$oid": "67eeb1ea9c64ab7713618ea6"
+      }
+    }
+  ],
+  "__v": 3
 },
 {
   "_id": {
