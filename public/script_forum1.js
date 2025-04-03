@@ -417,18 +417,39 @@ function renderPost(post) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Add event listener for click events
   document.body.addEventListener("click", async (event) => {
+    const userID = Number(localStorage.getItem("loginID")) || 0;
+
+    // Upvote button clicked
     if (event.target.closest(".upvote-btn")) {
       const btn = event.target.closest(".upvote-btn");
       const postId = btn.getAttribute("data-postid");
 
       try {
-        const res = await fetch(`/upvote/${postId}`, { method: "PUT" });
+        const res = await fetch(`/upvote/${postId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userID: userID }), // Send userID in request body
+        });
         const data = await res.json();
 
         if (res.ok) {
-          const voteCount = document.getElementById(`upvote-count-${postId}`);
-          voteCount.textContent = data.upvotes;
+          // Update the UI with the new vote counts
+          const upvoteCount = document.getElementById(`upvote-count-${postId}`);
+          const downvoteCount = document.getElementById(`downvote-count-${postId}`);
+
+          upvoteCount.textContent = data.upvotes;
+          downvoteCount.textContent = data.downvotes;
+
+          // Update the button state to reflect the vote (e.g., disable upvote if already voted)
+          if (data.voted === 'upvoted') {
+            btn.disabled = true; // Disable upvote button if already upvoted
+          } else {
+            btn.disabled = false; // Enable button if not yet voted
+          }
         } else {
           console.error("Failed to upvote:", data);
         }
@@ -437,17 +458,35 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Downvote button clicked
     if (event.target.closest(".downvote-btn")) {
       const btn = event.target.closest(".downvote-btn");
       const postId = btn.getAttribute("data-postid");
 
       try {
-        const res = await fetch(`/downvote/${postId}`, { method: "PUT" });
+        const res = await fetch(`/downvote/${postId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userID: userID }), // Send userID in request body
+        });
         const data = await res.json();
 
         if (res.ok) {
-          const voteCount = document.getElementById(`downvote-count-${postId}`);
-          voteCount.textContent = data.downvotes;
+          // Update the UI with the new vote counts
+          const upvoteCount = document.getElementById(`upvote-count-${postId}`);
+          const downvoteCount = document.getElementById(`downvote-count-${postId}`);
+
+          upvoteCount.textContent = data.upvotes;
+          downvoteCount.textContent = data.downvotes;
+
+          // Update the button state to reflect the vote (e.g., disable downvote if already downvoted)
+          if (data.voted === 'downvoted') {
+            btn.disabled = true; // Disable downvote button if already downvoted
+          } else {
+            btn.disabled = false; // Enable button if not yet voted
+          }
         } else {
           console.error("Failed to downvote:", data);
         }
