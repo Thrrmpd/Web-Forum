@@ -1,84 +1,70 @@
 [{
-  "_id": {
-    "$oid": "67ca5bd8107bdab9bcfa4214"
-  },
+  "_id": { "$oid": "67ca5bd8107bdab9bcfa4214" },
   "ID": 1001,
   "name": "John Doe",
   "email": "john_doe@gmail.com",
-  "pasword": "helloworld",
-  "picture": "pfp.png",
-  "loginID": 0,
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "67ca5c15107bdab9bcfa4215"
-  },
-  "ID": 1002,
-  "name": "Jane Fisher",
-  "email": "janefisher22@gmail.com",
-  "pasword": "goodbyemydei",
-  "picture": "CryingChopper.png",
-  "loginID": 0,
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "67ca5e12107bdab9bcfa4219"
-  },
-  "ID": 1003,
-  "name": "Jenny Parker",
-  "email": "jennyparker432@gmail.com",
-  "pasword": "hellomyworld",
-  "picture": "pfp.png",
-  "loginID": 0,
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "67d1c85e91b78680ccc99637"
-  },
-  "ID": 1004,
-  "name": "Jenny Crocker",
-  "email": "crockercorp@gmail.com",
-  "pasword": "crockertier",
-  "picture": "FunnyEnel.jpg",
-  "loginID": 0,
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "67d1c86b91b78680ccc99638"
-  },
-  "ID": 1005,
-  "name": "Jane Alison",
-  "email": "alisonjrjr@gmail.com",
-  "pasword": "portyhooty",
-  "picture": "Psyduck.jpg",
-  "loginID": 0,
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "67dba484f5704fcebae9fd7b"
-  },
-  "ID": 1007,
-  "name": "Hanhan",
-  "email": "hannah_corpuz@gmail.com",
   "password": "helloworld",
   "picture": "pfp.png",
   "loginID": 0,
-  "__v": 0
+  "votes": []
 },
 {
-  "_id": {
-    "$oid": "67dba7c0b2edcaf8200620ab"
-  },
+  "_id": { "$oid": "67ca5bd8107bdab9bcfa4215" },
+  "ID": 1002,
+  "name": "Jane Doe",
+  "email": "jane_doe@gmail.com",
+  "password": "password123",
+  "picture": "pfp2.png",
+  "loginID": 1,
+  "votes": []
+},
+{
+  "_id": { "$oid": "67ca5bd8107bdab9bcfa4216" },
+  "ID": 1003,
+  "name": "Alice",
+  "email": "alice@gmail.com",
+  "password": "alicepassword",
+  "picture": "alice.png",
+  "loginID": 2,
+  "votes": []
+},
+{
+  "_id": { "$oid": "67ca5bd8107bdab9bcfa4217" },
+  "ID": 1004,
+  "name": "Bob",
+  "email": "bob@gmail.com",
+  "password": "bobpassword",
+  "picture": "bob.png",
+  "loginID": 3,
+  "votes": []
+},
+{
+  "_id": { "$oid": "67ca5bd8107bdab9bcfa4218" },
+  "ID": 1005,
+  "name": "Eve",
+  "email": "eve@gmail.com",
+  "password": "evepassword",
+  "picture": "eve.png",
+  "loginID": 4,
+  "votes": []
+},
+{
+  "_id": { "$oid": "67ca5bd8107bdab9bcfa4219" },
+  "ID": 1007,
+  "name": "Charlie",
+  "email": "charlie@gmail.com",
+  "password": "charliepassword",
+  "picture": "charlie.png",
+  "loginID": 5,
+  "votes": []
+},
+{
+  "_id": { "$oid": "67ca5bd8107bdab9bcfa4220" },
   "ID": 1008,
-  "name": "Hannah Corpuz",
-  "email": "hannahcorpuz2003@gmail.com",
-  "password": "hello",
-  "picture": "CryingChopper.png",
-  "loginID": 0,
-  "__v": 0
+  "name": "David",
+  "email": "david@gmail.com",
+  "password": "davidpassword",
+  "picture": "david.png",
+  "loginID": 6,
+  "votes": []
 }]

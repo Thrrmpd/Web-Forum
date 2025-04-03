@@ -598,36 +598,82 @@ conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
 
 /*******************************UPVOTE/DOWNVOTE**********************************/
 
+// Handle upvote action
 conn.put("/upvote/:postId", async (req, res) => {
   const { postId } = req.params;
-
+  const { userID } = req.body; // Assuming userID is sent in the request body
+  
   try {
+    console.log("UserID from request:", userID); // Log the userID to debug
+
     const post = await posts.findById(postId);
     if (!post) {
       return res.status(404).send("Post not found");
     }
 
-    await post.upvote(); // Increment the upvote count
+    // Find the existing vote of the user on the post
+    const existingVote = post.votedUsers.find(vote => vote.userID === userID);
+    
+    if (existingVote) {
+      if (existingVote.voteType === 'upvote') {
+        // If the user has already upvoted, remove their vote entirely
+        post.upvotes -= 1;
+        post.votedUsers = post.votedUsers.filter(vote => vote.userID !== userID);
+      } else if (existingVote.voteType === 'downvote') {
+        // If the user had downvoted, change to upvote
+        post.upvotes += 1;
+        post.downvotes -= 1;
+        existingVote.voteType = 'upvote';  // Update the vote to upvote
+      }
+    } else {
+      // If the user hasn't voted yet, add their upvote
+      post.upvotes += 1;
+      post.votedUsers.push({ userID, voteType: 'upvote' });
+    }
 
-    res.status(200).json({ upvotes: post.upvotes });
+    await post.save(); // Save the changes to the post
+    res.status(200).json({ upvotes: post.upvotes, downvotes: post.downvotes });
   } catch (error) {
     console.error("Error upvoting:", error);
     res.status(500).send("Server error");
   }
 });
 
+// Handle downvote action
 conn.put("/downvote/:postId", async (req, res) => {
   const { postId } = req.params;
-
+  const { userID } = req.body; // Assuming userID is sent in the request body
+  
   try {
+    console.log("UserID from request:", userID); // Log the userID to debug
+
     const post = await posts.findById(postId);
     if (!post) {
       return res.status(404).send("Post not found");
     }
 
-    await post.downvote(); // Decrement the downvote count
+    // Find the existing vote of the user on the post
+    const existingVote = post.votedUsers.find(vote => vote.userID === userID);
+    
+    if (existingVote) {
+      if (existingVote.voteType === 'downvote') {
+        // If the user has already downvoted, remove their vote entirely
+        post.downvotes -= 1;
+        post.votedUsers = post.votedUsers.filter(vote => vote.userID !== userID);
+      } else if (existingVote.voteType === 'upvote') {
+        // If the user had upvoted, change to downvote
+        post.upvotes -= 1;
+        post.downvotes += 1;
+        existingVote.voteType = 'downvote';  // Update the vote to downvote
+      }
+    } else {
+      // If the user hasn't voted yet, add their downvote
+      post.downvotes += 1;
+      post.votedUsers.push({ userID, voteType: 'downvote' });
+    }
 
-    res.status(200).json({ downvotes: post.downvotes });
+    await post.save(); // Save the changes to the post
+    res.status(200).json({ upvotes: post.upvotes, downvotes: post.downvotes });
   } catch (error) {
     console.error("Error downvoting:", error);
     res.status(500).send("Server error");

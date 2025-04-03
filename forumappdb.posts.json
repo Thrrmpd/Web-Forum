@@ -1,147 +1,153 @@
-[
-  {
-    "_id": {
-      "$oid": "67caa15ad6d715aa87fa4219"
-    },
-    "postID": 200001,
-    "filename": "",
-    "description": "Hi Hello hi hello",
-    "title": "title",
-    "type": "Public",
-    "creatorID": 1001,
-    "forID": 10000,
-    "comments": [],
-    "upvotes": 0,
-    "downvotes": 1
+[{
+  "_id": {
+    "$oid": "67caa15ad6d715aa87fa4219"
   },
-  {
-    "_id": {
-      "$oid": "67cab08027fc9a044e9e9d3e"
-    },
-    "postID": 200002,
-    "filename": "",
-    "description": "Looking forward for better days!",
-    "title": "helloworld",
-    "type": "Public",
-    "creatorID": 1001,
-    "forID": 10000,
-    "comments": [
-      {
-        "userID": 1005,
-        "text": "my first program!",
-        "_id": {
-          "$oid": "67dd5f176a866bb574a90547"
-        },
-        "createdAt": {
-          "$date": "2025-03-21T12:44:07.334Z"
-        }
-      }
-    ],
-    "upvotes": 1,
-    "downvotes": 1
+  "postID": 200001,
+  "filename": "",
+  "description": "Hi Hello hi hello",
+  "title": "title",
+  "type": "Public",
+  "creatorID": 1001,
+  "forID": 10000,
+  "comments": [],
+  "upvotes": 0,
+  "downvotes": 0,
+  "votedUsers": []
+},
+{
+  "_id": {
+    "$oid": "67cab08027fc9a044e9e9d3e"
   },
-  {
-    "_id": {
-      "$oid": "67cab0c327fc9a044e9e9d3f"
-    },
-    "postID": 200003,
-    "filename": "",
-    "description": "please help my hamster's eating my food",
-    "title": "Hamster Cronicles",
-    "type": "Public",
-    "creatorID": 1003,
-    "forID": 10001,
-    "comments": [
-      {
-        "userID": 1001,
-        "text": "cool then",
-        "_id": {
-          "$oid": "67dc593cfd39bdffc06b949a"
-        },
-        "createdAt": {
-          "$date": "2025-03-20T18:06:52.077Z"
-        }
+  "postID": 200002,
+  "filename": "",
+  "description": "Looking forward for better days!",
+  "title": "helloworld",
+  "type": "Public",
+  "creatorID": 1001,
+  "forID": 10000,
+  "comments": [
+    {
+      "userID": 1005,
+      "text": "my first program!",
+      "_id": {
+        "$oid": "67dd5f176a866bb574a90547"
       },
-      {
-        "userID": 1004,
-        "text": "yo what hahahaha",
-        "_id": {
-          "$oid": "67dc5c6320ca62ad9a9f7703"
-        },
-        "createdAt": {
-          "$date": "2025-03-20T18:20:19.704Z"
-        }
+      "createdAt": {
+        "$date": "2025-03-21T12:44:07.334Z"
       }
-    ],
-    "upvotes": 5,
-    "downvotes": 0
+    }
+  ],
+  "upvotes": 0,
+  "downvotes": 0,
+  "votedUsers": [],
+  "__v": 14
+},
+{
+  "_id": {
+    "$oid": "67cab0c327fc9a044e9e9d3f"
   },
-  {
-    "_id": {
-      "$oid": "67cab1b327fc9a044e9e9d40"
-    },
-    "postID": 200004,
-    "filename": "",
-    "description": "hueoqwho",
-    "title": "Hello There",
-    "type": "Private",
-    "creatorID": 1003,
-    "forID": 10002,
-    "comments": [
-      {
-        "userID": 1001,
-        "text": "yippieeee",
-        "_id": {
-          "$oid": "67dc592bfd39bdffc06b9494"
-        },
-        "createdAt": {
-          "$date": "2025-03-20T18:06:35.315Z"
-        }
+  "postID": 200003,
+  "filename": "",
+  "description": "please help my hamster's eating my food",
+  "title": "Hamster Chronicles",
+  "type": "Public",
+  "creatorID": 1003,
+  "forID": 10001,
+  "comments": [
+    {
+      "userID": 1001,
+      "text": "cool then",
+      "_id": {
+        "$oid": "67dc593cfd39bdffc06b949a"
+      },
+      "createdAt": {
+        "$date": "2025-03-20T18:06:52.077Z"
       }
-    ],
-    "upvotes": 1,
-    "downvotes": 0
-  },
-  {
-    "_id": {
-      "$oid": "67cab1e727fc9a044e9e9d41"
     },
-    "postID": 200005,
-    "filename": "",
-    "description": "trwegferge",
-    "title": "fgerge",
-    "type": "Private",
-    "creatorID": 1002,
-    "forID": 10002,
-    "comments": [
-      {
-        "userID": 1001,
-        "text": "yo what is this",
-        "_id": {
-          "$oid": "67dc5c2a20ca62ad9a9f76f7"
-        },
-        "createdAt": {
-          "$date": "2025-03-20T18:19:22.526Z"
-        }
+    {
+      "userID": 1004,
+      "text": "yo what hahahaha",
+      "_id": {
+        "$oid": "67dc5c6320ca62ad9a9f7703"
+      },
+      "createdAt": {
+        "$date": "2025-03-20T18:20:19.704Z"
       }
-    ],
-    "upvotes": 2,
-    "downvotes": 1
+    }
+  ],
+  "upvotes": 0,
+  "downvotes": 0,
+  "votedUsers": [],
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "67cab1b327fc9a044e9e9d40"
   },
-  {
-    "_id": {
-      "$oid": "67d456374855d518bb8a8f28"
-    },
-    "postID": 10000,
-    "filename": "Test",
-    "description": "helloworld.to",
-    "title": "password",
-    "type": "Public",
-    "creatorID": 1002,
-    "forID": 10003,
-    "__v": 0,
-    "comments": [],
-    "upvotes": 1,
-    "downvotes": 0
-  }
-]
+  "postID": 200004,
+  "filename": "",
+  "description": "hueoqwho",
+  "title": "Hello There",
+  "type": "Private",
+  "creatorID": 1003,
+  "forID": 10002,
+  "comments": [
+    {
+      "userID": 1001,
+      "text": "yippieeee",
+      "_id": {
+        "$oid": "67dc592bfd39bdffc06b9494"
+      },
+      "createdAt": {
+        "$date": "2025-03-20T18:06:35.315Z"
+      }
+    }
+  ],
+  "upvotes": 0,
+  "downvotes": 0,
+  "votedUsers": []
+},
+{
+  "_id": {
+    "$oid": "67cab1e727fc9a044e9e9d41"
+  },
+  "postID": 200005,
+  "filename": "",
+  "description": "trwegferge",
+  "title": "fgerge",
+  "type": "Private",
+  "creatorID": 1002,
+  "forID": 10002,
+  "comments": [
+    {
+      "userID": 1001,
+      "text": "yo what is this",
+      "_id": {
+        "$oid": "67dc5c2a20ca62ad9a9f76f7"
+      },
+      "createdAt": {
+        "$date": "2025-03-20T18:19:22.526Z"
+      }
+    }
+  ],
+  "upvotes": 0,
+  "downvotes": 0,
+  "votedUsers": []
+},
+{
+  "_id": {
+    "$oid": "67d456374855d518bb8a8f28"
+  },
+  "postID": 10000,
+  "filename": "Test",
+  "description": "helloworld.to",
+  "title": "password",
+  "type": "Public",
+  "creatorID": 1002,
+  "forID": 10003,
+  "__v": 0,
+  "comments": [],
+  "upvotes": 0,
+  "downvotes": 0,
+  "votedUsers": []
+}]
