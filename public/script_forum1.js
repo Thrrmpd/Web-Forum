@@ -178,8 +178,29 @@ document.addEventListener("DOMContentLoaded", function () {
 const API_URL = "http://localhost:3000";
 
 async function fetchPosts() {
+  const params = new URLSearchParams(window.location.search);
+  const forumID = params.get("forumID");
+
+  if (!forumID) {
+    alert("Forum ID is missing!");
+    return;
+  }
+
+  // Fetch forum data from the backend
+  const res = await fetch(`/getForum/${forumID}`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch forum data");
+  }
+
+  const forumData = await res.json();
+  console.log("Forum Data:", forumData);
+
+  const forID = forumData.forID;
+
   try {
-    const response = await fetch(`${API_URL}/getPosts`);
+    const response = await fetch(
+      `${API_URL}/getPosts?forID=${encodeURIComponent(forID)}`
+    );
     const posts = await response.json();
 
     const postContainer = document.getElementById("postsContainer");
@@ -214,12 +235,16 @@ function createPostElement(post) {
       <button class="vote-btn upvote-btn" data-postid="${post._id}">
         <i class="fas fa-thumbs-up"></i>
       </button>
-      <span class="upvote-count" id="upvote-count-${post._id}">${post.upvotes}</span>
+      <span class="upvote-count" id="upvote-count-${post._id}">${
+    post.upvotes
+  }</span>
 
       <button class="vote-btn downvote-btn" data-postid="${post._id}">
         <i class="fas fa-thumbs-down"></i>
       </button>
-      <span class="downvote-count" id="downvote-count-${post._id}">${post.downvotes}</span>
+      <span class="downvote-count" id="downvote-count-${post._id}">${
+    post.downvotes
+  }</span>
     </div>
 
     <div class="comments">
@@ -360,10 +385,10 @@ async function deletePost(button) {
 
 async function loadPosts() {
   try {
-    const res = await fetch("/getPosts"); 
+    const res = await fetch("/getPosts");
     const posts = await res.json();
     const postsContainer = document.getElementById("posts-container");
-    
+
     postsContainer.innerHTML = posts.map(renderPost).join("");
 
     attachVoteListeners();
@@ -403,7 +428,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (res.ok) {
           const voteCount = document.getElementById(`upvote-count-${postId}`);
-          voteCount.textContent = data.upvotes;  
+          voteCount.textContent = data.upvotes;
         } else {
           console.error("Failed to upvote:", data);
         }
@@ -422,7 +447,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (res.ok) {
           const voteCount = document.getElementById(`downvote-count-${postId}`);
-          voteCount.textContent = data.downvotes;  
+          voteCount.textContent = data.downvotes;
         } else {
           console.error("Failed to downvote:", data);
         }

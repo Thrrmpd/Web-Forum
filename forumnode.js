@@ -5,7 +5,7 @@ const users = require("./userModels");
 const logins = require("./loginModel.js");
 const forums = require("./forumModels");
 const posts = require("./postsModel");
-const cookieParser = require("cookie-parser"); 
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const cors = require("cors");
 const port = 3000;
@@ -196,18 +196,25 @@ conn.get("/getForums", async (req, res) => {
   res.json(get);
 });
 
-//Read API for posts; gets data from db
+//NEW UPDATE FOR READING POSTS. WORKING!
 // conn.get("/getPosts", async (req, res) => {
-//   //invoke via fetch() api and inputting url link ex. const x = await fetch('/getPosts')
-//   let get = await posts.find({});
-//   console.log(get);
-//   res.json(get);
+//   try {
+//     const Post = await posts.find().sort({ postID: -1 });
+//     res.json(Post);
+//   } catch (error) {
+//     console.error("Error fetching posts:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
 // });
 
-//NEW UPDATE FOR READING POSTS.
 conn.get("/getPosts", async (req, res) => {
   try {
-    const Post = await posts.find().sort({ postID: -1 });
+    const { forID } = req.query;
+    if (!forID) {
+      return res.status(400).json({ error: "Missing forID parameter" });
+    }
+
+    const Post = await posts.find({ forID }).sort({ postID: -1 });
     res.json(Post);
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -590,39 +597,39 @@ conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
 
 /*******************************UPVOTE/DOWNVOTE**********************************/
 
-conn.put('/upvote/:postId', async (req, res) => {
+conn.put("/upvote/:postId", async (req, res) => {
   const { postId } = req.params;
 
   try {
-    const post = await posts.findById(postId);  
+    const post = await posts.findById(postId);
     if (!post) {
-      return res.status(404).send('Post not found');
+      return res.status(404).send("Post not found");
     }
 
-    await post.upvote();  // Increment the upvote count
+    await post.upvote(); // Increment the upvote count
 
-    res.status(200).json({ upvotes: post.upvotes });  
+    res.status(200).json({ upvotes: post.upvotes });
   } catch (error) {
     console.error("Error upvoting:", error);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
-conn.put('/downvote/:postId', async (req, res) => {
+conn.put("/downvote/:postId", async (req, res) => {
   const { postId } = req.params;
 
   try {
-    const post = await posts.findById(postId);  
+    const post = await posts.findById(postId);
     if (!post) {
-      return res.status(404).send('Post not found');
+      return res.status(404).send("Post not found");
     }
 
-    await post.downvote();  // Decrement the downvote count
+    await post.downvote(); // Decrement the downvote count
 
-    res.status(200).json({ downvotes: post.downvotes });  
+    res.status(200).json({ downvotes: post.downvotes });
   } catch (error) {
     console.error("Error downvoting:", error);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });
 
