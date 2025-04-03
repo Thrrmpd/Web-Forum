@@ -196,7 +196,7 @@ conn.get("/getForums", async (req, res) => {
   res.json(get);
 });
 
-//NEW UPDATE FOR READING POSTS. WORKING!
+//prev version
 // conn.get("/getPosts", async (req, res) => {
 //   try {
 //     const Post = await posts.find().sort({ postID: -1 });
@@ -207,6 +207,7 @@ conn.get("/getForums", async (req, res) => {
 //   }
 // });
 
+//NEW UPDATE FOR READING POSTS. WORKING!
 conn.get("/getPosts", async (req, res) => {
   try {
     const { forID } = req.query;
