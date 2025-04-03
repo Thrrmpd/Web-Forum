@@ -56,6 +56,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Add a comment
 async function addComment(postID) {
+  const userID = Number(localStorage.getItem("loginID"));
+
+  // Check if logged in
+  if (!userID) {
+    alert("You need to be logged in to add a comment.");
+    return; // Exit if not logged in
+  }
+
   if (!postID) {
     console.error("Invalid postID:", postID);
     alert("Error: Invalid post ID.");
@@ -64,7 +72,6 @@ async function addComment(postID) {
 
   const commentInput = document.getElementById(`commentInput-${postID}`);
   const commentText = commentInput.value.trim();
-  const userID = Number(localStorage.getItem("loginID")) || 0; // Convert to Number
 
   if (!commentText) {
     alert("Comment cannot be empty!");
@@ -80,9 +87,9 @@ async function addComment(postID) {
 
     if (!response.ok) throw new Error("Failed to add comment");
 
-    const updatedPost = await response.json(); // Fetch updated comments
+    const updatedPost = await response.json(); 
 
-    renderUpdatedComments(postID, updatedPost.comments); // Re-render all comments
+    renderUpdatedComments(postID, updatedPost.comments); 
 
     commentInput.value = "";
   } catch (error) {
@@ -114,6 +121,14 @@ async function fetchComments(postID) {
 
 // Edit a comment
 async function editComment(postID, commentID) {
+  const userID = Number(localStorage.getItem("loginID"));
+
+  // Check if logged in
+  if (!userID) {
+    alert("You need to be logged in to edit a comment.");
+    return; // Exit if not logged in
+  }
+
   const newText = prompt("Edit your comment:");
 
   if (!newText) return;
@@ -122,13 +137,16 @@ async function editComment(postID, commentID) {
     const response = await fetch(`/updateComment/${postID}/${commentID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: newText }),
+      body: JSON.stringify({ text: newText, userID: userID }), 
     });
 
-    if (!response.ok) throw new Error("Failed to update comment");
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert(errorData.error); 
+      return;
+    }
 
     const updatedPost = await response.json();
-
     renderUpdatedComments(postID, updatedPost.comments);
   } catch (error) {
     console.error("Error updating comment:", error);
@@ -137,16 +155,35 @@ async function editComment(postID, commentID) {
 
 // Delete a comment
 async function deleteComment(postID, commentID) {
+  const userID = Number(localStorage.getItem("loginID")); 
+
+  // Check if logged in
+  if (!userID) {
+    alert("You need to be logged in to delete a comment.");
+    return;
+  }
+
+  const confirmDelete = confirm("Are you sure you want to delete this comment?");
+  
+  if (!confirmDelete) {
+    return; // If user cancels, do nothing
+  }
+
   try {
     const response = await fetch(`/deleteComment/${postID}/${commentID}`, {
       method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userID: userID }), 
     });
 
-    if (!response.ok) throw new Error("Failed to delete comment");
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert(errorData.error); 
+      return;
+    }
 
     const updatedPost = await response.json();
-
-    renderUpdatedComments(postID, updatedPost.comments); // Re-render comments
+    renderUpdatedComments(postID, updatedPost.comments); 
   } catch (error) {
     console.error("Error deleting comment:", error);
   }
@@ -417,9 +454,15 @@ function renderPost(post) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Add event listener for click events
   document.body.addEventListener("click", async (event) => {
-    const userID = Number(localStorage.getItem("loginID")) || 0;
+    const userID = Number(localStorage.getItem("loginID")) || 0; // 0 if not logged in
+
+    if (!userID) {
+      if (event.target.closest(".upvote-btn") || event.target.closest(".downvote-btn")) {
+        alert("You must be logged in to vote.");
+      }
+      return; 
+    }
 
     // Upvote button clicked
     if (event.target.closest(".upvote-btn")) {
@@ -432,23 +475,21 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userID: userID }), // Send userID in request body
+          body: JSON.stringify({ userID: userID }), 
         });
         const data = await res.json();
 
         if (res.ok) {
-          // Update the UI with the new vote counts
           const upvoteCount = document.getElementById(`upvote-count-${postId}`);
           const downvoteCount = document.getElementById(`downvote-count-${postId}`);
 
           upvoteCount.textContent = data.upvotes;
           downvoteCount.textContent = data.downvotes;
 
-          // Update the button state to reflect the vote (e.g., disable upvote if already voted)
           if (data.voted === 'upvoted') {
-            btn.disabled = true; // Disable upvote button if already upvoted
+            btn.disabled = true; 
           } else {
-            btn.disabled = false; // Enable button if not yet voted
+            btn.disabled = false; 
           }
         } else {
           console.error("Failed to upvote:", data);
@@ -469,23 +510,21 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userID: userID }), // Send userID in request body
+          body: JSON.stringify({ userID: userID }), 
         });
         const data = await res.json();
 
         if (res.ok) {
-          // Update the UI with the new vote counts
           const upvoteCount = document.getElementById(`upvote-count-${postId}`);
           const downvoteCount = document.getElementById(`downvote-count-${postId}`);
 
           upvoteCount.textContent = data.upvotes;
           downvoteCount.textContent = data.downvotes;
 
-          // Update the button state to reflect the vote (e.g., disable downvote if already downvoted)
           if (data.voted === 'downvoted') {
-            btn.disabled = true; // Disable downvote button if already downvoted
+            btn.disabled = true; 
           } else {
-            btn.disabled = false; // Enable button if not yet voted
+            btn.disabled = false; 
           }
         } else {
           console.error("Failed to downvote:", data);
@@ -499,6 +538,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Logout function
 function logout() {
-  localStorage.removeItem("loginID");
-  window.location.href = "index.html"; // Redirect to the main page
+  localStorage.clear();
+  window.location.href = "index.html";
 }
