@@ -40,6 +40,16 @@ document.addEventListener("DOMContentLoaded", async ()=>{
             forums.push(bukakaMore.split(',').filter(Boolean))
             i++;    
         }
+    }else{
+        try{
+            const userRes = await fetch('/getUsers');
+            const forumRes = await fetch('/getForums');
+            const loginRes = await fetch('/getLoggedIn');
+            isLogin(userRes, forumRes, loginRes);
+    
+                }catch(err){
+                    console.error(err);
+                }
     }
         
 

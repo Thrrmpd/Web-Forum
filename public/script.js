@@ -29,12 +29,30 @@ async function joinForum() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+    
     console.log(sessionStorage.getItem('path'));
     const loginID = sessionStorage.getItem('loginObject');
     console.log('loginID from sessionStorage:', loginID); // NEED FOR DEBUGG
 
     const navRight = document.getElementById('nav-right');
     console.log('navRight element:', navRight); // another debug
+
+    var loginStatus;
+
+    if(document.cookie){
+        const arr = document.cookie.split(';');
+        
+        for(let i = 0; i < arr.length; i++){
+            if(arr[i].split('=')[0] == 'loginStatus'){
+                loginStatus = arr[i].split('=')[1];
+                console.log(loginStatus);
+            }
+            if(arr[i].split('=')[0] == 'userInfo'){
+                const usArray = arr[i].split('=')[1];
+                console.log(usArray);
+            }
+        }
+    }
 
     if (loginID) {
         try {
