@@ -348,6 +348,40 @@ conn.get("/searchForums", async (req, res) => {
   }
 });
 
+// Route to get all forums
+conn.get("/api/all-forums", async (req, res) => {
+  try {
+      // Fetch all forums from the database
+      const allForums = await forums.find();
+
+      // Log the fetched forums to debug
+      console.log("All Forums:", allForums);
+
+      res.status(200).json(allForums);
+  } catch (error) {
+      console.error("Error fetching all forums:", error);
+      res.status(500).json({ error: "Failed to fetch forums" });
+  }
+});
+
+conn.get("/api/forum/:forID", async (req, res) => {
+  try {
+      const forumID = req.params.forID;
+
+      // Fetch the forum with the matching forID
+      const forum = await forums.findOne({ forID: parseInt(forumID) });
+
+      if (!forum) {
+          return res.status(404).json({ error: "Forum not found" });
+      }
+
+      res.status(200).json(forum);
+  } catch (error) {
+      console.error("Error fetching forum:", error);
+      res.status(500).json({ error: "Failed to fetch forum" });
+  }
+});
+
 /********************************************************************************/
 
 /***********************************UPDATE***************************************/

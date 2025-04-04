@@ -516,4 +516,44 @@ document.querySelector('.search-input').addEventListener('input', async (event) 
 });
 
 
+async function loadRecentForums() {
+    try {
+        const response = await fetch("/api/all-forums");
+        const allForums = await response.json();
 
+        console.log("Fetched All Forums:", allForums);
+
+        if (!Array.isArray(allForums) || allForums.length === 0) {
+            console.error("No forums found or invalid response:", allForums);
+            return;
+        }
+
+        const sortedForums = allForums.sort((a, b) => b.forID - a.forID);
+
+        const recentForums = sortedForums.slice(0, 3);
+
+        console.log("Most Recent Forums:", recentForums);
+
+        const recentForumsContainer = document.querySelector(".most-container .forum-container");
+
+        recentForumsContainer.innerHTML = "";
+
+        recentForums.forEach((forum) => {
+            if (forum.forID && forum.title) {
+                const forumElement = document.createElement("div");
+                forumElement.classList.add("forum-container");
+
+                // Generate a dynamic link with a query parameter
+                forumElement.innerHTML = `<a href="forum_post.html?forumID=${forum._id}">${forum.title}</a>`;
+                recentForumsContainer.appendChild(forumElement);
+            } else {
+                console.error("Invalid forum data:", forum);
+            }
+        });
+    } catch (error) {
+        console.error("Error loading recent forums:", error);
+    }
+}
+
+// Call the function when the page loads
+document.addEventListener("DOMContentLoaded", loadRecentForums);
