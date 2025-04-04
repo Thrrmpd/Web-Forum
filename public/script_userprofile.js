@@ -258,16 +258,23 @@ async function updateForum(forumID, newTitle, newDescription){
         if(res.ok){
             alert('Forum updated!');
 
-            if(document.cookie){
+            if(loginStatus == 'true'){
                 const forumRes = await fetch('/getForums');
-                const arr = await forumRes.json();
-                console.log(arr);
-                console.log(arr);
+                const arr = Object.entries(await forumRes.json());
+                var forums = [];
+                
 
+                for(var i = 0; i < arr.length; i++){
+                    console.log(arr[i][1]['creatID']);
+                    if(arr[i][1]['creatID'] == parseInt(sessionStorage.getItem('loginID')))
+                        forums.push(Object.values(arr[i][1]));
+                    }
+
+                    document.cookie = `forumInfo=${encodeURIComponent(JSON.stringify(forums))}`;
 
             }
 
-            //window.location.reload();
+            window.location.reload();
         }else{
             alert('Failed to update forum');
         }
