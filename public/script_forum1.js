@@ -335,6 +335,14 @@ async function createPost() {
     return;
   }
 
+  if (!creatorID) {
+    alert("You need to log in!");
+    document.getElementById("postTitle").value = "";
+    document.getElementById("postContent").value = "";
+    document.getElementById("postMedia").value = "";
+    return;
+  }
+
   // Fetch forum data from the backend
   const res = await fetch(`/getForum/${forumID}`);
   if (!res.ok) {
