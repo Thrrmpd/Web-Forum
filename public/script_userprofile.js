@@ -60,7 +60,9 @@ document.addEventListener("DOMContentLoaded", async ()=>{
         sessionStorage.setItem('loginObject', userArray.split(',').filter(Boolean)[0]);
         sessionStorage.setItem('loginInfo', JSON.stringify(userArray.split(',').filter(Boolean)));
         sessionStorage.setItem('loginForums', JSON.stringify(forums))
-
+        
+        userObject = userArray.split(',').filter(Boolean)[0];
+        console.log(userObject);
 
         console.log(userArray.split(',').filter(Boolean));
         console.log(userArray.split(',').filter(Boolean)[0]);
@@ -307,6 +309,21 @@ async function deleteForum(forumID) {
         }
 
         console.log('Forum deleted successfully, reloading page...');
+        if(loginStatus == 'true'){
+            const forumRes = await fetch('/getForums');
+            const arr = Object.entries(await forumRes.json());
+            var forums = [];
+            
+
+            for(var i = 0; i < arr.length; i++){
+                console.log(arr[i][1]['creatID']);
+                if(arr[i][1]['creatID'] == parseInt(sessionStorage.getItem('loginID')))
+                    forums.push(Object.values(arr[i][1]));
+                }
+
+                document.cookie = `forumInfo=${encodeURIComponent(JSON.stringify(forums))}`;
+
+        }
         window.location.reload(); // Force a page reload
     } catch (err) {
         console.error('Error deleting forum:', err);
@@ -404,9 +421,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                     body: JSON.stringify(data)
                 })
+
+                if(res.ok){
+                    console.log(await res.json());
+                }
         }
         
-        window.location.reload();
+        //window.location.reload();
         
     });
 
