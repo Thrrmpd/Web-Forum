@@ -62,7 +62,7 @@ function logout() {
 
 // Add a comment
 async function addComment(postID) {
-  const userID = Number(localStorage.getItem("loginID"));
+  const userID = Number(sessionStorage.getItem("loginID"));
 
   // Check if logged in
   if (!userID) {
@@ -127,7 +127,7 @@ async function fetchComments(postID) {
 
 // Edit a comment
 async function editComment(postID, commentID) {
-  const userID = Number(localStorage.getItem("loginID"));
+  const userID = Number(sessionStorage.getItem("loginID"));
 
   // Check if logged in
   if (!userID) {
@@ -161,7 +161,7 @@ async function editComment(postID, commentID) {
 
 // Delete a comment
 async function deleteComment(postID, commentID) {
-  const userID = Number(localStorage.getItem("loginID"));
+  const userID = Number(sessionStorage.getItem("loginID"));
 
   // Check if logged in
   if (!userID) {
@@ -331,7 +331,7 @@ async function createPost() {
   const description = document.getElementById("postContent").value.trim();
   const type = document.getElementById("postVisibility").value;
   const filename = document.getElementById("postMedia").value || "";
-  const creatorID = Number(localStorage.getItem("loginID")) || 0; // Convert to Number
+  const creatorID = Number(sessionStorage.getItem("loginID")) || 0; // Convert to Number
 
   const params = new URLSearchParams(window.location.search);
   const forumID = params.get("forumID");
@@ -391,7 +391,7 @@ async function editPost(button) {
   const title = postDiv.querySelector("h3").textContent;
   const description = postDiv.querySelector("p").textContent;
 
-  const loggedInUserId = Number(localStorage.getItem("loginID"));
+  const loggedInUserId = Number(sessionStorage.getItem("loginID"));
 
   if (!loggedInUserId) {
     alert("You need to be logged to edit post!");
@@ -436,9 +436,9 @@ async function editPost(button) {
 async function deletePost(button) {
   const postDiv = button.closest(".post");
   const postId = postDiv.dataset.id;
-  const loggedInUserId = Number(localStorage.getItem("loginID"));
+  const loggedInUserId = Number(sessionStorage.getItem("loginID"));
 
-  const creatorID = Number(localStorage.getItem("loginID")) || 0; // Convert to Number
+  const creatorID = Number(sessionStorage.getItem("loginID")) || 0; // Convert to Number
 
   if (!creatorID) {
     alert("You need to be logged to delete post!");
@@ -505,7 +505,7 @@ function renderPost(post) {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("click", async (event) => {
-    const userID = Number(localStorage.getItem("loginID")) || 0; // 0 if not logged in
+    const userID = Number(sessionStorage.getItem("loginID")) || 0; // 0 if not logged in
 
     if (!userID) {
       if (

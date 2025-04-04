@@ -29,9 +29,9 @@ async function joinForum() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log(localStorage.getItem('path'));
+    console.log(sessionStorage.getItem('path'));
     const loginID = sessionStorage.getItem('loginObject');
-    console.log('loginID from localStorage:', loginID); // NEED FOR DEBUGG
+    console.log('loginID from sessionStorage:', loginID); // NEED FOR DEBUGG
 
     const navRight = document.getElementById('nav-right');
     console.log('navRight element:', navRight); // another debug
@@ -53,12 +53,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error('Error fetching user data:', err);
         }
     } else {
-        console.log('No loginID found in localStorage');
+        console.log('No loginID found in sessionStorage');
     }
 });
 
 function logout() {
     sessionStorage.removeItem('loginObject');
-    localStorage.removeItem('path');
+    sessionStorage.removeItem('path');
     window.location.href = 'index.html'; 
 }

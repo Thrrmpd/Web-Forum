@@ -238,17 +238,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const res = await fetch(`/deleteUser/${userObject}`, {
             method:'DELETE'
         })
-        localStorage.removeItem('path');
-        localStorage.removeItem('loginObject');
+        sessionStorage.removeItem('path');
+        sessionStorage.removeItem('loginObject');
         window.location.href = 'index.html';
 
     })
 
     logout.addEventListener("click", function(){
-        localStorage.removeItem('path');
-        console.log(localStorage.getItem('path'));
+        sessionStorage.removeItem('path');
+        console.log(sessionStorage.getItem('path'));
         pathway = 0;
-        localStorage.removeItem('loginObject');
+        sessionStorage.removeItem('loginObject');
         window.location.href = 'index.html';
     })
 

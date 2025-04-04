@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const loginID = localStorage.getItem('loginObject');
-  console.log('loginID from localStorage:', loginID); // NEED FOR DEBUGG
+  const loginID = sessionStorage.getItem('loginObject');
+  console.log('loginID from sessionStorage:', loginID); // NEED FOR DEBUGG
 
   const navRight = document.getElementById('nav-right');
   console.log('navRight element:', navRight); // another debug
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           console.error('Error fetching user data:', err);
       }
   } else {
-      console.log('No loginID found in localStorage');
+      console.log('No loginID found in sessionStorage');
   }
 });
 
@@ -30,9 +30,9 @@ document.getElementById('createForumButton').addEventListener('click', async () 
   const forumDescription = document.getElementById('forumDescription').value;
   const forumCode = document.getElementById('forumCode').value;
 
-  // Get the MongoDB _id from localStorage
-  const loginObject = localStorage.getItem('loginObject');
-  console.log("loginObject from localStorage:", loginObject); // Debugging statement
+  // Get the MongoDB _id from sessionStorage
+  const loginObject = sessionStorage.getItem('loginObject');
+  console.log("loginObject from sessionStorage:", loginObject); // Debugging statement
 
   if (!loginObject) {
     alert("Error: You are not logged in. Please log in again.");
@@ -94,7 +94,7 @@ document.getElementById('createForumButton').addEventListener('click', async () 
 });
 
 function logout() {
-  localStorage.removeItem('loginObject');
+  sessionStorage.removeItem('loginObject');
   window.location.href = 'index.html'; 
 }
 

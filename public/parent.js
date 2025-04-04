@@ -93,7 +93,7 @@ function signup() {
 				})
 			})
 			
-			localStorage.setItem('loginID', JSON.stringify(ID));
+			sessionStorage.setItem('loginID', JSON.stringify(ID));
 			window.location.replace("./index_userprofile.html");
 		}
 
