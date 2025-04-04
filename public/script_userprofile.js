@@ -7,11 +7,25 @@ document.addEventListener("DOMContentLoaded", async ()=>{
         
         const userCookie = document.cookie.split(';');
         console.log(userCookie);
-        userArray = userCookie[0].split('=')[1];
-        forumArray = userCookie[1].split('=')[1];
-        loginStatus = userCookie[2].split('=')[1];
-        console.log(userArray);
+
+        userCookie.forEach(cookie =>{
+            if(cookie.split('=')[0].trim() == 'userInfo'){
+                userArray = cookie.split('=')[1];
+                console.log(cookie.split('=')[1]);
+            }else if(cookie.split('=')[0].trim() == 'forumInfo'){
+                forumArray = cookie.split('=')[1];
+                console.log(cookie);
+            }else if(cookie.split('=')[0].trim() == 'loginStatus'){
+                loginStatus = cookie.split('=')[1];
+                console.log(cookie);
+            }
+        })
+
         
+        
+        console.log(userArray);
+        console.log(forumArray);
+        console.log(loginStatus);
         
         const split = decodeURIComponent(forumArray);
         const bukaka = split.split(']')
