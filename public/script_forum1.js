@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Handle user login state
-  const loginID = localStorage.getItem("loginObject");
-  console.log("loginID from localStorage:", loginID); // Debugging statement
+  const loginID = sessionStorage.getItem("loginObject");
+  console.log("loginID from sessionStorage:", loginID); // Debugging statement
 
   const navRight = document.getElementById("nav-right");
   console.log("navRight element:", navRight); // Debugging statement
@@ -50,13 +50,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Error fetching user data:", err);
     }
   } else {
-    console.log("No loginID found in localStorage");
+    console.log("No loginID found in sessionStorage");
   }
 });
 
 // Logout function
 function logout() {
-  localStorage.clear();
+  sessionStorage.clear();
   window.location.href = "index.html";
 }
 
