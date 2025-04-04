@@ -83,6 +83,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 function logout() {
     sessionStorage.removeItem('loginObject');
     sessionStorage.removeItem('path');
-    document.cookie = 'loginStatus=false';
-    window.location.href = 'index.html'; 
+
+    document.cookie.split(";").forEach((cookie) => {
+        const name = cookie.split("=")[0].trim();
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    });
+
+    console.log("All cookies and session storage cleared.");
+
+    window.location.href = 'index.html';
 }

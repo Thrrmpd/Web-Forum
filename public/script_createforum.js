@@ -95,6 +95,16 @@ document.getElementById('createForumButton').addEventListener('click', async () 
 
 function logout() {
   sessionStorage.removeItem('loginObject');
-  window.location.href = 'index.html'; 
+  sessionStorage.removeItem('path');
+
+  document.cookie.split(";").forEach((cookie) => {
+      const name = cookie.split("=")[0].trim();
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+
+  console.log("All cookies and session storage cleared.");
+
+  // Redirect to the homepage or login page
+  window.location.href = 'index.html';
 }
 

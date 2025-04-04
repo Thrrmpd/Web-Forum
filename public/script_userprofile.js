@@ -362,13 +362,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     })
 
-    logout.addEventListener("click", function(){
-        sessionStorage.removeItem('path');
-        console.log(sessionStorage.getItem('path'));
-        pathway = 0;
-        sessionStorage.removeItem('loginObject');
-        window.location.href = 'index.html';
-    })
+    logout.addEventListener("click", function () {
+        // Clear all cookies
+        document.cookie.split(";").forEach((cookie) => {
+            const name = cookie.split("=")[0].trim();
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        });
+    
+        sessionStorage.removeItem("path");
+        sessionStorage.removeItem("loginObject");
+        sessionStorage.removeItem("loginInfo");
+        sessionStorage.removeItem("loginForums");
+    
+        console.log("Cookies and session storage cleared.");
+    
+        window.location.href = "index.html";
+    });
 
     const nameInfo = document.createTextNode("Username: ");
     const email = document.createTextNode("Email: ");
