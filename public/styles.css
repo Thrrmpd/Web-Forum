@@ -1,57 +1,134 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-}
-.nav-bar {
-    background: #2369da;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e2a38, #2b3e50);
     color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.nav-bar {
+    background: rgba(0, 0, 0, 0.4);
     padding: 10px 20px;
     display: flex;
-    justify-content: space-between; /* Pushes left and right sections apart */
+    justify-content: space-between;
     align-items: center;
-    border-radius: 20px;
+    color: white;
+    font-size: 19px;
 }
+
 .nav-bar a {
     color: white;
     margin: 0 10px;
     text-decoration: none;
 }
 
-
-h1 {
-    font-size: 30px;
-    color: #333;
-    margin-bottom: 15px;
-    text-align:center;
+.nav-bar a:hover {
+    text-decoration: underline;
 }
 
-/* Stylized input field */
-input {
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 14px;
+}
+
+.homepage-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; 
+    width: 95%;
+    max-width: 85%;
+    max-height: 500px;
+    margin: 0 auto;
+}
+
+.forum-icon-container {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.forum-icon {
+    width: 600px; 
+    height: auto;
+    max-width: 100%;
+}
+
+.homepage-content {
+    flex: 2;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.0); 
+    border: 2px solid #2a4d6f; 
+    border-radius: 15px; 
+    padding: 20px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+}
+
+.homepage-content:hover {
+    border-color: #2369da; /* Brighter blue on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Slightly larger shadow */
+    transition: all 0.3s ease;
+}
+
+.homepage-content h1 {
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+.homepage-content p {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.homepage-content input {
     padding: 12px;
     width: 100%;
     max-width: 250px;
-    border: 2px solid #2369da;
+    border: 2px solid #2a4d6f;
     border-radius: 8px;
     outline: none;
     text-align: center;
     font-size: 16px;
-    margin: 0 auto;
-    display: block;
+    margin-bottom: 15px;
 }
 
-/* Stylized button */
-button {
+.homepage-content button {
     padding: 12px 25px;
-    margin-top: 15px;
     background-color: #2369da;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    margin: 0 auto;
-    display: block;
+    transition: all 0.3s ease;
 }
 
+.homepage-content button:hover {
+    background-color: #2a4d6f;
+    transform: scale(1.05);
+}
+
+.site-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    padding-right: 20px;
+    display: inline-block;
+}
