@@ -54,6 +54,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+// Logout function
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
 // Add a comment
 async function addComment(postID) {
   const userID = Number(localStorage.getItem("loginID"));
@@ -387,6 +393,11 @@ async function editPost(button) {
 
   const loggedInUserId = Number(localStorage.getItem("loginID"));
 
+  if (!loggedInUserId) {
+    alert("You need to be logged to edit post!");
+    return;
+  }
+
   const newTitle = prompt("Edit Title:", title);
   const newDescription = prompt("Edit Content:", description);
 
@@ -426,6 +437,13 @@ async function deletePost(button) {
   const postDiv = button.closest(".post");
   const postId = postDiv.dataset.id;
   const loggedInUserId = Number(localStorage.getItem("loginID"));
+
+  const creatorID = Number(localStorage.getItem("loginID")) || 0; // Convert to Number
+
+  if (!creatorID) {
+    alert("You need to be logged to delete post!");
+    return;
+  }
 
   if (!confirm("Are you sure you want to delete this post?")) return;
 
@@ -574,9 +592,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-// Logout function
-function logout() {
-  localStorage.clear();
-  window.location.href = "index.html";
-}
