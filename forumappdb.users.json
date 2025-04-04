@@ -1,138 +1,105 @@
-[{
-  "_id": {
-    "$oid": "67ca5bd8107bdab9bcfa4214"
-  },
-  "ID": 1001,
-  "name": "John Doe",
-  "email": "john_doe@gmail.com",
-  "password": "helloworld",
-  "picture": "pfp.png",
-  "loginID": 0,
-  "votes": [
-    {
-      "postID": {
-        "$oid": "67caa15ad6d715aa87fa4219"
-      },
-      "voteType": "downvote",
-      "_id": {
-        "$oid": "67eeb612f362e70e03baa72a"
-      }
-    }
-  ],
-  "__v": 5
-},
-{
-  "_id": {
-    "$oid": "67ca5bd8107bdab9bcfa4215"
-  },
-  "ID": 1002,
-  "name": "Jane Doe",
-  "email": "jane_doe@gmail.com",
-  "password": "password123",
-  "picture": "pfp2.png",
-  "loginID": 1,
-  "votes": [
-    {
-      "postID": {
-        "$oid": "67cab08027fc9a044e9e9d3e"
-      },
-      "voteType": "upvote",
-      "_id": {
-        "$oid": "67eeb7fd82785e40ff5e1fae"
-      }
-    }
-  ],
-  "__v": 1
-},
-{
-  "_id": {
-    "$oid": "67ca5bd8107bdab9bcfa4216"
-  },
-  "ID": 1003,
-  "name": "Alice",
-  "email": "alice@gmail.com",
-  "password": "alicepassword",
-  "picture": "alice.png",
-  "loginID": 2,
-  "votes": []
-},
-{
-  "_id": {
-    "$oid": "67ca5bd8107bdab9bcfa4217"
-  },
-  "ID": 1004,
-  "name": "Bob",
-  "email": "bob@gmail.com",
-  "password": "bobpassword",
-  "picture": "bob.png",
-  "loginID": 3,
-  "votes": [],
-  "__v": 6
-},
-{
-  "_id": {
-    "$oid": "67ca5bd8107bdab9bcfa4219"
-  },
-  "ID": 1007,
-  "name": "Charlie",
-  "email": "charlie@gmail.com",
-  "password": "charliepassword",
-  "picture": "charlie.png",
-  "loginID": 5,
-  "votes": [
-    {
-      "postID": {
-        "$oid": "67cab08027fc9a044e9e9d3e"
-      },
-      "voteType": "downvote",
-      "_id": {
-        "$oid": "67eec03c0b273297f9df5b78"
-      }
-    }
-  ],
-  "__v": 4
-},
-{
-  "_id": {
-    "$oid": "67ca5bd8107bdab9bcfa4220"
-  },
-  "ID": 1008,
-  "name": "David",
-  "email": "david@gmail.com",
-  "password": "davidpassword",
-  "picture": "david.png",
-  "loginID": 6,
-  "votes": []
-},
-{
-  "_id": {
-    "$oid": "67ca5bd8107bdab9bcfa4218"
-  },
-  "ID": 1005,
-  "name": "Eve",
-  "email": "eve@gmail.com",
-  "password": "evepassword",
-  "picture": "eve.png",
-  "loginID": 4,
-  "votes": [
-    {
-      "postID": {
-        "$oid": "67cab0c327fc9a044e9e9d3f"
-      },
-      "voteType": "upvote",
-      "_id": {
-        "$oid": "67eeb1ea9c64ab7713618ea7"
-      }
+[
+  {
+    "_id": {
+      "$oid": "67ca5bd8107bdab9bcfa4214"
     },
-    {
-      "postID": {
-        "$oid": "67cab08027fc9a044e9e9d3e"
-      },
-      "voteType": "upvote",
-      "_id": {
-        "$oid": "67eebbbefd40830810cb140d"
+    "ID": 1001,
+    "name": "John Doe",
+    "email": "john_doe@gmail.com",
+    "pasword": "helloworld",
+    "picture": "pfp.png",
+    "loginID": 0,
+    "__v": 1,
+    "votes": [
+      {
+        "postID": {
+          "$oid": "67ef3d22de05e5be600fcf49"
+        },
+        "voteType": "upvote",
+        "_id": {
+          "$oid": "67ef4e0ca3b189cc7b06fc85"
+        }
       }
-    }
-  ],
-  "__v": 19
-}]
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "67ca5c15107bdab9bcfa4215"
+    },
+    "ID": 1002,
+    "name": "Jane Fisher",
+    "email": "janefisher22@gmail.com",
+    "pasword": "goodbyemydei",
+    "picture": "CryingChopper.png",
+    "loginID": 0,
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67ca5e12107bdab9bcfa4219"
+    },
+    "ID": 1003,
+    "name": "Jenny Parker",
+    "email": "jennyparker432@gmail.com",
+    "pasword": "hellomyworld",
+    "picture": "pfp.png",
+    "loginID": 0,
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67d1c85e91b78680ccc99637"
+    },
+    "ID": 1004,
+    "name": "Jenny Crocker",
+    "email": "crockercorp@gmail.com",
+    "pasword": "crockertier",
+    "picture": "FunnyEnel.jpg",
+    "loginID": 0,
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67d1c86b91b78680ccc99638"
+    },
+    "ID": 1005,
+    "name": "Jane Alison",
+    "email": "alisonjrjr@gmail.com",
+    "pasword": "portyhooty",
+    "picture": "Psyduck.jpg",
+    "loginID": 0,
+    "__v": 10,
+    "votes": [
+      {
+        "postID": {
+          "$oid": "67ef54615a58da800856a9db"
+        },
+        "voteType": "upvote",
+        "_id": {
+          "$oid": "67ef57710fb1249124e965b6"
+        }
+      },
+      {
+        "postID": {
+          "$oid": "67ef54f15a58da800856aa09"
+        },
+        "voteType": "downvote",
+        "_id": {
+          "$oid": "67ef57730fb1249124e965be"
+        }
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "67dba484f5704fcebae9fd7b"
+    },
+    "ID": 1007,
+    "name": "Hanhan",
+    "email": "hannah_corpuz@gmail.com",
+    "password": "helloworld",
+    "picture": "pfp.png",
+    "loginID": 0,
+    "__v": 0
+  }
+]

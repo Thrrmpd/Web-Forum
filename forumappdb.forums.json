@@ -1,50 +1,53 @@
-[{
-  "_id": {
-    "$oid": "67ca9f6dd6d715aa87fa4214"
+[
+  {
+    "_id": {
+      "$oid": "67ca9f6dd6d715aa87fa4214"
+    },
+    "forID": 10000,
+    "title": "Talk of town",
+    "description": "Got hot takes? Weird news? Campus chika? This is where it all goes down. The place for trending topics, wild thoughts, and everything everyone's secretly talking about. Don't be shy—spill it, post it, debate it.",
+    "code": "FORUM1",
+    "creatID": 1001
   },
-  "forID": 10000,
-  "title": "Test Forum1",
-  "description": "Test",
-  "code": "FORUM0",
-  "creatID": 1001
-},
-{
-  "_id": {
-    "$oid": "67ca9f6dd6d715aa87fa4215"
+  {
+    "_id": {
+      "$oid": "67ca9f6dd6d715aa87fa4215"
+    },
+    "forID": 10001,
+    "title": "Syntax & Sass",
+    "description": "For when your code works and you look good doing it. Come here for coding questions, tech rants, debugging drama, and sarcastic semicolons. Slay your errors and serve your logic.",
+    "code": "FORUM2",
+    "creatID": 1002
   },
-  "forID": 10001,
-  "title": "Test Forum2",
-  "description": "",
-  "code": "FORUM2",
-  "creatID": 1001
-},
-{
-  "_id": {
-    "$oid": "67ca9f6dd6d715aa87fa4216"
+  {
+    "_id": {
+      "$oid": "67ca9f6dd6d715aa87fa4216"
+    },
+    "forID": 10002,
+    "title": "Finals() = NoSleep();",
+    "description": "Finals week is here. Share your study hacks, stress vents, cursed notes, and last-minute breakdowns. We suffer together—like a true recursive function.",
+    "code": "FORUM3",
+    "creatID": 1003
   },
-  "forID": 10002,
-  "title": "Test Forum3",
-  "description": "",
-  "code": "FORUM3",
-  "creatID": 1005
-},
-{
-  "_id": {
-    "$oid": "67ca9f6dd6d715aa87fa4217"
+  {
+    "_id": {
+      "$oid": "67ca9f6dd6d715aa87fa4217"
+    },
+    "forID": 10003,
+    "title": "Spill the Tea ☕️",
+    "description": "What’s the latest scoop? From wholesome updates to chaotic energy, this is your safe space to share real talk, lowkey drama, and those “you won’t believe what happened” stories. Tea, memes, and vibes only.",
+    "code": "FORUM4",
+    "creatID": 1004
   },
-  "forID": 10003,
-  "title": "Test Forum4",
-  "description": "",
-  "code": "FORUM4",
-  "creatID": 1003
-},
-{
-  "_id": {
-    "$oid": "67ca9f6dd6d715aa87fa4218"
-  },
-  "forID": 10004,
-  "title": "Test Forum5",
-  "description": "",
-  "code": "FORUM5",
-  "creatID": 1003
-}]
+  {
+    "_id": {
+      "$oid": "67f044647b97aabc968bad1d"
+    },
+    "forID": 10004,
+    "title": "Dear Diary, But Make It Public",
+    "description": "Feeling things? Same. Post your inner thoughts, self-reflections, daily randomness, or poetic rambles. This is your open journal where oversharing is encouraged and judgment doesn't live here.",
+    "code": "FORUM5",
+    "creatID": 1001,
+    "__v": 0
+  }
+]

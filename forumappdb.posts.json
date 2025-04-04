@@ -1,192 +1,332 @@
-[{
-  "_id": {
-    "$oid": "67caa15ad6d715aa87fa4219"
-  },
-  "postID": 200001,
-  "filename": "",
-  "description": "Hi Hello hi hello",
-  "title": "title",
-  "type": "Public",
-  "creatorID": 1001,
-  "forID": 10000,
-  "comments": [],
-  "upvotes": 0,
-  "downvotes": 1,
-  "votedUsers": [
-    {
-      "userID": 1001,
-      "voteType": "downvote",
-      "_id": {
-        "$oid": "67eeb612f362e70e03baa729"
-      }
-    }
-  ],
-  "__v": 7
-},
-{
-  "_id": {
-    "$oid": "67cab08027fc9a044e9e9d3e"
-  },
-  "postID": 200002,
-  "filename": "",
-  "description": "Looking forward for better days!",
-  "title": "helloworld",
-  "type": "Public",
-  "creatorID": 1001,
-  "forID": 10000,
-  "comments": [
-    {
-      "userID": 1005,
-      "text": "my first program!",
-      "_id": {
-        "$oid": "67dd5f176a866bb574a90547"
-      },
-      "createdAt": {
-        "$date": "2025-03-21T12:44:07.334Z"
-      }
-    }
-  ],
-  "upvotes": 2,
-  "downvotes": 1,
-  "votedUsers": [
-    {
-      "userID": 1002,
-      "voteType": "upvote",
-      "_id": {
-        "$oid": "67eeb7fd82785e40ff5e1fad"
-      }
+[
+  {
+    "_id": {
+      "$oid": "67f044ea7b97aabc968bad26"
     },
-    {
-      "userID": 1005,
-      "voteType": "upvote",
-      "_id": {
-        "$oid": "67eebbbefd40830810cb140c"
-      }
+    "postID": 200024,
+    "filename": "",
+    "description": "Okay, this is the third time my iced tea has magically disappeared. WHOEVER YOU ARE, I just wanna talk 😤💢.",
+    "title": "Who keeps stealing the iced tea in the CS lab fridge??",
+    "type": "public",
+    "creatorID": 1003,
+    "forID": 10004,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f045267b97aabc968bad2a"
     },
-    {
-      "userID": 1007,
-      "voteType": "downvote",
-      "_id": {
-        "$oid": "67eec0390b273297f9df5b59"
-      }
-    }
-  ],
-  "__v": 43
-},
-{
-  "_id": {
-    "$oid": "67cab0c327fc9a044e9e9d3f"
+    "postID": 200025,
+    "filename": "",
+    "description": "- Library 2nd floor (god tier)\r\n\r\n- Cafeteria (mid, too many users)",
+    "title": "Unofficial ranking of campus WiFi spots 😤",
+    "type": "public",
+    "creatorID": 1004,
+    "forID": 10004,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
   },
-  "postID": 200003,
-  "filename": "",
-  "description": "please help my hamster's eating my food",
-  "title": "Hamster Chronicles",
-  "type": "Public",
-  "creatorID": 1003,
-  "forID": 10001,
-  "comments": [
-    {
-      "userID": 1001,
-      "text": "woah really?",
-      "_id": {
-        "$oid": "67dc593cfd39bdffc06b949a"
-      },
-      "createdAt": {
-        "$date": "2025-03-20T18:06:52.077Z"
-      }
+  {
+    "_id": {
+      "$oid": "67f045687b97aabc968bad2e"
     },
-    {
-      "userID": 1004,
-      "text": "yo what hahahaha",
-      "_id": {
-        "$oid": "67dc5c6320ca62ad9a9f7703"
-      },
-      "createdAt": {
-        "$date": "2025-03-20T18:20:19.704Z"
-      }
-    }
-  ],
-  "upvotes": 1,
-  "downvotes": 0,
-  "votedUsers": [
-    {
-      "userID": 1005,
-      "voteType": "upvote",
-      "_id": {
-        "$oid": "67eeb1ea9c64ab7713618ea6"
-      }
-    }
-  ],
-  "__v": 3
-},
-{
-  "_id": {
-    "$oid": "67cab1b327fc9a044e9e9d40"
+    "postID": 200026,
+    "filename": "",
+    "description": "I be lying in bed and suddenly inventing billion-dollar apps I’ll never build. Can someone explain this phenomenon?",
+    "title": "Why do all my best ideas hit at 2AM???",
+    "type": "public",
+    "creatorID": 1001,
+    "forID": 10004,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
   },
-  "postID": 200004,
-  "filename": "",
-  "description": "hueoqwho",
-  "title": "Hello There",
-  "type": "Private",
-  "creatorID": 1003,
-  "forID": 10002,
-  "comments": [
-    {
-      "userID": 1001,
-      "text": "yippieeee",
-      "_id": {
-        "$oid": "67dc592bfd39bdffc06b9494"
-      },
-      "createdAt": {
-        "$date": "2025-03-20T18:06:35.315Z"
+  {
+    "_id": {
+      "$oid": "67f045957b97aabc968bad32"
+    },
+    "postID": 200027,
+    "filename": "",
+    "description": "Let’s argue. Tabs gang where you at??? Spaces gang, defend yourselves. The floor is yours.",
+    "title": "Hot Take: Tabs are better than spaces",
+    "type": "public",
+    "creatorID": 1001,
+    "forID": 10004,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [
+      {
+        "userID": 1001,
+        "text": "Tab person here!!!",
+        "_id": {
+          "$oid": "67f045f17b97aabc968bad34"
+        },
+        "createdAt": {
+          "$date": "2025-04-04T20:49:53.489Z"
+        }
       }
-    }
-  ],
-  "upvotes": 0,
-  "downvotes": 0,
-  "votedUsers": []
-},
-{
-  "_id": {
-    "$oid": "67cab1e727fc9a044e9e9d41"
+    ],
+    "votedUsers": [],
+    "__v": 0
   },
-  "postID": 200005,
-  "filename": "",
-  "description": "trwegferge",
-  "title": "fgerge",
-  "type": "Private",
-  "creatorID": 1002,
-  "forID": 10002,
-  "comments": [
-    {
-      "userID": 1001,
-      "text": "yo what is this",
-      "_id": {
-        "$oid": "67dc5c2a20ca62ad9a9f76f7"
+  {
+    "_id": {
+      "$oid": "67f046477b97aabc968bad42"
+    },
+    "postID": 200028,
+    "filename": "",
+    "description": "Spent 2 hours debugging. Turns out… I missed one semicolon. Just one. 🫠",
+    "title": "Why won’t this semicolon love me back?",
+    "type": "public",
+    "creatorID": 1001,
+    "forID": 10001,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f0499085dd4e51db0c5c80"
+    },
+    "postID": 200029,
+    "filename": "",
+    "description": "Why does my logic look like spaghetti after one week??",
+    "title": "Me: ‘I’ll write clean code this time.’ Also me: 👹",
+    "type": "public",
+    "creatorID": 1002,
+    "forID": 10004,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f04a3a41967dab7ce4c6b8"
+    },
+    "postID": 200030,
+    "filename": "",
+    "description": "Turns out I was calling the wrong function this whole time 😅",
+    "title": "Found the bug. It was me. I was the bug.”",
+    "type": "public",
+    "creatorID": 1002,
+    "forID": 10001,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f04a4d41967dab7ce4c6bc"
+    },
+    "postID": 200031,
+    "filename": "",
+    "description": "Swear it’s shy or something. Run it with a friend watching? Error.",
+    "title": "My program runs… but only when I’m not looking.",
+    "type": "public",
+    "creatorID": 1004,
+    "forID": 10001,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f04a5c41967dab7ce4c6c0"
+    },
+    "postID": 200032,
+    "filename": "",
+    "description": "Code works, but at what cost?",
+    "title": "I just used a nested ternary… and now I hate myself",
+    "type": "public",
+    "creatorID": 1004,
+    "forID": 10001,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f04a6a41967dab7ce4c6c4"
+    },
+    "postID": 200033,
+    "filename": "",
+    "description": "It’s giving Hydra energy. I’m tired but impressed.",
+    "title": "When you fix a bug and 3 more appear",
+    "type": "public",
+    "creatorID": 1001,
+    "forID": 10001,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f04a9741967dab7ce4c6d0"
+    },
+    "postID": 200034,
+    "filename": "",
+    "description": "I just had the best slice of pizza… and it was 2AM. Like, what’s going on with that? Anyone else experience this?",
+    "title": "Can someone explain why pizza tastes 10x better at 2AM?",
+    "type": "public",
+    "creatorID": 1004,
+    "forID": 10000,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [
+      {
+        "userID": 1001,
+        "text": "ME!!!",
+        "_id": {
+          "$oid": "67f04aa641967dab7ce4c6d2"
+        },
+        "createdAt": {
+          "$date": "2025-04-04T21:09:58.366Z"
+        }
       },
-      "createdAt": {
-        "$date": "2025-03-20T18:19:22.526Z"
+      {
+        "userID": 1001,
+        "text": "I love pizzaaaa!!",
+        "_id": {
+          "$oid": "67f04ab141967dab7ce4c6d5"
+        },
+        "createdAt": {
+          "$date": "2025-04-04T21:10:09.717Z"
+        }
       }
-    }
-  ],
-  "upvotes": 0,
-  "downvotes": 0,
-  "votedUsers": []
-},
-{
-  "_id": {
-    "$oid": "67d456374855d518bb8a8f28"
+    ],
+    "votedUsers": [],
+    "__v": 0
   },
-  "postID": 10000,
-  "filename": "Test",
-  "description": "helloworld.to",
-  "title": "password",
-  "type": "Public",
-  "creatorID": 1002,
-  "forID": 10003,
-  "__v": 0,
-  "comments": [],
-  "upvotes": 0,
-  "downvotes": 0,
-  "votedUsers": []
-}]
+  {
+    "_id": {
+      "$oid": "67f04ac441967dab7ce4c6dd"
+    },
+    "postID": 200035,
+    "filename": "",
+    "description": "It’s like everyone suddenly decides to go right when I’m finished with my 5-minute warm-up. Should’ve just stayed home!",
+    "title": "Why does the gym only get busy when I’m already exhausted?",
+    "type": "public",
+    "creatorID": 1003,
+    "forID": 10000,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [
+      {
+        "userID": 1001,
+        "text": "gain that muscles!",
+        "_id": {
+          "$oid": "67f04b3541967dab7ce4c6f5"
+        },
+        "createdAt": {
+          "$date": "2025-04-04T21:12:21.547Z"
+        }
+      }
+    ],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f04ad141967dab7ce4c6e1"
+    },
+    "postID": 200036,
+    "filename": "",
+    "description": "The same songs, the same vibes. I’m not mad, but I might need a new playlist. Or should I just keep living in the past? 🙃",
+    "title": "Who else has their playlist from 2019 still stuck in rotation?",
+    "type": "public",
+    "creatorID": 1002,
+    "forID": 10000,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f04ae041967dab7ce4c6e5"
+    },
+    "postID": 200037,
+    "filename": "",
+    "description": "I’ll finish this task later, because I have some serious weekend plans with Netflix.",
+    "title": "What’s the point of studying if the weekend’s calling my name?",
+    "type": "public",
+    "creatorID": 1002,
+    "forID": 10000,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [
+      {
+        "userID": 1004,
+        "text": "Do you activities!",
+        "_id": {
+          "$oid": "67f04b1241967dab7ce4c6ee"
+        },
+        "createdAt": {
+          "$date": "2025-04-04T21:11:46.668Z"
+        }
+      },
+      {
+        "userID": 1005,
+        "text": "Better sleep, yeah",
+        "_id": {
+          "$oid": "67f04b1a41967dab7ce4c6f1"
+        },
+        "createdAt": {
+          "$date": "2025-04-04T21:11:54.063Z"
+        }
+      }
+    ],
+    "votedUsers": [],
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "67f04af441967dab7ce4c6e9"
+    },
+    "postID": 200038,
+    "filename": "",
+    "description": "I was trying to send a meme to my friend but sent it to Prof. Garcia instead. They laughed and said, \"Solid meme.\" Is this a win or a disaster???",
+    "title": "Accidentally sent a meme to my professor… and they liked it??",
+    "type": "public",
+    "creatorID": 1001,
+    "forID": 10000,
+    "upvotes": 0,
+    "downvotes": 0,
+    "comments": [
+      {
+        "userID": 1002,
+        "text": "lol!",
+        "_id": {
+          "$oid": "67f04afe41967dab7ce4c6eb"
+        },
+        "createdAt": {
+          "$date": "2025-04-04T21:11:26.714Z"
+        }
+      }
+    ],
+    "votedUsers": [],
+    "__v": 0
+  }
+]
