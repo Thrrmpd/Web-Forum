@@ -1,8 +1,51 @@
 
-var userArray, forumArray, userObject, loggedinUsers, loggedinForums, pathway;
+var userArray, forumArray, userObject, loggedinUsers, loggedinForums, pathway, loginStatus;
 
 document.addEventListener("DOMContentLoaded", async ()=>{
+    var forums = [];
+    if(document.cookie){
+        
+        const userCookie = document.cookie.split(';');
+        console.log(userCookie);
+        userArray = userCookie[0].split('=')[1];
+        forumArray = userCookie[2].split('=')[1];
+        loginStatus = userCookie[1].split('=')[1];
+        console.log(userArray);
+        
+        
+        const split = decodeURIComponent(forumArray);
+        const bukaka = split.split(']')
+        
+        var bukakaMore;
+        var i = 0;
+        
+        while(bukaka[i] != ''){
+            bukakaMore = bukaka[i].replaceAll('[','');
+            bukakaMore = bukakaMore.replaceAll('"','');
+            forums.push(bukakaMore.split(',').filter(Boolean))
+            i++;    
+        }
     
+        if(loginStatus == 'true'){
+        displayInfo(userArray.split(',').filter(Boolean)); //display user info from cookie
+        displayForums(forums, userArray.split(',').filter(Boolean)[2]); //display forums from cookie
+
+        sessionStorage.setItem('loginObject', userArray.split(',').filter(Boolean)[0]);
+        sessionStorage.setItem('loginInfo', JSON.stringify(userArray.split(',').filter(Boolean)));
+        sessionStorage.setItem('loginForums', JSON.stringify(forums))
+
+
+        console.log(userArray.split(',').filter(Boolean));
+        console.log(userArray.split(',').filter(Boolean)[0]);
+    }
+    else{
+        document.cookie = 'loginStatus=true';
+        window.location.reload();
+    }
+    }
+    else{
+    
+
         try{
         const userRes = await fetch('/getUsers');
         const forumRes = await fetch('/getForums');
@@ -12,6 +55,9 @@ document.addEventListener("DOMContentLoaded", async ()=>{
             }catch(err){
                 console.error(err);
             }
+            }
+        
+        
     
 })
 
@@ -37,6 +83,8 @@ async function isLogin(userRes, forumRes, loginRes){ //login function
             if(ID == Object.values(userArray[i][1])[1]){ //if ID == const ID, info = user info with ID = const iD
                 
                 info = Object.values(userArray[i][1]);
+                document.cookie = `userInfo=${info}; max-age=86400; path=/`;
+                document.cookie = `loginStatus=true; max-age=86400; path=/`;
                 sessionStorage.setItem('loginObject', info[0]);
                 break;
             }
@@ -49,6 +97,11 @@ async function isLogin(userRes, forumRes, loginRes){ //login function
             }
 
         }
+
+        console.log(forums)
+        
+        
+        
         
         userObject = info[0];
         console.log(userObject);
@@ -58,8 +111,10 @@ async function isLogin(userRes, forumRes, loginRes){ //login function
 
         displayInfo(info); 
 
-        if(forums.length != 0)
+        if(forums.length != 0){
             displayForums(forums, info[2]);
+            document.cookie = `forumInfo=${encodeURIComponent(JSON.stringify(forums))}; max-age=86400; path=/`;
+        }
 
     }catch(err){
         console.error(err);

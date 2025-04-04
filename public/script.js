@@ -60,5 +60,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 function logout() {
     sessionStorage.removeItem('loginObject');
     sessionStorage.removeItem('path');
+    document.cookie = 'loginStatus=false';
     window.location.href = 'index.html'; 
 }
