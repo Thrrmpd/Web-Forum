@@ -271,6 +271,11 @@ function createPostElement(post) {
     <small>Visibility: ${post.type}</small>
     <h3>${post.title}</h3>
     <p>${post.description}</p>
+    ${
+      post.filename
+        ? `<img src="${post.filename}" alt="Media" class="post-image" />`
+        : ""
+    }
     <div class="edit-delete">
       <button onclick="editPost(this)">Edit</button>
       <button onclick="deletePost(this)">Delete</button>
@@ -330,7 +335,6 @@ async function createPost() {
   const title = document.getElementById("postTitle").value.trim();
   const description = document.getElementById("postContent").value.trim();
   const type = document.getElementById("postVisibility").value;
-  const filename = document.getElementById("postMedia").value || "";
   const creatorID = Number(sessionStorage.getItem("loginID")) || 0; // Convert to Number
 
   const params = new URLSearchParams(window.location.search);
@@ -343,9 +347,6 @@ async function createPost() {
 
   if (!creatorID) {
     alert("You need to log in!");
-    document.getElementById("postTitle").value = "";
-    document.getElementById("postContent").value = "";
-    document.getElementById("postMedia").value = "";
     return;
   }
 
@@ -360,13 +361,22 @@ async function createPost() {
 
   const forID = forumData.forID;
 
-  const newPost = { title, description, type, filename, creatorID, forID };
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("description", description);
+  formData.append("type", type);
+  formData.append("creatorID", creatorID);
+  formData.append("forID", forID); 
+
+  const fileInput = document.getElementById("postMedia");
+  if (fileInput.files.length > 0) {
+    formData.append("image", fileInput.files[0]);
+  }
 
   try {
     const response = await fetch(`${API_URL}/addingPost`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newPost),
+      body: formData,
     });
 
     if (!response.ok) throw new Error("Failed to create post");

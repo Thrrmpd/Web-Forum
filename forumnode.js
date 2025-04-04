@@ -10,6 +10,8 @@ const path = require("path");
 const cors = require("cors");
 const port = 3000;
 const conn = express();
+const fs = require("fs");
+const fileUpload = require("express-fileupload");
 
 var username = "Test",
   email = "helloworld.to",
@@ -18,7 +20,9 @@ var username = "Test",
 
 // Middleware
 conn.use(cors());
+conn.use(fileUpload());
 conn.use(express.json());
+conn.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // conn.use(parser.urlencoded({ extended: true }));
 // conn.use(express.static(path.join(__dirname, "public")));
 
@@ -31,6 +35,10 @@ conn.use(cookieParser());
 conn.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
+
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 
 /***********************************CREATE***************************************/
 
@@ -112,7 +120,7 @@ conn.post("/addingForums", async (req, res) => {
 //Add Post API, same function as add user api but differing number of attributes
 conn.post("/addingPost", async (req, res) => {
   try {
-    const { title, description, type, filename, creatorID, forID } = req.body;
+    const { title, description, type, creatorID, forID } = req.body;
 
     if (!title || !description) {
       return res.status(400).json({ error: "Title and content are required!" });
@@ -122,13 +130,30 @@ conn.post("/addingPost", async (req, res) => {
     const lastPost = await posts.findOne().sort({ postID: -1 });
     const postID = lastPost ? lastPost.postID + 1 : 1;
 
+    let imagePath = null;
+
+    // Check if an image file is included in the request
+    if (req.files && req.files.image) {
+      const imageFile = req.files.image;
+
+      // Generate a unique filename
+      const uniqueFilename = `${Date.now()}-${imageFile.name}`;
+      const uploadPath = path.join(__dirname, "uploads", uniqueFilename);
+
+      // Save the file to the "uploads" folder
+      await imageFile.mv(uploadPath);
+
+      // Store the relative path to the file
+      imagePath = `/uploads/${uniqueFilename}`;
+    }
+
     const newPost = new posts({
       postID,
       title,
       description,
       type,
-      filename: filename || "",
-      creatorID: creatorID || "0000", // Default creator ID if not provided
+      filename: imagePath || "",
+      creatorID: creatorID || "0000",
       forID: forID,
     });
 
