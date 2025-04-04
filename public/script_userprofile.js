@@ -2,6 +2,7 @@
 var userArray, forumArray, userObject, loggedinUsers, loggedinForums, pathway, loginStatus;
 
 document.addEventListener("DOMContentLoaded", async ()=>{
+    console.log(sessionStorage.getItem('loginID'));
     var forums = [];
     if(document.cookie){
         
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async ()=>{
     }
         
 
-        if(loginStatus == 'true'){
+        if(loginStatus == 'true' && sessionStorage.getItem('loginID') == userArray.split(',').filter(Boolean)[1]){
         displayInfo(userArray.split(',').filter(Boolean)); //display user info from cookie
         displayForums(forums, userArray.split(',').filter(Boolean)[2]); //display forums from cookie
 
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async ()=>{
     else if (loginStatus == 'false' && sessionStorage.getItem('loginID') == userArray.split(',').filter(Boolean)[1]){
         document.cookie = 'loginStatus=true';
         window.location.reload();
-    } else if(loginStatus == 'false' && sessionStorage.getItem('loginID') != userArray.split(',').filter(Boolean)[1]){
+    } else {
     
 
         try{
