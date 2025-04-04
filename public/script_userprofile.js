@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", async ()=>{
         const userCookie = document.cookie.split(';');
         console.log(userCookie);
         userArray = userCookie[0].split('=')[1];
-        forumArray = userCookie[2].split('=')[1];
-        loginStatus = userCookie[1].split('=')[1];
+        forumArray = userCookie[1].split('=')[1];
+        loginStatus = userCookie[2].split('=')[1];
         console.log(userArray);
         
         
@@ -18,14 +18,15 @@ document.addEventListener("DOMContentLoaded", async ()=>{
         
         var bukakaMore;
         var i = 0;
-        
+        console.log(bukaka);
         while(bukaka[i] != ''){
             bukakaMore = bukaka[i].replaceAll('[','');
             bukakaMore = bukakaMore.replaceAll('"','');
             forums.push(bukakaMore.split(',').filter(Boolean))
             i++;    
         }
-    
+        
+
         if(loginStatus == 'true'){
         displayInfo(userArray.split(',').filter(Boolean)); //display user info from cookie
         displayForums(forums, userArray.split(',').filter(Boolean)[2]); //display forums from cookie
