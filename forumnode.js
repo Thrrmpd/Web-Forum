@@ -152,13 +152,15 @@ conn.post("/addingComment/:postID", async (req, res) => {
   const { userID, text } = req.body;
 
   if (!userID) {
-    return res.status(400).json({ error: "You need to be logged in to add a comment" });
+    return res
+      .status(400)
+      .json({ error: "You need to be logged in to add a comment" });
   }
 
   try {
     const updatedPost = await posts.findByIdAndUpdate(
       new mongoose.Types.ObjectId(postID),
-      { $push: { comments: { userID, text } } }, 
+      { $push: { comments: { userID, text } } },
       { new: true }
     );
 
@@ -430,29 +432,11 @@ conn.put("/updateForum/:id", async (req, res) => {
   }
 });
 
-// conn.post("/updatePost/:postID", async (req, res) => {
-//   const postID = req.params.postID;
-//   try {
-//     const updateInfo = await posts.findByIdAndUpdate(postID, {
-//       filename: "new.txt",
-//     });
-
-//     if (!updateInfo) {
-//       return res.status(404).json({ error: "Comment not found" });
-//     }
-
-//     console.log("Post Updated: ", updateInfo);
-//     res.status(200).json(updateInfo);
-//   } catch (exception) {
-//     console.error(exception);
-//     res.status(500).json({ error: "Failed to update Post" });
-//   }
-// });
-
 conn.post("/updatePost/:id", async (req, res) => {
   try {
     const postId = req.params.id;
-    const { title, description } = req.body;
+    const { updatedPost, loggedInUserId } = req.body;
+    const { title, description } = updatedPost;
 
     if (!title || !description) {
       return res
@@ -460,18 +444,28 @@ conn.post("/updatePost/:id", async (req, res) => {
         .json({ error: "Title and content cannot be empty." });
     }
 
-    const updatedPost = await posts.findByIdAndUpdate(
+    // Find the post by ID to get the creatorID
+    const post = await posts.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    // Check if the logged-in user is the creator of the post
+    if (post.creatorID !== loggedInUserId) {
+      return res
+        .status(403)
+        .json({ error: "You can only edit your own posts" });
+    }
+
+    // If user is the creator, update the post
+    const updatedPostData = await posts.findByIdAndUpdate(
       postId,
       { title, description },
       { new: true }
     );
 
-    if (!updatedPost) {
-      return res.status(404).json({ error: "Post not found" });
-    }
-
-    console.log("Post Updated:", updatedPost);
-    res.json(updatedPost);
+    console.log("Post Updated:", updatedPostData);
+    res.json(updatedPostData);
   } catch (error) {
     console.error("Error updating post:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -481,10 +475,12 @@ conn.post("/updatePost/:id", async (req, res) => {
 // Update a comment
 conn.put("/updateComment/:postID/:commentID", async (req, res) => {
   const { postID, commentID } = req.params;
-  const { text, userID } = req.body; 
+  const { text, userID } = req.body;
 
   if (!userID) {
-    return res.status(401).json({ error: "You must be logged in to edit a comment." });
+    return res
+      .status(401)
+      .json({ error: "You must be logged in to edit a comment." });
   }
 
   if (!mongoose.Types.ObjectId.isValid(postID)) {
@@ -492,7 +488,10 @@ conn.put("/updateComment/:postID/:commentID", async (req, res) => {
   }
 
   try {
-    const post = await posts.findOne({ _id: postID, "comments._id": commentID });
+    const post = await posts.findOne({
+      _id: postID,
+      "comments._id": commentID,
+    });
 
     if (!post) {
       return res.status(404).json({ error: "Post or comment not found" });
@@ -500,7 +499,9 @@ conn.put("/updateComment/:postID/:commentID", async (req, res) => {
 
     const comment = post.comments.id(commentID);
     if (comment.userID !== userID) {
-      return res.status(403).json({ error: "You can only edit your own comments" });
+      return res
+        .status(403)
+        .json({ error: "You can only edit your own comments" });
     }
 
     comment.text = text;
@@ -564,29 +565,60 @@ conn.delete("/deleteForum/:forumID", async (req, res) => {
   }
 });
 
+// conn.delete("/deletePost/:postID", async (req, res) => {
+//   const postID = req.params.postID;
+//   try {
+//     const deletePost = await posts.findByIdAndDelete(postID);
+
+//     if (!deletePost) {
+//       return res.status(404).json({ error: "Post not found" });
+//     }
+
+//     console.log("User Removed", postID);
+//     res.status(200).json({ message: "Post Deleted Successfully" });
+//   } catch (exception) {
+//     console.log(exception);
+//   }
+// });
+
 conn.delete("/deletePost/:postID", async (req, res) => {
   const postID = req.params.postID;
-  try {
-    const deletePost = await posts.findByIdAndDelete(postID);
+  const { loggedInUserId } = req.body; // Get logged-in user ID from request body
 
-    if (!deletePost) {
+  try {
+    const post = await posts.findById(postID);
+
+    if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    console.log("User Removed", postID);
+    // Check if the logged-in user is the creator of the post
+    if (post.creatorID !== loggedInUserId) {
+      return res
+        .status(403)
+        .json({ error: "You can only delete your own posts" });
+    }
+
+    // If the user is the creator, delete the post
+    await posts.findByIdAndDelete(postID);
+
+    console.log("Post Deleted", postID);
     res.status(200).json({ message: "Post Deleted Successfully" });
   } catch (exception) {
     console.log(exception);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 // Delete a comment
 conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
   const { postID, commentID } = req.params;
-  const { userID } = req.body; 
+  const { userID } = req.body;
 
   if (!userID) {
-    return res.status(401).json({ error: "You must be logged in to delete a comment." });
+    return res
+      .status(401)
+      .json({ error: "You must be logged in to delete a comment." });
   }
 
   if (!mongoose.Types.ObjectId.isValid(postID)) {
@@ -595,16 +627,19 @@ conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
 
   try {
     const post = await posts.findOneAndUpdate(
-      { _id: postID, "comments._id": commentID, "comments.userID": userID }, 
-      { $pull: { comments: { _id: commentID } } }, 
+      { _id: postID, "comments._id": commentID, "comments.userID": userID },
+      { $pull: { comments: { _id: commentID } } },
       { new: true }
     );
 
     if (!post) {
-      return res.status(404).json({ error: "Post or comment not found, or you're not authorized to delete this comment" });
+      return res.status(404).json({
+        error:
+          "Post or comment not found, or you're not authorized to delete this comment",
+      });
     }
 
-    res.json(post); 
+    res.json(post);
   } catch (error) {
     console.error("Error deleting comment:", error);
     res.status(500).json({ error: "Failed to delete a comment" });
@@ -617,7 +652,7 @@ conn.delete("/deleteComment/:postID/:commentID", async (req, res) => {
 
 // Handle upvote action
 conn.put("/upvote/:postId", async (req, res) => {
-  const { postId } = req.params;  
+  const { postId } = req.params;
   const { userID } = req.body;
 
   try {
@@ -629,31 +664,43 @@ conn.put("/upvote/:postId", async (req, res) => {
     const user = await users.findOne({ ID: userID });
     if (!user) return res.status(404).send("User not found");
 
-    const existingVote = post.votedUsers.find(vote => vote.userID === userID);
+    const existingVote = post.votedUsers.find((vote) => vote.userID === userID);
 
     if (existingVote) {
-      if (existingVote.voteType === 'upvote') {
+      if (existingVote.voteType === "upvote") {
         // Remove upvote
         post.upvotes -= 1;
-        post.votedUsers = post.votedUsers.filter(vote => vote.userID !== userID);
+        post.votedUsers = post.votedUsers.filter(
+          (vote) => vote.userID !== userID
+        );
         // Remove post from votes
-        user.votes = user.votes.filter(vote => vote.postID.toString() !== postId);  
-      } else if (existingVote.voteType === 'downvote') {
+        user.votes = user.votes.filter(
+          (vote) => vote.postID.toString() !== postId
+        );
+      } else if (existingVote.voteType === "downvote") {
         // Change vote from downvote to upvote
         post.upvotes += 1;
         post.downvotes -= 1;
-        existingVote.voteType = 'upvote';
+        existingVote.voteType = "upvote";
         // Update votes array
-        user.votes = user.votes.map(vote =>
-          vote.postID.toString() === postId ? { postID: new mongoose.Types.ObjectId(postId), voteType: 'upvote' } : vote
+        user.votes = user.votes.map((vote) =>
+          vote.postID.toString() === postId
+            ? {
+                postID: new mongoose.Types.ObjectId(postId),
+                voteType: "upvote",
+              }
+            : vote
         );
       }
     } else {
       // New upvote
       post.upvotes += 1;
-      post.votedUsers.push({ userID, voteType: 'upvote' });
-      // Add post to votes array 
-      user.votes.push({ postID: new mongoose.Types.ObjectId(postId), voteType: 'upvote' });
+      post.votedUsers.push({ userID, voteType: "upvote" });
+      // Add post to votes array
+      user.votes.push({
+        postID: new mongoose.Types.ObjectId(postId),
+        voteType: "upvote",
+      });
     }
 
     await post.save();
@@ -668,7 +715,7 @@ conn.put("/upvote/:postId", async (req, res) => {
 
 // Handle downvote action
 conn.put("/downvote/:postId", async (req, res) => {
-  const { postId } = req.params;  
+  const { postId } = req.params;
   const { userID } = req.body;
 
   try {
@@ -680,31 +727,43 @@ conn.put("/downvote/:postId", async (req, res) => {
     const user = await users.findOne({ ID: userID });
     if (!user) return res.status(404).send("User not found");
 
-    const existingVote = post.votedUsers.find(vote => vote.userID === userID);
+    const existingVote = post.votedUsers.find((vote) => vote.userID === userID);
 
     if (existingVote) {
-      if (existingVote.voteType === 'downvote') {
+      if (existingVote.voteType === "downvote") {
         // Remove downvote
         post.downvotes -= 1;
-        post.votedUsers = post.votedUsers.filter(vote => vote.userID !== userID);
+        post.votedUsers = post.votedUsers.filter(
+          (vote) => vote.userID !== userID
+        );
         // Remove post from votes
-        user.votes = user.votes.filter(vote => vote.postID.toString() !== postId); 
-      } else if (existingVote.voteType === 'upvote') {
+        user.votes = user.votes.filter(
+          (vote) => vote.postID.toString() !== postId
+        );
+      } else if (existingVote.voteType === "upvote") {
         // Change vote from upvote to downvote
         post.upvotes -= 1;
         post.downvotes += 1;
-        existingVote.voteType = 'downvote';
+        existingVote.voteType = "downvote";
         // Update votes array
-        user.votes = user.votes.map(vote =>
-          vote.postID.toString() === postId ? { postID: new mongoose.Types.ObjectId(postId), voteType: 'downvote' } : vote
+        user.votes = user.votes.map((vote) =>
+          vote.postID.toString() === postId
+            ? {
+                postID: new mongoose.Types.ObjectId(postId),
+                voteType: "downvote",
+              }
+            : vote
         );
       }
     } else {
       // New downvote
       post.downvotes += 1;
-      post.votedUsers.push({ userID, voteType: 'downvote' });
-      // Add post to votes array 
-      user.votes.push({ postID: new mongoose.Types.ObjectId(postId), voteType: 'downvote' });
+      post.votedUsers.push({ userID, voteType: "downvote" });
+      // Add post to votes array
+      user.votes.push({
+        postID: new mongoose.Types.ObjectId(postId),
+        voteType: "downvote",
+      });
     }
 
     await post.save();

@@ -87,9 +87,9 @@ async function addComment(postID) {
 
     if (!response.ok) throw new Error("Failed to add comment");
 
-    const updatedPost = await response.json(); 
+    const updatedPost = await response.json();
 
-    renderUpdatedComments(postID, updatedPost.comments); 
+    renderUpdatedComments(postID, updatedPost.comments);
 
     commentInput.value = "";
   } catch (error) {
@@ -137,12 +137,12 @@ async function editComment(postID, commentID) {
     const response = await fetch(`/updateComment/${postID}/${commentID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: newText, userID: userID }), 
+      body: JSON.stringify({ text: newText, userID: userID }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      alert(errorData.error); 
+      alert(errorData.error);
       return;
     }
 
@@ -155,7 +155,7 @@ async function editComment(postID, commentID) {
 
 // Delete a comment
 async function deleteComment(postID, commentID) {
-  const userID = Number(localStorage.getItem("loginID")); 
+  const userID = Number(localStorage.getItem("loginID"));
 
   // Check if logged in
   if (!userID) {
@@ -163,8 +163,10 @@ async function deleteComment(postID, commentID) {
     return;
   }
 
-  const confirmDelete = confirm("Are you sure you want to delete this comment?");
-  
+  const confirmDelete = confirm(
+    "Are you sure you want to delete this comment?"
+  );
+
   if (!confirmDelete) {
     return; // If user cancels, do nothing
   }
@@ -173,17 +175,17 @@ async function deleteComment(postID, commentID) {
     const response = await fetch(`/deleteComment/${postID}/${commentID}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userID: userID }), 
+      body: JSON.stringify({ userID: userID }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      alert(errorData.error); 
+      alert(errorData.error);
       return;
     }
 
     const updatedPost = await response.json();
-    renderUpdatedComments(postID, updatedPost.comments); 
+    renderUpdatedComments(postID, updatedPost.comments);
   } catch (error) {
     console.error("Error deleting comment:", error);
   }
@@ -375,6 +377,8 @@ async function editPost(button) {
   const title = postDiv.querySelector("h3").textContent;
   const description = postDiv.querySelector("p").textContent;
 
+  const loggedInUserId = Number(localStorage.getItem("loginID"));
+
   const newTitle = prompt("Edit Title:", title);
   const newDescription = prompt("Edit Content:", description);
 
@@ -387,12 +391,21 @@ async function editPost(button) {
 
   try {
     const response = await fetch(`${API_URL}/updatePost/${postId}`, {
-      method: "POST", //
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedPost),
+      body: JSON.stringify({ updatedPost, loggedInUserId }),
     });
 
-    if (!response.ok) throw new Error("Failed to update post");
+    if (!response.ok) {
+      // If the response is not OK, check the status code
+      const errorData = await response.json();
+      if (response.status === 403) {
+        alert(errorData.error); // Show the error message sent by the server
+      } else {
+        throw new Error("Failed to update post");
+      }
+      return;
+    }
 
     postDiv.querySelector("h3").textContent = newTitle;
     postDiv.querySelector("p").textContent = newDescription;
@@ -404,15 +417,26 @@ async function editPost(button) {
 async function deletePost(button) {
   const postDiv = button.closest(".post");
   const postId = postDiv.dataset.id;
+  const loggedInUserId = Number(localStorage.getItem("loginID"));
 
   if (!confirm("Are you sure you want to delete this post?")) return;
 
   try {
     const response = await fetch(`${API_URL}/deletePost/${postId}`, {
       method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ loggedInUserId }), // Send logged-in user ID to the server
     });
 
-    if (!response.ok) throw new Error("Failed to delete post");
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (response.status === 403) {
+        alert(errorData.error); // Show error message from server
+      } else {
+        throw new Error("Failed to delete post");
+      }
+      return;
+    }
 
     postDiv.remove();
   } catch (error) {
@@ -458,10 +482,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const userID = Number(localStorage.getItem("loginID")) || 0; // 0 if not logged in
 
     if (!userID) {
-      if (event.target.closest(".upvote-btn") || event.target.closest(".downvote-btn")) {
+      if (
+        event.target.closest(".upvote-btn") ||
+        event.target.closest(".downvote-btn")
+      ) {
         alert("You must be logged in to vote.");
       }
-      return; 
+      return;
     }
 
     // Upvote button clicked
@@ -475,21 +502,23 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userID: userID }), 
+          body: JSON.stringify({ userID: userID }),
         });
         const data = await res.json();
 
         if (res.ok) {
           const upvoteCount = document.getElementById(`upvote-count-${postId}`);
-          const downvoteCount = document.getElementById(`downvote-count-${postId}`);
+          const downvoteCount = document.getElementById(
+            `downvote-count-${postId}`
+          );
 
           upvoteCount.textContent = data.upvotes;
           downvoteCount.textContent = data.downvotes;
 
-          if (data.voted === 'upvoted') {
-            btn.disabled = true; 
+          if (data.voted === "upvoted") {
+            btn.disabled = true;
           } else {
-            btn.disabled = false; 
+            btn.disabled = false;
           }
         } else {
           console.error("Failed to upvote:", data);
@@ -510,21 +539,23 @@ document.addEventListener("DOMContentLoaded", () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userID: userID }), 
+          body: JSON.stringify({ userID: userID }),
         });
         const data = await res.json();
 
         if (res.ok) {
           const upvoteCount = document.getElementById(`upvote-count-${postId}`);
-          const downvoteCount = document.getElementById(`downvote-count-${postId}`);
+          const downvoteCount = document.getElementById(
+            `downvote-count-${postId}`
+          );
 
           upvoteCount.textContent = data.upvotes;
           downvoteCount.textContent = data.downvotes;
 
-          if (data.voted === 'downvoted') {
-            btn.disabled = true; 
+          if (data.voted === "downvoted") {
+            btn.disabled = true;
           } else {
-            btn.disabled = false; 
+            btn.disabled = false;
           }
         } else {
           console.error("Failed to downvote:", data);
