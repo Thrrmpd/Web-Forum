@@ -1,18 +1,18 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
+  margin: 0px;
   padding: 0;
-  background-color: #f4f4f4;
+  background: linear-gradient(135deg, #1e2a38, #2b3e50);
 }
 
 .nav-bar {
-  background: #2369da;
-  color: white;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.4);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 19px;
 }
 
 .nav-bar a {
@@ -24,7 +24,7 @@ body {
 .post-form,
 .posts-section,
 .forum-description {
-  background: white;
+  background: rgba(255, 255, 255, 0.1);
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -32,10 +32,26 @@ body {
   max-width: 800px;
 }
 
+.postVisibility {
+  background: #cccccc;
+}
+
 .forum-description {
   text-align: center;
   font-size: 16px;
-  color: #555;
+  color: #cccccc;
+}
+
+.post-form h2{
+  font-size: 24px;
+  color: #cccccc;
+  margin-bottom: 15px;
+}
+
+.posts-section h2 {
+  font-size: 24px;
+  color: #cccccc;
+  margin-bottom: 15px;
 }
 
 input,
@@ -62,18 +78,41 @@ button:hover {
 }
 
 .post {
-  background: white;
+  background: rgba(255, 255, 255, 0.1);;
   padding: 10px;
   margin: 30px 0;
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   position: relative;
+  color: #cccccc;
+}
+
+.post h4 {
+  font-size: 15px;
+}
+
+.post h3 {
+  color: white;
+  font-size: 25px;
+}
+
+.post p {
+  color: white;
+}
+
+.comment-input input {
+  background-color:#ffffff13
+}
+
+[id^="commentInput-"]::placeholder {
+  color: #cccccc;
+  opacity: 0.8; 
 }
 
 .comments {
   margin-top: 15px;
   padding: 10px;
-  background: #f9f9f9;
+  background: #f9f9f900;
   border-radius: 5px;
 }
 
@@ -81,7 +120,7 @@ button:hover {
   margin-top: 5px;
   margin-bottom: 5px;
   font-size: 18px;
-  color: #333;
+  color: white;
 }
 
 .comment {
@@ -98,6 +137,24 @@ button:hover {
   margin-top: 5px;
 }
 
+.edit-delete button {
+  background-color: rgba(255, 255, 255, 0.178);
+}
+
+.post-form button {
+  background-color: rgba(255, 255, 255, 0.178);
+}
+
+.comment-actions button {
+  background-color: rgba(255, 255, 255, 0.267);
+  color: white;
+  border: 2px solid #ccc;
+}
+
+.comment-input button {
+  background-color: rgba(255, 255, 255, 0.178);
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -108,7 +165,7 @@ img {
 
 h1 {
   font-size: 30px;
-  color: #333;
+  color: #cccccc;
   margin-bottom: 15px;
   text-align: center;
 }
@@ -119,7 +176,7 @@ h1 {
   justify-content: space-between;
   padding: 5px 10px; 
   margin: 3px 0; 
-  background: white;
+  background: rgba(255, 255, 255, 0.062);
   border-radius: 6px; 
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
   font-size: 12px; 
@@ -131,6 +188,7 @@ h1 {
   text-align: left;
   margin: 0;
   font-size: 12px;
+  color: white;
 }
 
 .comment-actions {
@@ -212,4 +270,35 @@ h1 {
   height: auto;
   margin-top: 10px;
   border-radius: 5px;
+}
+
+#postVisibility {
+  background-color:rgba(255, 255, 255, 0);
+  color: #cccccc;
+}
+
+#postTitle {
+  background-color:rgba(255, 255, 255, 0);
+  color: #cccccc;
+}
+
+#postContent {
+  background-color:rgba(255, 255, 255, 0);
+  color: #cccccc;
+}
+
+#postMedia {
+  background-color:rgba(255, 255, 255, 0);
+  color: #cccccc;
+}
+
+#postTitle::placeholder,
+#postContent::placeholder {
+  color: #cccccc;
+  opacity: 0.7; 
+}
+
+#commentInput::placeholder {
+  color: #cccccc;
+  opacity: 0.7; 
 }
