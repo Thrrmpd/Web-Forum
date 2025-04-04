@@ -31,27 +31,32 @@ async function joinForum() {
 document.addEventListener("DOMContentLoaded", async () => {
     
     console.log(sessionStorage.getItem('path'));
-    const loginID = sessionStorage.getItem('loginObject');
+    var loginID = sessionStorage.getItem('loginObject');
     console.log('loginID from sessionStorage:', loginID); // NEED FOR DEBUGG
 
     const navRight = document.getElementById('nav-right');
     console.log('navRight element:', navRight); // another debug
 
-    var loginStatus;
+    var loginStatus, buffer;
 
     if(document.cookie){
         const arr = document.cookie.split(';');
         
         for(let i = 0; i < arr.length; i++){
-            if(arr[i].split('=')[0] == 'loginStatus'){
+            if(arr[i].split('=')[0].trim() == 'loginStatus'){
                 loginStatus = arr[i].split('=')[1];
                 console.log(loginStatus);
             }
-            if(arr[i].split('=')[0] == 'userInfo'){
-                const usArray = arr[i].split('=')[1];
+            if(arr[i].split('=')[0].trim() == 'userInfo'){
+                const usArray = arr[i].split('=')[1].split(',');
+                buffer = usArray[0];
                 console.log(usArray);
             }
         }
+    }
+
+    if(loginStatus == 'true'){
+        loginID = buffer;
     }
 
     if (loginID) {
