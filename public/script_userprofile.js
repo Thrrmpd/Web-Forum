@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", async ()=>{
             forums.push(bukakaMore.split(',').filter(Boolean))
             i++;    
         }
+    }
         
 
         if(loginStatus == 'true'){
@@ -53,12 +54,10 @@ document.addEventListener("DOMContentLoaded", async ()=>{
         console.log(userArray.split(',').filter(Boolean));
         console.log(userArray.split(',').filter(Boolean)[0]);
     }
-    else{
+    else if (loginStatus == 'false' && sessionStorage.getItem('loginID') == userArray.split(',').filter(Boolean)[1]){
         document.cookie = 'loginStatus=true';
         window.location.reload();
-    }
-    }
-    else{
+    } else if(loginStatus == 'false' && sessionStorage.getItem('loginID') != userArray.split(',').filter(Boolean)[1]){
     
 
         try{
@@ -98,8 +97,11 @@ async function isLogin(userRes, forumRes, loginRes){ //login function
             if(ID == Object.values(userArray[i][1])[1]){ //if ID == const ID, info = user info with ID = const iD
                 
                 info = Object.values(userArray[i][1]);
+
+                if(!document.cookie){
                 document.cookie = `userInfo=${info}; max-age=86400; path=/`;
                 document.cookie = `loginStatus=true; max-age=86400; path=/`;
+                }
                 sessionStorage.setItem('loginObject', info[0]);
                 break;
             }
@@ -128,7 +130,8 @@ async function isLogin(userRes, forumRes, loginRes){ //login function
 
         if(forums.length != 0){
             displayForums(forums, info[2]);
-            document.cookie = `forumInfo=${encodeURIComponent(JSON.stringify(forums))}; max-age=86400; path=/`;
+            if(!document.cookie)
+                document.cookie = `forumInfo=${encodeURIComponent(JSON.stringify(forums))}; max-age=86400; path=/`;
         }
 
     }catch(err){
@@ -253,7 +256,17 @@ async function updateForum(forumID, newTitle, newDescription){
 
         if(res.ok){
             alert('Forum updated!');
-            window.location.reload();
+
+            if(document.cookie){
+                const forumRes = await fetch('/getForums');
+                const arr = await forumRes.json();
+                console.log(arr);
+                console.log(arr);
+
+
+            }
+
+            //window.location.reload();
         }else{
             alert('Failed to update forum');
         }
