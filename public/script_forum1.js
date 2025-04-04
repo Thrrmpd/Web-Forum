@@ -269,6 +269,7 @@ function createPostElement(post) {
 
   postDiv.innerHTML = `
     <small>Visibility: ${post.type}</small>
+    <h4>Creator: ${post.creatorID}</h4>
     <h3>${post.title}</h3>
     <p>${post.description}</p>
     ${
@@ -366,7 +367,7 @@ async function createPost() {
   formData.append("description", description);
   formData.append("type", type);
   formData.append("creatorID", creatorID);
-  formData.append("forID", forID); 
+  formData.append("forID", forID);
 
   const fileInput = document.getElementById("postMedia");
   if (fileInput.files.length > 0) {
