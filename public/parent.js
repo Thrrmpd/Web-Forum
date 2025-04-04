@@ -27,7 +27,7 @@ function login() {
 		
 		if(isEqual == true)
 			{
-				localStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1])); //Stores user ID so that vars are passed between js and html pages
+				sessionStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1])); //Stores user ID so that vars are passed between js and html pages
 				
 				window.location.replace("./index_userprofile.html");
 			}

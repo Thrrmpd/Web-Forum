@@ -16,8 +16,10 @@ document.addEventListener("DOMContentLoaded", async ()=>{
 })
 
 async function isLogin(userRes, forumRes, loginRes){ //login function
-    const ID = parseInt(localStorage.getItem('loginID')); //used this to get user data of user that logged in
-    console.log(ID);
+    
+        const ID = parseInt(sessionStorage.getItem('loginID')); //used this to get user data of user that logged in
+        console.log(ID);
+        
     console.log(Object.entries(await loginRes.json()).length);
     try{//Try catch block needed in case promise error occurs because of fetch()
         
@@ -35,7 +37,7 @@ async function isLogin(userRes, forumRes, loginRes){ //login function
             if(ID == Object.values(userArray[i][1])[1]){ //if ID == const ID, info = user info with ID = const iD
                 
                 info = Object.values(userArray[i][1]);
-                localStorage.setItem('loginObject', info[0]);
+                sessionStorage.setItem('loginObject', info[0]);
                 break;
             }
         }
@@ -51,8 +53,8 @@ async function isLogin(userRes, forumRes, loginRes){ //login function
         userObject = info[0];
         console.log(userObject);
 
-        localStorage.setItem('loginInfo', JSON.stringify(info));
-        localStorage.setItem('loginForums', JSON.stringify(forums))
+        sessionStorage.setItem('loginInfo', JSON.stringify(info));
+        sessionStorage.setItem('loginForums', JSON.stringify(forums))
 
         displayInfo(info); 
 

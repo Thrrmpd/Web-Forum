@@ -30,7 +30,7 @@ async function joinForum() {
 
 document.addEventListener("DOMContentLoaded", async () => {
     console.log(localStorage.getItem('path'));
-    const loginID = localStorage.getItem('loginObject');
+    const loginID = sessionStorage.getItem('loginObject');
     console.log('loginID from localStorage:', loginID); // NEED FOR DEBUGG
 
     const navRight = document.getElementById('nav-right');
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function logout() {
-    localStorage.removeItem('loginObject');
+    sessionStorage.removeItem('loginObject');
     localStorage.removeItem('path');
     window.location.href = 'index.html'; 
 }
