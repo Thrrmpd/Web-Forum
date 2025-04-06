@@ -26,7 +26,15 @@ conn.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // conn.use(parser.urlencoded({ extended: true }));
 // conn.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://localhost:27017/forumappdb");
+mongoose.connect("mongodb+srv://johannjoseph26:TbogoJXZubB7HEeg@cluster0.ujhsndz.mongodb.net/forumappdb?retryWrites=true&w=majority&appName=Cluster0");
+
+mongoose.connection.on("connected", () => {
+  console.log("Connected to MongoDB successfully!");
+});
+
+mongoose.connection.on("error", (err) => {
+  console.error("Error connecting to MongoDB:", err);
+});
 
 conn.use(express.static(path.join(__dirname, "public")));
 conn.use(parser.json());
