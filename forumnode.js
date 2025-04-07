@@ -21,10 +21,9 @@ var username = "Test",
 
 // Middleware
 conn.use(cors());
-conn.use(fileUpload());
-conn.use(express.json());
 conn.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
-//conn.use("/uploads", express.static(path.join(__dirname, "uploads")));
+conn.use(express.json());
+conn.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // conn.use(parser.urlencoded({ extended: true }));
 // conn.use(express.static(path.join(__dirname, "public")));
 
