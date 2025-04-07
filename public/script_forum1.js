@@ -230,7 +230,8 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchPosts();
 });
 
-const API_URL = "http://localhost:3000";
+//const API_URL = "http://localhost:3000";
+const API_URL = "https://theroundtable.onrender.com";
 
 async function fetchPosts() {
   const params = new URLSearchParams(window.location.search);
