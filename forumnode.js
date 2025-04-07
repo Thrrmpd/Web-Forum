@@ -12,6 +12,7 @@ const port = 3000;
 const conn = express();
 const fs = require("fs");
 const fileUpload = require("express-fileupload");
+const cloudinary = require("cloudinary").v2;
 
 var username = "Test",
   email = "helloworld.to",
@@ -48,6 +49,20 @@ if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
 }
 
+cloudinary.config ( {
+  cloud_name: "danqjbdkc",
+  api_key: "394157762231989",
+  api_secret: "-j-2V252YCWfEdf1itQRrGFtZqM",
+});
+
+// check if cloudinary is connected
+cloudinary.api.ping((error, result) => {
+  if (error) {
+    console.error("Cloudinary connection error:", error);
+  } else {
+    console.log("Cloudinary connected successfully:", result);
+  }
+})
 /***********************************CREATE***************************************/
 
 //Add User API
@@ -144,15 +159,16 @@ conn.post("/addingPost", async (req, res) => {
     if (req.files && req.files.image) {
       const imageFile = req.files.image;
 
-      // Generate a unique filename
-      const uniqueFilename = `${Date.now()}-${imageFile.name}`;
-      const uploadPath = path.join(__dirname, "uploads", uniqueFilename);
+      // Upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(imageFile.tempFilePath, {
+        folder: "uploads", // Optional: specify a folder in Cloudinary
+      });
 
-      // Save the file to the "uploads" folder
-      await imageFile.mv(uploadPath);
+      console.log("Cloudinary upload result:", result);
 
-      // Store the relative path to the file
-      imagePath = `/uploads/${uniqueFilename}`;
+      imagePath = result.secure_url; // Cloudinary URL 
+    } else { 
+      console.log("No image file uploaded.");
     }
 
     const newPost = new posts({
