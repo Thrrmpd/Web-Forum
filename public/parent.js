@@ -5,10 +5,10 @@ function login() {
 	const username  = document.getElementById("username").value;
 	var isEqual = false;
 	document.getElementById("loginbutton").addEventListener('click', async()=>{ //event listener where if user clicks login button then the function below will be executed
-		const res = await fetch('/getUsers'); //fetch users from getUsers API
-		const userdata = await res.json(); //returns object to userdata from res.json()
-		var userentries = Object.entries(userdata); //returns array of key/value pairs to userentries 
-		var index;
+		//const res = await fetch('/getUsers'); //fetch users from getUsers API
+		//const userdata = await res.json(); //returns object to userdata from res.json()
+		//var userentries = Object.entries(userdata); //returns array of key/value pairs to userentries 
+		//var index;
 		//a single entry from userentries is an object
 		
 
@@ -27,8 +27,10 @@ function login() {
 					password:password
 				})
 			})
+
+			console.log(res);
 	}catch(err){
-		console.log(err);
+		console.log(res);
 	}
 	/*try{
 		const crypto = await import('bcrypt');

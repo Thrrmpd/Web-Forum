@@ -128,19 +128,20 @@ conn.post('/login', async (req, res)=>{
     if(req.body.email == Object.values(userentries[i][1])[3]){
       var compare = await crypto.compare(req.body.password, Object.values(userentries[i][1])[3])
       if(compare == true){
-        sessionStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1]));
-        window.location.replace("./index_userprofile.html");
+        return res.status(200).json({message:"OK"})
       }
       else{
-        return;
+        return res.status(401).json({messsage:"NO"});
       }
     
     }
   }
 
+  res.status(404).json({message: "Invalid Username or Password"});
 
-}catch{
 
+}catch(err){
+  console.log(err)
 }
 
 });
