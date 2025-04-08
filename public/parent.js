@@ -14,7 +14,8 @@ function login() {
 	try{
 		for(let i = 0; i < userentries.length; i++){ //for loop check for validity
 			if(username == Object.values(userentries[i][1])[3]){
-				if(await crypto.compare(password, Object.values(userentries[i][1])[4])){
+				var compare = await crypto.compare(password, Object.values(userentries[i][1])[4]);
+				if(compare == true){
 					isEqual = true;
 					index = i;
 					break;
@@ -27,7 +28,7 @@ function login() {
 			}
 		}
 	}catch{
-		
+
 	}
 		
 		if(isEqual == true)
