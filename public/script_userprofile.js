@@ -450,6 +450,8 @@ document.addEventListener("DOMContentLoaded", function () {
               updateUsername.value = '';
               updateEmail.value = '';
               updatePFP.value = '';
+
+              sessionStorage.setItem("loginInfo", JSON.stringify(updatedUser));
             } else {
               const error = await res.json();
               console.error("Error updating user:", error);
