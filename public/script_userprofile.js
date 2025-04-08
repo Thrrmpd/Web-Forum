@@ -1,11 +1,10 @@
-const crypto = require('bcrypt');
+
 var userArray, forumArray, userObject, loggedinUsers, loggedinForums, pathway, loginStatus;
 
 document.addEventListener("DOMContentLoaded", async () => {
     console.log(sessionStorage.getItem('loginID'));
     var forums = [];
 
-    console.log(crypto.hash("helloworld", 10));
 
     if (document.cookie) {
         const userCookie = document.cookie.split(';');

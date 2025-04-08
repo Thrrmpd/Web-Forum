@@ -85,22 +85,29 @@ function signup() {
 
 
 
+			try{
 			
-			const hash = await crypto.hash(password, 10);
-			alert(hash)
+				const salt = await crypto.genSalt();
+				const hashed = await crypto.hash(password, salt);
+			
 
-			const res = await fetch("/addingUser", {
-				method:'POST',
-				headers:{
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					ID:ID,
-					name:username,
-					email:email,
-					password:hash
+				const res = await fetch("/addingUser", {
+					method:'POST',
+					headers:{
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						ID:ID,
+						name:username,
+						email:email,
+						password:hashed
+					})
 				})
-			})
+		}catch{
+
+		}
+
+			
 			
 			sessionStorage.setItem('loginID', JSON.stringify(ID));
 			window.location.replace("./index_userprofile.html");
