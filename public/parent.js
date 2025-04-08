@@ -11,10 +11,10 @@ function login() {
 		var index;
 		//a single entry from userentries is an object
 		console.log(userdata);
-
+	try{
 		for(let i = 0; i < userentries.length; i++){ //for loop check for validity
 			if(username == Object.values(userentries[i][1])[3]){
-				if(password == Object.values(userentries[i][1])[4]){
+				if(await crypto.compare(password, Object.values(userentries[i][1])[4])){
 					isEqual = true;
 					index = i;
 					break;
@@ -26,6 +26,9 @@ function login() {
 				isEqual = false;
 			}
 		}
+	}catch{
+		
+	}
 		
 		if(isEqual == true)
 			{
