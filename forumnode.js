@@ -300,15 +300,35 @@ async function getUserFromDatabase(userID) {
 // READ API for users by ID
 conn.get("/getUser/:id", async (req, res) => {
   const userID = req.params.id;
+
   try {
-    const user = await getUserFromDatabase(userID);
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).send("User not found");
+    console.log("Fetching user data for ID:", userID); // Debugging log
+
+    // Validate userID
+    if (!mongoose.Types.ObjectId.isValid(userID)) {
+      console.log("Invalid userID format:", userID); // Debugging log
+      return res.status(400).json({ error: "Invalid user ID format" });
     }
+
+    // Fetch user from the database
+    const user = await getUserFromDatabase(userID);
+    if (!user) {
+      console.log("User not found for ID:", userID); // Debugging log
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    console.log("User found:", user); // Debugging log
+
+    // Return the user data
+    res.status(200).json({
+      ID: user.ID,
+      name: user.name,
+      email: user.email,
+      picture: user.picture,
+    });
   } catch (err) {
-    res.status(500).send("Server error");
+    console.error("Error fetching user data:", err); // Debugging log
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
