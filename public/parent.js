@@ -27,8 +27,8 @@ function login() {
 					password:password
 				})
 			})
-	}catch{
-
+	}catch(err){
+		console.log(err);
 	}
 	/*try{
 		const crypto = await import('bcrypt');
