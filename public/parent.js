@@ -87,7 +87,7 @@ function signup() {
 
 			
 			const hash = await crypto.hash(password, 10);
-			
+			alert(hash)
 
 			const res = await fetch("/addingUser", {
 				method:'POST',
