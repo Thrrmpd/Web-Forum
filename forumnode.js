@@ -115,7 +115,7 @@ conn.post("/addLogin", async (req, res) => {
   }
 });
 
-conn.post('/login', async (req, res)=>{
+conn.get('/login', async (req, res)=>{
 
   try{
   const userdata = await users.find({});
