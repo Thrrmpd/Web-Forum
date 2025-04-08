@@ -13,6 +13,7 @@ const conn = express();
 const fs = require("fs");
 const fileUpload = require("express-fileupload");
 const cloudinary = require("cloudinary").v2;
+const { ObjectId } = mongoose.Types;
 
 var username = "Test",
   email = "helloworld.to",
@@ -28,6 +29,7 @@ conn.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // conn.use(express.static(path.join(__dirname, "public")));
 
 mongoose.connect("mongodb+srv://johannjoseph26:TbogoJXZubB7HEeg@cluster0.ujhsndz.mongodb.net/forumappdb?retryWrites=true&w=majority&appName=Cluster0");
+// mongoose.connect("mongodb://127.0.0.1:27017/forumappdb")
 
 mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDB successfully!");
@@ -305,7 +307,17 @@ conn.get("/getUser/:id", async (req, res) => {
 conn.get("/getForum/:id", async (req, res) => {
   const forumID = req.params.id;
   try {
-    const forum = await forums.findById(forumID);
+
+    let forum;
+
+    // forumID is a ObjectId 
+    if (ObjectId.isValid(forumID)) {
+      forum = await forums.findById(forumID);
+    } else {
+      // forumID is not a ObjectId
+      forum = await forums.findOne({ forID: parseInt(forumID) });
+    }
+
     if (forum) {
       res.json(forum);
     } else {
@@ -855,6 +867,51 @@ conn.put("/downvote/:postId", async (req, res) => {
     res.status(200).json({ upvotes: post.upvotes, downvotes: post.downvotes });
   } catch (error) {
     console.error("Error downvoting:", error);
+    res.status(500).send("Server error");
+  }
+});
+
+/********************************************************************************/
+/***********************************POPULAR**************************************/
+
+conn.get("/api/popular", async (req, res) => {
+  try {
+    const forums = await posts.aggregate([
+      {
+        $group: {
+          _id: "$forID", 
+          totalUpvotes: { $sum: "$upvotes" },
+          totalDownvotes: { $sum: "$downvotes" },
+        }
+      },
+      { $sort: { totalUpvotes: -1 } }, 
+      { $limit: 5 }, 
+      {
+        $lookup: {
+          from: "forums", 
+          localField: "_id",
+          foreignField: "forID", 
+          as: "forumDetails"
+        }
+      },
+      {
+        $unwind: "$forumDetails" 
+      },
+      {
+        $project: {
+          forID: "$forumDetails.forID", 
+          title: "$forumDetails.title", 
+          totalUpvotes: 1,
+          totalDownvotes: 1
+        }
+      }
+    ]);    
+
+    console.log("Aggregated forums:", forums);
+
+    res.json(forums);
+  } catch (error) {
+    console.error("Error fetching top 5 forums:", error);
     res.status(500).send("Server error");
   }
 });
