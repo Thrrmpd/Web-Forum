@@ -1,92 +1,94 @@
-
 var userArray, forumArray, userObject, loggedinUsers, loggedinForums, pathway, loginStatus;
 
-document.addEventListener("DOMContentLoaded", async ()=>{
+document.addEventListener("DOMContentLoaded", async () => {
     console.log(sessionStorage.getItem('loginID'));
     var forums = [];
-    if(document.cookie){
-        
+
+    if (document.cookie) {
         const userCookie = document.cookie.split(';');
         console.log(userCookie);
 
-        userCookie.forEach(cookie =>{
-            if(cookie.split('=')[0].trim() == 'userInfo'){
-                userArray = cookie.split('=')[1];
-                console.log(cookie.split('=')[1]);
-            }else if(cookie.split('=')[0].trim() == 'forumInfo'){
-                forumArray = cookie.split('=')[1];
-                console.log(cookie);
-            }else if(cookie.split('=')[0].trim() == 'loginStatus'){
-                loginStatus = cookie.split('=')[1];
-                console.log(cookie);
-            }
-        })
+        userCookie.forEach(cookie => {
+            const [key, value] = cookie.split('=').map(item => item.trim());
 
-        
-        
+            if (key === 'userInfo') {
+                userArray = value || '';  
+                console.log(value);
+            } else if (key === 'forumInfo') {
+                forumArray = value || '';
+                console.log(value);
+            } else if (key === 'loginStatus') {
+                loginStatus = value || '';
+                console.log(value);
+            }
+        });
+
         console.log(userArray);
         console.log(forumArray);
         console.log(loginStatus);
-        
-        const split = decodeURIComponent(forumArray);
-        const bukaka = split.split(']')
-        
-        var bukakaMore;
-        var i = 0;
-        console.log(bukaka);
-        while(bukaka[i] != ''){
-            bukakaMore = bukaka[i].replaceAll('[','');
-            bukakaMore = bukakaMore.replaceAll('"','');
-            forums.push(bukakaMore.split(',').filter(Boolean))
-            i++;    
+
+        if (forumArray) {
+            try {
+                const split = decodeURIComponent(forumArray);
+                const bukaka = split.split(']');
+
+                let bukakaMore;
+                let i = 0;
+                console.log(bukaka);
+                while (bukaka[i] !== '') {
+                    bukakaMore = bukaka[i].replaceAll('[', '').replaceAll('"', '');
+                    forums.push(bukakaMore.split(',').filter(Boolean));
+                    i++;
+                }
+
+                sessionStorage.setItem('loginForums', JSON.stringify(forums));
+            } catch (e) {
+                console.error('Error decoding forum array:', e);
+            }
         }
-    }else{
-        try{
+
+    } else {
+        try {
             const userRes = await fetch('/getUsers');
             const forumRes = await fetch('/getForums');
             const loginRes = await fetch('/getLoggedIn');
             isLogin(userRes, forumRes, loginRes);
-    
-                }catch(err){
-                    console.error(err);
-                }
+        } catch (err) {
+            console.error(err);
+        }
     }
-        
 
-        if(loginStatus == 'true' && sessionStorage.getItem('loginID') == userArray.split(',').filter(Boolean)[1]){
-        displayInfo(userArray.split(',').filter(Boolean)); //display user info from cookie
-        displayForums(forums, userArray.split(',').filter(Boolean)[2]); //display forums from cookie
+    if (loginStatus === 'true' && sessionStorage.getItem('loginID') === userArray.split(',').filter(Boolean)[1]) {
+        displayInfo(userArray.split(',').filter(Boolean)); 
+        
+        const storedForums = sessionStorage.getItem('loginForums');
+        if (storedForums) {
+            forums = JSON.parse(storedForums);
+            displayForums(forums, userArray.split(',').filter(Boolean)[2]); 
+        }
 
         sessionStorage.setItem('loginObject', userArray.split(',').filter(Boolean)[0]);
         sessionStorage.setItem('loginInfo', JSON.stringify(userArray.split(',').filter(Boolean)));
-        sessionStorage.setItem('loginForums', JSON.stringify(forums))
-        
+
         userObject = userArray.split(',').filter(Boolean)[0];
         console.log(userObject);
-
         console.log(userArray.split(',').filter(Boolean));
         console.log(userArray.split(',').filter(Boolean)[0]);
     }
-    else if (loginStatus == 'false' && sessionStorage.getItem('loginID') == userArray.split(',').filter(Boolean)[1]){
+    else if (loginStatus === 'false' && sessionStorage.getItem('loginID') === userArray.split(',').filter(Boolean)[1]) {
         document.cookie = 'loginStatus=true';
         window.location.reload();
     } else {
-    
-
-        try{
-        const userRes = await fetch('/getUsers');
-        const forumRes = await fetch('/getForums');
-        const loginRes = await fetch('/getLoggedIn');
-        isLogin(userRes, forumRes, loginRes);
-
-            }catch(err){
-                console.error(err);
-            }
-            }
-        
-        
-    
-})
+        try {
+            const userRes = await fetch('/getUsers');
+            const forumRes = await fetch('/getForums');
+            const loginRes = await fetch('/getLoggedIn');
+            isLogin(userRes, forumRes, loginRes);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+});
 
 async function isLogin(userRes, forumRes, loginRes){ //login function
     
@@ -373,6 +375,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sessionStorage.removeItem("loginObject");
         sessionStorage.removeItem("loginInfo");
         sessionStorage.removeItem("loginForums");
+        sessionStorage.removeItem("loginID");
     
         console.log("Cookies and session storage cleared.");
     
