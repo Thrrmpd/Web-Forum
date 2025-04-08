@@ -414,59 +414,51 @@ document.addEventListener("DOMContentLoaded", function () {
         const updateEmail = document.querySelector(".newEmail");
         const updatePFP = document.querySelector(".newPFP");
 
-        
-        if(updateUsername.value == '' && updateEmail.value == '' && !updatePFP.files[0])
+        if (updateUsername.value === '' && updateEmail.value === '' && !updatePFP.files[0]) {
             alert("Please fill out at least one field to update.");
-            else{
-                const data = {};
-                if(updateUsername.value) 
-                    Object.assign(data, {newUsername: updateUsername.value});
-                if(updateEmail.value) 
-                    Object.assign(data, {newEmail: updateEmail.value});
-                if(updatePFP.files[0]) 
-                 Object.assign(data, {newPFP: updatePFP.files[0].name});
-
-                console.log(data);
-
-                try {
-                    const res = await fetch(`/updateUser/${userObject}`, {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify(data)
-                    });
-                  
-                    if (res.ok) {
-                      const updatedUser = await res.json();
-                      console.log("Updated User:", updatedUser);
-                  
-                      // Update the displayed user info
-                      displayInfo([
-                        null, // Placeholder for ID (not used in displayInfo)
-                        null, // Placeholder for another unused field
-                        updatedUser.name, // Username
-                        updatedUser.email, // Email
-                        null, // Placeholder for password (not used in displayInfo)
-                        updatedUser.picture // Profile picture
-                      ]);
-                  
-                      // Clear input fields
-                      updateUsername.value = '';
-                      updateEmail.value = '';
-                      updatePFP.value = '';
-                    } else {
-                      const error = await res.json();
-                      console.error("Error updating user:", error);
-                      alert(error.message || "Failed to update user.");
-                    }
-                  } catch (err) {
-                    console.error("Error updating user:", err);
-                    alert("An error occurred while updating the user.");
-                  }
-        }
+            return;
+          }
         
-        //window.location.reload();
+          const formData = new FormData();
+          if (updateUsername.value) formData.append("newUsername", updateUsername.value);
+          if (updateEmail.value) formData.append("newEmail", updateEmail.value);
+          if (updatePFP.files[0]) formData.append("newPFP", updatePFP.files[0]);
+        
+          console.log("FormData contents:", [...formData.entries()]); // Debugging log
+        
+          try {
+            const res = await fetch(`/updateUser/${userObject}`, {
+              method: 'POST',
+              body: formData,
+            });
+        
+            if (res.ok) {
+              const updatedUser = await res.json();
+              console.log("Updated User:", updatedUser);
+        
+              // Update the displayed user info
+              displayInfo([
+                null, // Placeholder for ID (not used in displayInfo)
+                null, // Placeholder for another unused field
+                updatedUser.name, // Username
+                updatedUser.email, // Email
+                null, // Placeholder for password (not used in displayInfo)
+                updatedUser.picture // Profile picture
+              ]);
+        
+              // Clear input fields
+              updateUsername.value = '';
+              updateEmail.value = '';
+              updatePFP.value = '';
+            } else {
+              const error = await res.json();
+              console.error("Error updating user:", error);
+              alert(error.message || "Failed to update user.");
+            }
+          } catch (err) {
+            console.error("Error updating user:", err);
+            alert("An error occurred while updating the user.");
+          }
         
     });
 

@@ -467,7 +467,21 @@ conn.post("/updateUser/:userID", async (req, res) => {
     const updateFields = {};
     if (newUsername) updateFields.name = newUsername;
     if (newEmail) updateFields.email = newEmail;
-    if (newPFP) updateFields.picture = newPFP;
+    
+    if (req.files && req.files.newPFP) {
+      const imageFile = req.files.newPFP;
+
+      console.log("Profile picture received:", imageFile); // Debugging log
+
+      // Upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(imageFile.tempFilePath, {
+        folder: "profile_pictures", // Optional: specify a folder in Cloudinary
+      });
+
+      console.log("Cloudinary upload result:", result); // Debugging log
+
+      updateFields.picture = result.secure_url; // Save the Cloudinary URL
+    }
 
     // Check if there are fields to update
     if (Object.keys(updateFields).length === 0) {
