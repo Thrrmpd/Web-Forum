@@ -28,7 +28,7 @@ function login() {
 				})
 			})
 
-			console.log(res);
+			console.log(await res.json());
 	}catch(err){
 		console.log(res);
 	}
