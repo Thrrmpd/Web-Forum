@@ -87,9 +87,6 @@ function signup() {
 
 			try{
 			
-				const salt = await crypto.genSalt();
-				const hashed = await crypto.hash(password, salt);
-			
 
 				const res = await fetch("/addingUser", {
 					method:'POST',
@@ -100,7 +97,7 @@ function signup() {
 						ID:ID,
 						name:username,
 						email:email,
-						password:hashed
+						password:password
 					})
 				})
 		}catch{

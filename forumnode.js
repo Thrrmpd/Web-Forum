@@ -73,12 +73,16 @@ cloudinary.api.ping((error, result) => {
 conn.post("/addingUser", async (req, res) => {
   //This is actually a function
   try {
+
+
+    const hashedPassword = await crypto.hash(req.body.password, 10);
+
     const newUser = await new users({
       //Create new user object to be stored in db
       ID: req.body.ID, //get ID from html page (index_userprofile.html)
       name: req.body.name, //get username from html page (index_userprofile.html)
       email: req.body.email, // ^
-      password: req.body.password, // ^
+      password: hashedPassword, // ^
       isForumCreator: false, // default forum creator is false since new user
       picture: "pfp.png", //standard pfp of new user is pfp.png
       loginID: 0,
