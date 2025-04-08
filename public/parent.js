@@ -29,7 +29,8 @@ function login() {
 				isEqual = false;
 			}
 		}
-	}catch{
+	}catch(err){
+		console.log(err);
 
 	}
 		
