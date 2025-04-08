@@ -290,7 +290,7 @@ conn.get("/getPosts", async (req, res) => {
 // Function to get user data from the database
 async function getUserFromDatabase(userID) {
   try {
-    const user = await users.findById(userID);
+    const user = await users.findById(userID).select("ID name email picture");
     return user;
   } catch (err) {
     throw new Error("Database query failed");
