@@ -430,17 +430,25 @@ conn.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    console.log("Login request received:", { email, password }); // Debugging log
+
     // Find the user by email
     const user = await users.findOne({ email });
     if (!user) {
+      console.log("User not found for email:", email); // Debugging log
       return res.status(404).json({ error: "User not found" });
     }
+
+    console.log("User found:", user); // Debugging log
 
     // Compare the provided password with the hashed password in the database
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log("Password mismatch for user:", user.email); // Debugging log
       return res.status(401).json({ error: "Invalid password" });
     }
+
+    console.log("Password match for user:", user.email); // Debugging log
 
     // If the password matches, return the user data
     res.status(200).json({
