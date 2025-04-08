@@ -85,8 +85,8 @@ function signup() {
 
 
 
-			const salt = crypto.genSaltSync(Math.floor(Math.random() * 10) + 1);
-			const hash = crypto.hash(password, salt);
+			const salt = await crypto.genSaltSync(Math.floor(Math.random() * 10) + 1);
+			const hash = await crypto.hash(password, salt);
 
 
 			const res = await fetch("/addingUser", {
