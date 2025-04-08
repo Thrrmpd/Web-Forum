@@ -486,6 +486,26 @@ conn.post("/login", async (req, res) => {
   }
 });
 
+conn.get("/getForumsByUser/:userID", async (req, res) => {
+  const userID = req.params.userID;
+
+  try {
+      console.log("Fetching forums for user ID:", userID);
+
+      // Fetch forums where the creator ID matches the user ID
+      const forums = await forumsCollection.find({ creatID: parseInt(userID) }).toArray();
+
+      if (!forums || forums.length === 0) {
+          return res.status(404).json({ error: "No forums found for this user." });
+      }
+
+      res.status(200).json(forums);
+  } catch (err) {
+      console.error("Error fetching forums:", err);
+      res.status(500).json({ error: "Failed to fetch forums." });
+  }
+});
+
 /********************************************************************************/
 
 /***********************************UPDATE***************************************/

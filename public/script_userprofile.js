@@ -2,9 +2,25 @@
 var userArray, forumArray, userObject, loggedinUsers, loggedinForums, pathway, loginStatus;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const loginID = sessionStorage.getItem('loginID');
     console.log(sessionStorage.getItem('loginID'));
     var forums = [];
 
+    try {
+        // Fetch forums created by the logged-in user
+        const res = await fetch(`/getForumsByUser/${loginID}`);
+        if (!res.ok) {
+            throw new Error("Failed to fetch forums.");
+        }
+
+        const forumsofUser = await res.json();
+        console.log("Fetched Forums:", forumsofUser);
+
+        // Display the forums
+        displayForums(forumsofUser, "Your Forum");
+    } catch (err) {
+        console.error("Error fetching forums:", err);
+    }
 
     if (document.cookie) {
         const userCookie = document.cookie.split(';');
@@ -66,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const storedForums = sessionStorage.getItem('loginForums');
         if (storedForums) {
             forums = JSON.parse(storedForums);
-            displayForums(forums, userArray.split(',').filter(Boolean)[2]); 
+            // displayForums(forums, userArray.split(',').filter(Boolean)[2]); 
         }
 
         sessionStorage.setItem('loginObject', userArray.split(',').filter(Boolean)[0]);
@@ -146,7 +162,7 @@ async function isLogin(userRes, forumRes, loginRes){ //login function
         displayInfo(info); 
 
         if(forums.length != 0){
-            displayForums(forums, info[2]);
+            // displayForums(forums, info[2]);
             if(!document.cookie)
                 document.cookie = `forumInfo=${encodeURIComponent(JSON.stringify(forums))}; max-age=86400; path=/`;
         }
