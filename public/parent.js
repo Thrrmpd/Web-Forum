@@ -1,39 +1,39 @@
 
 
-
-document.getElementById("loginbutton").addEventListener("click", async () => {
-	const email = document.getElementById("username").value;
-	const password = document.getElementById("password").value;
-  
-	try {
-	  const res = await fetch("/login", {
-		method: "POST",
-		headers: {
-		  "Content-Type": "application/json",
-		},
-		body: JSON.stringify({ email, password }),
+function login() { 
+	document.getElementById("loginbutton").addEventListener("click", async () => {
+		const email = document.getElementById("username").value;
+		const password = document.getElementById("password").value;
+	  
+		try {
+		  const res = await fetch("/login", {
+			method: "POST",
+			headers: {
+			  "Content-Type": "application/json",
+			},
+			body: JSON.stringify({ email, password }),
+		  });
+	  
+		  if (res.ok) {
+			const data = await res.json();
+			console.log("Login successful:", data);
+	  
+			// Store user ID in session storage
+			sessionStorage.setItem("loginID", data.user.id);
+	  
+			// Redirect to the user profile page
+			window.location.replace("./index_userprofile.html");
+		  } else {
+			const error = await res.json();
+			console.error("Login failed:", error);
+			alert(error.error || "Login failed. Please check your credentials.");
+		  }
+		} catch (err) {
+		  console.error("Error during login:", err);
+		  alert("An error occurred while logging in.");
+		}
 	  });
-  
-	  if (res.ok) {
-		const data = await res.json();
-		console.log("Login successful:", data);
-  
-		// Store user ID in session storage
-		sessionStorage.setItem("loginID", data.user.id);
-  
-		// Redirect to the user profile page
-		window.location.replace("./index_userprofile.html");
-	  } else {
-		const error = await res.json();
-		console.error("Login failed:", error);
-		alert(error.error || "Login failed. Please check your credentials.");
-	  }
-	} catch (err) {
-	  console.error("Error during login:", err);
-	  alert("An error occurred while logging in.");
-	}
-  });	
-
+}
 
 function goback() {
 window.history.back();
