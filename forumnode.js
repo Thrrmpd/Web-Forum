@@ -118,10 +118,10 @@ conn.post("/addLogin", async (req, res) => {
 conn.post('/login', async (req, res)=>{
 
   try{
-  const userdata = await fetch('/getUsers');
-  const check =  await userdata.json();
+  const userdata = await users.find({});
+  const check =  Object.entries(userdata);
 
-  const userentries = Object.entries(check);
+  const userentries = Object.entries(userdata);
 
   
   for(var i = 0; i < userentries.length; i++){
