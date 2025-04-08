@@ -460,60 +460,37 @@ conn.get("/api/forum/:forID", async (req, res) => {
 
 conn.post("/updateUser/:userID", async (req, res) => {
   const userID = req.params.userID;
-  console.log(userID);
-  console.log(req.body.newUsername);
-  console.log(req.body.newEmail);
-  console.log(typeof req.body.newPFP);
-
-  const updatePFP = {};
+  const { newUsername, newEmail, newPFP } = req.body;
 
   try {
-    if (req.body.newUsername) {
-      console.log("newUsername happen");
-      const updateInfo = await users.findByIdAndUpdate(userID, {
-        $set: { name: req.body.newUsername },
-      });
+    // Build the update object dynamically
+    const updateFields = {};
+    if (newUsername) updateFields.name = newUsername;
+    if (newEmail) updateFields.email = newEmail;
+    if (newPFP) updateFields.picture = newPFP;
 
-      if (!updateInfo) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      console.log("User Updated: ", updateInfo);
-      success = updateInfo;
+    // Check if there are fields to update
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({ error: "No fields to update" });
     }
 
-    var success;
+    console.log("Fields to update:", updateFields);
 
-    if (req.body.newEmail) {
-      console.log("newEmail happen");
+    // Perform the update
+    const updatedUser = await users.findByIdAndUpdate(
+      userID,
+      { $set: updateFields },
+      { new: true } // Return the updated document
+    );
 
-      const updateInfo = await users.findByIdAndUpdate(userID, {
-        $set: { email: req.body.newEmail },
-      });
-
-      if (!updateInfo) {
-        return res.status(404).json({ error: "User not found" });
-      }
-
-      console.log("User Updated: ", updateInfo);
-      success = updateInfo;
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    if (req.body.newPFP) {
-      console.log("newPFP happen");
-      const updateInfo = await users.findByIdAndUpdate(userID, {
-        $set: { picture: req.body.newPFP },
-      });
-
-      if (!updateInfo) {
-        return res.status(404).json({ error: "User not found" });
-      }
-
-      success = updateInfo;
-    }
-    console.log("User Updated:", success);
-    res.status(200).json(success);
+    console.log("User Updated:", updatedUser);
+    res.status(200).json(updatedUser);
   } catch (exception) {
-    console.error(exception);
+    console.error("Error updating user:", exception);
     res.status(500).json({ error: "Failed to update user" });
   }
 });

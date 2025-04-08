@@ -428,17 +428,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 console.log(data);
 
-                const res = await fetch(`/updateUser/${userObject}`, {
-                    method:'POST',
-                    headers:{
+                try {
+                    const res = await fetch(`/updateUser/${userObject}`, {
+                      method: 'POST',
+                      headers: {
                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-
-                if(res.ok){
-                    console.log(await res.json());
-                }
+                      },
+                      body: JSON.stringify(data)
+                    });
+                  
+                    if (res.ok) {
+                      const updatedUser = await res.json();
+                      console.log("Updated User:", updatedUser);
+                  
+                      // Update the displayed user info
+                      displayInfo([
+                        null, // Placeholder for ID (not used in displayInfo)
+                        null, // Placeholder for another unused field
+                        updatedUser.name, // Username
+                        updatedUser.email, // Email
+                        null, // Placeholder for password (not used in displayInfo)
+                        updatedUser.picture // Profile picture
+                      ]);
+                  
+                      // Clear input fields
+                      updateUsername.value = '';
+                      updateEmail.value = '';
+                      updatePFP.value = '';
+                    } else {
+                      const error = await res.json();
+                      console.error("Error updating user:", error);
+                      alert(error.message || "Failed to update user.");
+                    }
+                  } catch (err) {
+                    console.error("Error updating user:", err);
+                    alert("An error occurred while updating the user.");
+                  }
         }
         
         //window.location.reload();
