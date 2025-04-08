@@ -8,6 +8,7 @@ const posts = require("./postsModel");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const cors = require("cors");
+const crypto = require('bcrypt');
 const port = 3000;
 const conn = express();
 const fs = require("fs");
@@ -28,8 +29,9 @@ conn.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // conn.use(parser.urlencoded({ extended: true }));
 // conn.use(express.static(path.join(__dirname, "public")));
 
+
 mongoose.connect("mongodb+srv://johannjoseph26:TbogoJXZubB7HEeg@cluster0.ujhsndz.mongodb.net/forumappdb?retryWrites=true&w=majority&appName=Cluster0");
-// mongoose.connect("mongodb://127.0.0.1:27017/forumappdb")
+//mongoose.connect("mongodb://127.0.0.1:27017/forumappdb")
 
 mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDB successfully!");

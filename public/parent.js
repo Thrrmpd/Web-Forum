@@ -1,3 +1,5 @@
+const crypto = require('bcrypt');
+
 function login() { 
 	const password = document.getElementById("password").value;
 	const username  = document.getElementById("username").value;
@@ -80,6 +82,13 @@ function signup() {
 
 		ID = Object.values(userentries[k][1])[1].valueOf() + 1
 		if(isEqual == false && stringEqual == true){
+
+
+
+			const salt = crypto.genSaltSync(Math.floor(Math.random() * 10) + 1);
+			const hash = crypto.hash(password, salt);
+
+
 			const res = await fetch("/addingUser", {
 				method:'POST',
 				headers:{
@@ -89,7 +98,7 @@ function signup() {
 					ID:ID,
 					name:username,
 					email:email,
-					password:password
+					password:hash
 				})
 			})
 			
