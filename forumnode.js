@@ -115,6 +115,36 @@ conn.post("/addLogin", async (req, res) => {
   }
 });
 
+conn.post('/login', async (req, res)=>{
+
+  try{
+  const userdata = await fetch('/getUsers');
+  const check =  await userdata.json();
+
+  const userentries = Object.entries(check);
+
+  
+  for(var i = 0; i < userentries.length; i++){
+    if(req.body.email == Object.values(userentries[i][1])[3]){
+      var compare = await crypto.compare(req.body.password, Object.values(userentries[i][1])[3])
+      if(compare == true){
+        sessionStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1]));
+        window.location.replace("./index_userprofile.html");
+      }
+      else{
+        return;
+      }
+    
+    }
+  }
+
+
+}catch{
+
+}
+
+});
+
 //Add Forum API, same function as add user api but differing number of attributes
 conn.post("/addingForums", async (req, res) => {
   try {
