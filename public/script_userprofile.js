@@ -1,4 +1,4 @@
-const crypto = require('bcrypt');
+
 var userArray, forumArray, userObject, loggedinUsers, loggedinForums, pathway, loginStatus;
 
 document.addEventListener("DOMContentLoaded", async () => {

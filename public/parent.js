@@ -1,4 +1,4 @@
-const crypto = require('bcrypt');
+
 
 function login() { 
 	const password = document.getElementById("password").value;
@@ -12,6 +12,7 @@ function login() {
 		//a single entry from userentries is an object
 		console.log(userdata);
 	try{
+		const crypto = await import('bcrypt');
 		for(let i = 0; i < userentries.length; i++){ //for loop check for validity
 			if(username == Object.values(userentries[i][1])[3]){
 				var compare = await crypto.compare(password, Object.values(userentries[i][1])[4]);
