@@ -442,7 +442,7 @@ conn.post("/login", async (req, res) => {
     console.log("User found:", user); // Debugging log
 
     // Compare the provided password with the hashed password in the database
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await crypto.compare(password, user.password);
     if (!isMatch) {
       console.log("Password mismatch for user:", user.email); // Debugging log
       return res.status(401).json({ error: "Invalid password" });
