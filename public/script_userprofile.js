@@ -446,12 +446,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 updatedUser.picture // Profile picture
               ]);
         
+              document.cookie = `userInfo=${updatedUser.ID},${updatedUser.name},${updatedUser.email},${updatedUser.password},${updatedUser.picture}; max-age=86400; path=/`;
+              
               // Clear input fields
               updateUsername.value = '';
               updateEmail.value = '';
               updatePFP.value = '';
 
-              sessionStorage.setItem("loginInfo", JSON.stringify(updatedUser));
             } else {
               const error = await res.json();
               console.error("Error updating user:", error);
