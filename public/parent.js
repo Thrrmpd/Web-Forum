@@ -4,49 +4,38 @@ function login() {
 	const password = document.getElementById("password").value;
 	const username  = document.getElementById("username").value;
 	var isEqual = false;
-	document.getElementById("loginbutton").addEventListener('click', async()=>{ //event listener where if user clicks login button then the function below will be executed
-		const res = await fetch('/getUsers'); //fetch users from getUsers API
-		const userdata = await res.json(); //returns object to userdata from res.json()
-		var userentries = Object.entries(userdata); //returns array of key/value pairs to userentries 
-		var index;
-		//a single entry from userentries is an object
-		
-
-		var isEqual = false;
-
-		
-	try{
-		
-		for(let i = 0; i < userentries.length; i++){ //for loop check for validity
-			if(username == Object.values(userentries[i][1])[3]){
-				
-				if(password == Object.values(userentries[i][1])[4]){
-					isEqual = true;
-					index = i;
-					break;
-				}
-				else{
-					isEqual = false;
-				}
-			}else{
-				isEqual = false;
-			}
+	document.getElementById("loginbutton").addEventListener("click", async () => {
+		const email = document.getElementById("username").value;
+		const password = document.getElementById("password").value;
+	  
+		try {
+		  const res = await fetch("/login", {
+			method: "POST",
+			headers: {
+			  "Content-Type": "application/json",
+			},
+			body: JSON.stringify({ email, password }),
+		  });
+	  
+		  if (res.ok) {
+			const data = await res.json();
+			console.log("Login successful:", data);
+	  
+			// Store user ID in session storage
+			sessionStorage.setItem("loginID", data.user.id);
+	  
+			// Redirect to the user profile page
+			window.location.replace("./index_userprofile.html");
+		  } else {
+			const error = await res.json();
+			console.error("Login failed:", error);
+			alert(error.error || "Login failed. Please check your credentials.");
+		  }
+		} catch (err) {
+		  console.error("Error during login:", err);
+		  alert("An error occurred while logging in.");
 		}
-	}catch(err){
-		console.log(err);
-
-	}
-		
-		if(isEqual == true)
-			{
-				sessionStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1])); //Stores user ID so that vars are passed between js and html pages
-				
-				window.location.replace("./index_userprofile.html");
-			}
-		else
-			alert("username or password might be wrong");
-
-	})
+	  });
 
 	
 	
