@@ -15,7 +15,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon forumnode.js"
+    "test": "nodemon forumnode.js",
+    "postinstall": "npm install bcryptjs"
   },
   "author": "",
   "license": "ISC",
