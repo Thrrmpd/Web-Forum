@@ -115,36 +115,7 @@ conn.post("/addLogin", async (req, res) => {
   }
 });
 
-conn.get('/login', async (req, res)=>{
 
-  try{
-  const userdata = await users.find({});
-  const check =  Object.entries(userdata);
-
-  const userentries = Object.entries(userdata);
-
-  
-  for(var i = 0; i < userentries.length; i++){
-    if(req.body.email == Object.values(userentries[i][1])[3]){
-      var compare = await crypto.compare(req.body.password, Object.values(userentries[i][1])[3])
-      if(compare == true){
-        return res.status(200).json({message:"OK"})
-      }
-      else{
-        return res.status(401).json({messsage:"NO"});
-      }
-    
-    }
-  }
-
-  res.status(404).json({message: "Invalid Username or Password"});
-
-
-}catch(err){
-  console.log(err)
-}
-
-});
 
 //Add Forum API, same function as add user api but differing number of attributes
 conn.post("/addingForums", async (req, res) => {

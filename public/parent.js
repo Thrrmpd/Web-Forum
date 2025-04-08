@@ -5,40 +5,22 @@ function login() {
 	const username  = document.getElementById("username").value;
 	var isEqual = false;
 	document.getElementById("loginbutton").addEventListener('click', async()=>{ //event listener where if user clicks login button then the function below will be executed
-		//const res = await fetch('/getUsers'); //fetch users from getUsers API
-		//const userdata = await res.json(); //returns object to userdata from res.json()
-		//var userentries = Object.entries(userdata); //returns array of key/value pairs to userentries 
-		//var index;
+		const res = await fetch('/getUsers'); //fetch users from getUsers API
+		const userdata = await res.json(); //returns object to userdata from res.json()
+		var userentries = Object.entries(userdata); //returns array of key/value pairs to userentries 
+		var index;
 		//a single entry from userentries is an object
 		
 
 		var isEqual = false;
 
-		try{
-			
-
-			const res = await fetch("/login", {
-				method:'POST',
-				headers:{
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					email:username,
-					password:password
-				})
-			})
-
-			console.log(await res.json());
-	}catch(err){
-		console.log(res);
-	}
-	/*try{
-		const crypto = await import('bcrypt');
+		
+	try{
+		
 		for(let i = 0; i < userentries.length; i++){ //for loop check for validity
 			if(username == Object.values(userentries[i][1])[3]){
-				var compare = await crypto.compare(password, Object.values(userentries[i][1])[4]);
-				console.log(compare);
-				if(compare == true){
+				
+				if(password == Object.values(userentries[i][1])[4]){
 					isEqual = true;
 					index = i;
 					break;
@@ -53,13 +35,13 @@ function login() {
 	}catch(err){
 		console.log(err);
 
-	}*/
+	}
 		
 		if(isEqual == true)
 			{
-				//sessionStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1])); //Stores user ID so that vars are passed between js and html pages
+				sessionStorage.setItem('loginID', JSON.stringify(Object.values(userentries[index][1])[1])); //Stores user ID so that vars are passed between js and html pages
 				
-				//window.location.replace("./index_userprofile.html");
+				window.location.replace("./index_userprofile.html");
 			}
 		else
 			alert("username or password might be wrong");
