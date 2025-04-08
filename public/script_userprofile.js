@@ -566,3 +566,36 @@ async function loadRecentForums() {
 
 // Call the function when the page loads
 document.addEventListener("DOMContentLoaded", loadRecentForums);
+
+async function loadPopularForums() {
+    try {
+        const response = await fetch("/api/popular");
+        const popForums = await response.json();
+  
+        console.log("Fetched Top 5 Popular Forums:", popForums);
+  
+        if (!Array.isArray(popForums) || popForums.length === 0) {
+            console.error("No popular forums found or invalid response:", popForums);
+            return;
+        }
+  
+        const popularContainer = document.querySelector("#popular-container");
+        popularContainer.innerHTML = ""; 
+  
+        popForums.forEach(forum => {
+            if (forum.forID && forum.title) {
+                const forumElement = document.createElement("div");
+                forumElement.classList.add("forum-container");
+                forumElement.innerHTML = `<a href="forum_post.html?forumID=${forum.forID.toString()}">${forum.title}</a>`;
+                popularContainer.appendChild(forumElement);
+            } else {
+                console.error("Invalid forum data:", forum);
+            }
+        });
+    } catch (error) {
+        console.error("Error loading top 5 popular forums:", error);
+    }
+}
+
+// Call the function when the page loads
+document.addEventListener("DOMContentLoaded", loadPopularForums);
